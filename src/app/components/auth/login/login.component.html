@@ -1,0 +1,75 @@
+<div class="container-fluid m-0 p-0">
+    <div class="row m-0 p-0">
+      <div class="col-md-6">
+        <div class="col-md-4 d-flex">
+          <a class="navbar-brand" routerLink="">
+            <img src="../assets/logo.svg" alt="Logo" class="img-fluid brand-logo py-4 mx-3">
+          </a>
+          <h2 class="brand-name fw-bold">Crypto</h2>
+        </div> 
+        <div class="col-md-8 mx-5 pt-3">
+          <div class="mx-5">
+            <h4 class="mb-4 fw-bold fs-3">Login</h4>
+          <form [formGroup]="form">
+            <div class="mb-3">
+              <label for="exampleInputEmail1" class="form-label">E-mail</label>
+              <input type="email" class="form-control" aria-describedby="emailHelp" placeholder="Email Id" formControlName="email_id"
+              [ngClass]="{
+                'is-invalid':
+                  control['email_id'].invalid &&
+                  (control['email_id'].dirty ||
+                    control['email_id'].touched)
+              }"
+              />
+              <span class="text-danger " *ngIf="
+              control['email_id'].invalid &&
+              (control['email_id'].dirty ||
+                control['email_id'].touched)
+            ">
+                <div *ngIf="control['email_id'].errors?.['required']" class="d-flex justify-content-start" >
+                  <small>Email Address is required</small>
+                </div>
+                <div *ngIf="control['email_id'].errors?.['email']"  class="d-flex justify-content-start" >
+                  <small> Email must be a valid email address</small>
+                </div>
+              </span>
+            </div>
+            <div class="mb-3">
+              <label for="exampleInputPassword1" class="form-label">Password</label>
+              <input type="password" class="form-control" id="exampleInputPassword1" placeholder="Password" formControlName="password"
+              [type]="passwordVisible ? 'text' : 'password'"
+              [ngClass]="{
+                'is-invalid':
+                  control['password'].invalid &&
+                  (control['password'].dirty ||
+                    control['password'].touched)
+              }">
+              <div class="row d-flex justify-content-end">
+                <div class="col-2 h-0">
+                  <span class="eye"
+                    [ngClass]="{'is-password-invalid': control['password'].invalid && (control['password'].dirty || control['password'].touched)}"><i class="fa-regular fa-eye fs-5"
+                      matSuffix (click)="togglePasswordVisibility()"></i></span>
+                </div>
+              </div>
+                <span class="text-danger ">
+                    <div   class="d-flex justify-content-start" *ngIf="
+                    control['password'].invalid &&
+                    (control['password'].dirty ||
+                      control['password'].touched)">
+                      <small>Password is required</small>
+                    </div>
+                  </span>
+            </div>
+            <a href="#" class="password-link fw-bold fs-6">Forgot Password ?</a>
+            <div class="">
+              <button type="submit" class="btn login-btn mt-4 fs-5" (click)="login()">Login</button>
+            </div>
+          </form>
+          </div>
+        </div>             
+      </div>
+      <div class="col-md-6 m-0 p-0">
+        <img src="../assets/image.png" alt="Image" class="img-fluid login-image">
+      </div>
+    </div>
+  </div>

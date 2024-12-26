@@ -1,0 +1,57 @@
+<div class="container-fluid m-0">
+    <div class="row justify-content-between">
+      <div class="col-md-5 m-0">
+        <i class="fa-solid fa-magnifying-glass searching-icon"></i>
+        <input
+          type="search"
+          placeholder="Search here"
+          aria-label="Search"
+          class="search-input mb-3"/>
+      </div>
+      <div class="col-md-2 mt-4">
+        <button class="btn add-btn" (click)="openDialog()">Add</button>
+      </div>
+    </div>
+    <div class="row m-0 p-0 mb-5">
+      <div class="card p-0 mt-2">
+        <div class="col-md-12">
+          <div class="table-responsive">
+            <table class="table">
+              <thead>
+                <tr>
+                  <th scope="col">Sr.No</th>
+                  <th scope="col">User Name</th>
+                  <th scope="col">Email Id</th>
+                  <th scope="col">User Type</th>
+                  <th scope="col">Status</th>
+                  <th scope="col">Status</th>
+                  <!-- <th scope="col">Edit</th> -->
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let item of allUserList ; let i= index">
+                  <td>{{ i + 1 }}</td>
+                  <td>{{item.user_name}}</td>
+                  <td>{{item.email_id || "--" }}</td>
+                  <td>{{item.user_type}}</td>
+                  <td> {{ item.status == 1 ? "Activated" : "Deactivated" }} </td>
+                  <td> <mat-slide-toggle
+                    (change)=" changeEvent($event, item.untitled_id) "
+                    class="m-0" [checked]="item.status == 1 ? true : false">
+                    </mat-slide-toggle>
+                  </td>
+                  <!-- <td> <i class="fa fa-solid fa-pen-to-square fs-4 pointer"
+                    (click)="openDialog(item.untitled_id)"></i>
+                  </td> -->
+                </tr>
+                <tr class="fw-bold text-center"
+                *ngIf="allUserList.length === 0">
+                <td colspan="10" class="text-danger">No Data Available</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+</div>  

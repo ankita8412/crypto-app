@@ -1,0 +1,94 @@
+<div class="container-fluid">
+    <div class="row m-0 pt-4 pb-4">
+      <small class="text-center fw-bold fs-5 mb-4">{{isEdit ? " Edit" : "Add " }} User</small>
+      <div class="col-md-12">
+        <form [formGroup]="form">
+          <div class="row d-flex justify-content-center">
+            <div class="col-md-6 mb-3">
+                <input
+                  type="text"
+                  class="form-control"
+                  id="user_name"
+                  placeholder="User Name"
+                  formControlName="user_name"
+                  [ngClass]="{
+                    'is-invalid':
+                      control['user_name'].invalid &&
+                      (control['user_name'].dirty || control['user_name'].touched)
+                  }"
+                />
+                <div
+                  class="text-danger"
+                  *ngIf="
+                    control['user_name'].invalid &&
+                    (control['user_name'].dirty || control['user_name'].touched)
+                  ">
+                  <small>Please Provide Valid Username.</small>
+                </div>
+              </div>
+            <div class="col-md-6 mb-3">
+              <input
+                type="text"
+                class="form-control"
+                id="email_id"
+                placeholder="Email Id"
+                formControlName="email_id"
+                [ngClass]="{
+                  'is-invalid':
+                    control['email_id'].invalid &&
+                    (control['email_id'].dirty || control['email_id'].touched)
+                }"
+              />
+              <div
+                class="text-danger"
+                *ngIf="
+                  control['email_id'].invalid &&
+                  (control['email_id'].dirty || control['email_id'].touched)
+                ">
+                <small>Please Provide Valid Email Id.</small>
+              </div>
+            </div>
+            <div class="col-md-6 mb-3">
+              <select class="form-select"
+                aria-label="select user_type_id"
+                formControlName="user_type_id"
+                type="text">
+                <option hidden value="null" disabled selected>Select User Type</option>
+                <option
+                  [value]="item.user_type_id"
+                  *ngFor="let item of allUserTypeList">
+                  {{ item.user_type }}
+                </option>
+              </select>
+              <div
+                class="text-danger"
+                *ngIf="
+                  control['user_type_id'].invalid &&
+                  (control['user_type_id'].dirty || control['user_type_id'].touched)">
+                <small>Please Select Valid User Type.</small>
+              </div>
+            </div>
+            <div class="col-md-6 mb-3">
+              <input
+                type="text"
+                class="form-control"
+                id="password"
+                placeholder="Password"
+                formControlName="password">
+            </div>
+          </div>
+          <div class="d-flex justify-content-center mt-3">
+            <div class="col-md-2">
+              <button class="btn cancel-btn" (click)="closeDialog()">
+                Cancel
+              </button>
+            </div>
+            <div class="col-md-2 ms-3">
+              <button class="btn submit-btn" (click)="submit()">{{ isEdit ? "Update" : "Submit" }} </button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+  

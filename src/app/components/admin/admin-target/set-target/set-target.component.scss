@@ -1,0 +1,26 @@
+.target-input{
+    width: 20%;
+}
+::placeholder{
+    font-size: 14px;
+}
+:host ::ng-deep mat-select{
+    height: 55px;
+    font-size: 14!important;
+    padding: 15px 10px !important;
+    width: 100%;
+  }
+:host ::ng-deep .mdc-text-field--focused:not(.mdc-text-field--disabled) .mdc-floating-label {
+    color: #9f9f9f;
+}
+:host ::ng-deep .mdc-text-field{
+    background-color: transparent;
+    border: 1px solid #ced4da;
+    border-radius: 10px;   
+}
+:host ::ng-deep .mdc-text-field--filled:not(.mdc-text-field--disabled) .mdc-line-ripple::before {
+    border-bottom: 0px;
+}
+:host ::ng-deep .mdc-text-field--filled .mdc-line-ripple::after {
+    border-bottom:0px;
+}

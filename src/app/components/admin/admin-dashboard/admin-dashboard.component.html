@@ -1,0 +1,62 @@
+<div class="container-fluid m-0 mb-5">
+    <div class="row g-2 m-0 pt-4 justify-content-evenly">
+      <div class="col-md-3 p-4 dashboard-menu card text-center">
+        <small>abcd</small>
+      </div>
+      <div class="col-md-3 p-4 dashboard-menu card text-center">
+        <small>abcd</small>
+      </div>
+      <div class="col-md-3 p-4 dashboard-menu card text-center">
+        <small>abcd</small>
+      </div>
+      <div class="col-md-3 p-4 dashboard-menu card text-center">
+        <small>abcd</small>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-5 align-self-start">
+        <i class="fa-solid fa-magnifying-glass searching-icon"></i>
+        <input
+          type="search"
+          placeholder="Search here"
+          aria-label="Search"
+          class="search-input mb-3"
+        />
+      </div>
+    </div>
+    <div class="row m-0">
+      <div class="card p-0 mt-2">
+        <div class="col-md-12">
+          <div class="table-responsive">
+            <table class="table">
+              <thead>
+                <tr>
+                  <th scope="col">Sr.No</th>
+                  <th scope="col">Coin</th>
+                  <th scope="col">Rank</th>
+                  <th scope="col">Current Price</th>
+                  <th scope="col">Market Cap</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let item of allSetTargetList ; let i= index">
+                  <td>{{ i + 1 }}</td>
+                  <td><span class="short-name">
+                    {{ (item.coin.split(' (')[1]?.replace(')', '') || "--") }}
+                  </span> {{ (item.coin.split(' (')[0]) || "--" }} </td>
+                  <td>--</td>
+                  <td>{{ item.currant_price || "--" }}</td>
+                  <td>--</td>
+                </tr>
+                <tr class="fw-bold text-center"
+                  *ngIf="allSetTargetList.length === 0">
+                  <td colspan="10" class="text-danger">No Data Available</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  
