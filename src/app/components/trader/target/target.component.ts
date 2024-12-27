@@ -123,7 +123,7 @@ export class TargetComponent implements OnInit {
     });
   }
   updateSellToSoldStatus(item: any,footer:any) {
-    if (!item.currentPrice || item.currentPrice === '--') {
+    if (!item.currant_price || item.currant_price === '--') {
       console.error('Cannot update without a valid currentPrice');
       return;
     }
@@ -131,7 +131,7 @@ export class TargetComponent implements OnInit {
       console.error('Cannot update without a valid set_footer_id');
       return;
     }
-    const body = { complition_id: 4 ,currentPrice: item.currentPrice,set_footer_id: footer.set_footer_id };
+    const body = { complition_id: 4 ,currant_price: item.currant_price,set_footer_id: footer.set_footer_id };
     this._traderService.updateSellToSoldStatus(body).subscribe({
       next: (res: any) => {
         console.log("updateSellToSoldStatus");
