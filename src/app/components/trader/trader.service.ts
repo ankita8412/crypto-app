@@ -45,7 +45,11 @@ export class TraderService {
     return this.http.get(this.baseUrl + 'api/sale-target-header')
   }
   // update current price
-  UpdateCurrentPriceStatus(): Observable<any>{
+  updateTargetCompitionStatus(): Observable<any>{
     return this.http.put(this.baseUrl + 'api/sale-target-header',null)
   }
+  updateSellToSoldStatus(body:any): Observable<any>{
+    return this.http.patch(this.baseUrl + 'api/sale-target-header/sell-to-sold',body)
+  }
+
 }

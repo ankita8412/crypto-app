@@ -11,18 +11,22 @@ import Swal from 'sweetalert2';
 @Component({
   selector: 'app-set-target',
   templateUrl: './set-target.component.html',
-  styleUrls: ['./set-target.component.scss']
+  styleUrls: ['./set-target.component.scss'],
 })
-export class SetTargetComponent implements OnInit{
+export class SetTargetComponent implements OnInit {
   form!: FormGroup;
-  searchKey='';
+  searchKey = '';
   allCoinList: Array<any> = [];
   filteredCoinArray: Array<any> = [];
   percentageError: boolean = false;
   private searchKeyChanged: Subject<string> = new Subject<string>();
-  constructor(private _traderService:TraderService,private dialogRef: MatDialogRef<TargetComponent>,private fb: FormBuilder,
-    private _toastrService:ToastrService,private router: Router,
-  ){}
+  constructor(
+    private _traderService: TraderService,
+    private dialogRef: MatDialogRef<TargetComponent>,
+    private fb: FormBuilder,
+    private _toastrService: ToastrService,
+    private router: Router
+  ) {}
 
   ngOnInit(): void {
     this.createForm();
@@ -34,19 +38,19 @@ export class SetTargetComponent implements OnInit{
   createForm() {
     this.form = this.fb.group({
       coin: [null, Validators.required],
-      base_price: [null,Validators.required],
-      currant_price: [null,Validators.required],
+      base_price: [null, Validators.required],
+      currant_price: [null, Validators.required],
       return_x: [null, Validators.required],
       available_coins: [null, Validators.required],
-      final_sale_price:[null,Validators.required],
-      ticker_symbol:[null,Validators.required],
+      final_sale_price: [null, Validators.required],
+      ticker_symbol: [null, Validators.required],
       setTargetFooter: this.fb.array(this.createTargetInputs(5)),
     });
   }
   get control() {
     return this.form.controls;
   }
-   // Create Form Array
+  // Create Form Array
   get setTargetFooterArray(): FormArray {
     return this.form.get('setTargetFooter') as FormArray;
   }
@@ -54,17 +58,17 @@ export class SetTargetComponent implements OnInit{
   createTargetInputs(count: number): FormGroup[] {
     return Array.from({ length: count }, (_, index) =>
       this.fb.group({
-        sale_target_coin: [0, [Validators.min(0), Validators.max(100)]],
+        sale_target_coin: ['', [Validators.min(0), Validators.max(100)]],
         sale_target_percent: [`${index + 1}`], // Dynamic ID
       })
     );
   }
-   // Validate that the total percentage is exactly 100%
-   validateExactPercentage() {
+  // Validate that the total percentage is exactly 100%
+  validateExactPercentage() {
     const totalPercentage = this.setTargetFooterArray.controls
       .map((control) => control.value.sale_target_coin || 0)
       .reduce((sum, current) => sum + current, 0);
-      this.percentageError = totalPercentage !== 100;
+    this.percentageError = totalPercentage !== 100;
   }
   //get coin list...
   getAllCoinList(searchKey: string = '') {
@@ -87,28 +91,34 @@ export class SetTargetComponent implements OnInit{
   }
 
   onCoinChange(event: any) {
-    const selectedCoinName = event.value; // Fetch the coin name  
-    const selectedCoin = this.allCoinList.find(item => item.coin_name === selectedCoinName);
+    const selectedCoinName = event.value; // Fetch the coin name
+    const selectedCoin = this.allCoinList.find(
+      (item) => item.coin_name === selectedCoinName
+    );
     if (selectedCoin) {
-      this.control['coin'].patchValue(selectedCoin.coin_name); // Update form with the coin_name 
+      this.control['coin'].patchValue(selectedCoin.coin_name); // Update form with the coin_name
       this._traderService.getCoinById(selectedCoin.coin_id).subscribe({
         next: (res: any) => {
           const tickerSymbol = res.data.ticker_symbol;
           this.control['ticker_symbol'].patchValue(tickerSymbol);
           if (tickerSymbol) {
-            this._traderService.getCurrentPriceByTicker(tickerSymbol).subscribe({
-              next: (res: any) => {
-                this.control['currant_price'].patchValue(res.data.currentPrice);
-              },
-            });
+            this._traderService
+              .getCurrentPriceByTicker(tickerSymbol)
+              .subscribe({
+                next: (res: any) => {
+                  this.control['currant_price'].patchValue(
+                    res.data.currentPrice
+                  );
+                },
+              });
           }
         },
       });
     }
   }
 
-   //Filter coin array
-   filterCoinList() {
+  //Filter coin array
+  filterCoinList() {
     this.searchKeyChanged.next(this.searchKey.trim());
   }
   calculateFinalSalePrice(): void {
@@ -117,8 +127,7 @@ export class SetTargetComponent implements OnInit{
     const finalSalePrice = basePrice * returnX;
     this.form.get('final_sale_price')?.setValue(finalSalePrice);
   }
-  
-  submit() {  
+  submit() {
     Swal.fire({
       title: 'Are you sure?',
       text: 'Do you want to submit the form?',
@@ -126,14 +135,14 @@ export class SetTargetComponent implements OnInit{
       showCancelButton: true,
       confirmButtonColor: '#3085d6',
       cancelButtonColor: '#d33',
-      confirmButtonText: 'Yes, submit!'
-    }).then((result:any) => {
+      confirmButtonText: 'Yes, submit!',
+    }).then((result: any) => {
       if (result.isConfirmed) {
         this.addSetTarget();
       }
-    })
+    });
   }
-  addSetTarget(){
+  addSetTarget() {
     if (this.form.valid) {
       this._traderService.addSetTarget(this.form.getRawValue()).subscribe({
         next: (res: any) => {
