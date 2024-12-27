@@ -28,9 +28,9 @@ export class TargetComponent implements OnInit{
     this.getAllSetTargetList();
     // Set up the interval
     this.refreshInterval = setInterval(() => {
-      this.getAllSetTargetList();
+    this.getAllSetTargetList();
     this.UpdateCurrentPriceStatus()
-    }, 30000);
+    }, 10000);
   }
   ngOnDestroy() {
     if (this.refreshInterval) {
@@ -56,14 +56,16 @@ export class TargetComponent implements OnInit{
   //   });
   // }
 
-  getAllSetTargetList() {
+  getAllSetTargetList(): void {
     this._traderService.getAllSetTargetList(this.page, this.perPage).subscribe({
       next: (res: any) => {
         if (res.data.length > 0) {
           this.allSetTargetList = res.data;
+  
           // Fetch current prices for each item
           this.allSetTargetList.forEach((item: any) => {
-            this.tickerSymbol = this.extractTickerSymbol(item.coin);
+            this.tickerSymbol = this.extractTickerSymbol(item.coin); // Dynamically extract tickerSymbol
+            
             if (this.tickerSymbol) {
               this.getCurrentPrice(this.tickerSymbol, (currentPrice) => {
                 item.currentPrice = currentPrice || "--"; // Add current price to the item
@@ -100,15 +102,17 @@ export class TargetComponent implements OnInit{
    
   // get current price
   UpdateCurrentPriceStatus(): void {
-    const tickerSymbol = 'AAPL'; // Replace with the actual ticker symbol you need
-    this.getCurrentPrice(tickerSymbol, (price) => {
+    this.getCurrentPrice(this.tickerSymbol, (price) => {
       if (price !== null) {
-        this.currentPrice = price; // Assuming currentPrice is a class property
-        console.log('Updated current price:', price);
+        console.log(`Updated current price for ${this.tickerSymbol}:`, price);
       } else {
-        console.warn('Failed to fetch current price.');
+        console.warn(`Failed to fetch current price for ${this.tickerSymbol}.`);
       }
     });
+  }
+  getCurrentPriceByStatus(){
+    console.log("hello");
+    
   }
   // onPageChange(event: PageEvent): void {
   //   this.page = event.pageIndex + 1;

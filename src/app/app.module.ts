@@ -8,15 +8,11 @@ import { HttpClientModule , HTTP_INTERCEPTORS} from '@angular/common/http';
 import { provideToastr, ToastrModule } from 'ngx-toastr';
 import { AuthGuard } from './shared/auth-guard.service';
 import { AuthInterceptorService } from './shared/auth-interceptor.service';
-import { TraderSidebarComponent } from './sidebar/trader-sidebar/trader-sidebar.component';
-import { AdminSidebarComponent } from './sidebar/admin-sidebar/admin-sidebar.component';
 import { SharedModule } from './shared/shared.module';
 
 @NgModule({
   declarations: [
     AppComponent,
-    TraderSidebarComponent,
-    AdminSidebarComponent,
   ],
   imports: [
     BrowserModule,

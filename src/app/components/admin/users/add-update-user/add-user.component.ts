@@ -103,6 +103,7 @@ export class AddUserComponent implements OnInit {
           next: (res: any) => {
             if (res.status == 200) {
               this._toastrService.success(res.message)
+              // this._toastrService.clear()
               this.closeDialog('message');
             } else {
               this._toastrService.warning(res.message)
