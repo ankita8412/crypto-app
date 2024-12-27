@@ -47,6 +47,7 @@ export class UsersComponent implements OnInit {
     this._adminService.userEnableDisable(id, status).subscribe({
       next: (res: any) => {
         this._toastrService.success(res.message);
+        // this._toastrService.clear();
         this.getAllUsersList();
       },
       error: (error: any) => {

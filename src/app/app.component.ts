@@ -73,7 +73,7 @@ export class AppComponent implements OnInit,AfterContentChecked{
       });
     }
   logoutUser() {
-    localStorage.clear();
-    window.location.href = '/auth'; 
+    localStorage.clear()
+    window.location.href = '#/auth'; 
   }
 }

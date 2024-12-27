@@ -56,7 +56,7 @@ export class SetTargetComponent implements OnInit{
    createTargetInputs(count: number): FormGroup[] {
      return Array.from({ length: count }, (_, index) =>
        this.fb.group({
-         sale_target_coin: [0, [Validators.min(0), Validators.max(100)]],
+         sale_target_coin: ['', [Validators.min(0), Validators.max(100)]],
          sale_target_percent: [`${index + 1}`], // Dynamic ID
        })
      );

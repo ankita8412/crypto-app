@@ -153,6 +153,10 @@ td{
 .mdc-switch__ripple {
     top: 10% !important;
 }
+.mat-mdc-slide-toggle .mdc-switch .mdc-switch__ripple {
+    height: var(--mdc-switch-state-layer-size, 0px) !important;
+    width: var(--mdc-switch-state-layer-size, 0px) !important;
+}
 // .status-btn2{
 //     padding: 2px 20px;
 // }
