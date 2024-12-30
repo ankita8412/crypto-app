@@ -4,6 +4,7 @@ import { TraderService } from '../trader.service';
 import { MatDialog } from '@angular/material/dialog';
 import Swal from 'sweetalert2';
 import { PageEvent } from '@angular/material/paginator';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-target',
@@ -27,7 +28,8 @@ export class TargetComponent implements OnInit {
   untitled_id:any
   constructor(
     private dialog: MatDialog,
-    private _traderService: TraderService
+    private _traderService: TraderService,
+    private _toastrService:ToastrService
   ) {}
 
   ngOnInit(): void {
@@ -91,7 +93,6 @@ export class TargetComponent implements OnInit {
     });
   }
   
-
   // Helper function to extract the ticker symbol
   extractTickerSymbol(coin: string): string | null {
     const match = coin.match(/\(([^)]+)\)/); // Regex to extract text within parentheses
@@ -143,7 +144,6 @@ export class TargetComponent implements OnInit {
     });
   }
 
-
   updateSellToSoldStatus(item: any, footer: any, currentPrice: any) {
     if (!currentPrice || currentPrice === '--') {
       console.error('Cannot update without a valid currentPrice');
@@ -166,6 +166,37 @@ export class TargetComponent implements OnInit {
         console.error('Error in updateSellToSoldStatus:', err);
       }
     });
+  }
+
+  downloadReport(){
+    this._traderService.downloadReport().subscribe({
+      next: (blob: Blob) => {
+        // Create a new Blob URL for the downloaded file
+        const url = window.URL.createObjectURL(blob);
+
+        // Create an anchor element and trigger the download
+        const link = document.createElement('a');
+        link.href = url;
+
+        // Set the file name
+        link.download = 'Sale-Target-Report.xlsx';  // Set a proper filename
+
+        // Append to the DOM and trigger click to download
+        link.click();
+
+        // Clean up - revoke the object URL
+        window.URL.revokeObjectURL(url);
+      },
+      error: (err: any) => {
+        console.log(err);
+        
+        if (err.error.status == 401 || err.error.status == 422) {
+          this._toastrService.warning(err.error.message);
+        } else {
+          this._toastrService.error('Internal Server Error');
+        }
+      }
+    })
   }
   
   // onPageChange(event: PageEvent): void {
