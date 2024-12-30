@@ -4,6 +4,5 @@ export const environment = {
     // baseUrlImage:'http://localhost:3000/',
     baseUrl: 'http://wmdevelopment.co.in:3002/v1/',
     baseUrlImage: 'http://wmdevelopment.co.in/crypto/',
-    // http://wmdevelopment.co.in:3002/
 };
 
