@@ -20,14 +20,12 @@ export class AuthInterceptorService implements HttpInterceptor{
 
   intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
     const token = this._authService.getToken();
-    // const loggedUserId:any = this._authService.getLoggedUserId();
 
 
     if (token && this._authService.isAuthenticated()) {
-      this._sharedService.setLoading(true);
+      // this._sharedService.setLoading(true);
       const cloned = request.clone({
         headers: this.httpHeaders.append("Authorization", "Bearer " + token),
-        // params: request.params.set("logged_user_id", loggedUserId)
       });
 
       return next.handle(cloned).pipe(

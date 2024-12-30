@@ -20,7 +20,7 @@ export class LoginComponent implements OnInit{
   ){}
   ngOnInit(): void {
     this.createForm();
-    console.log("Login Form");
+    localStorage.clear();
     
   }
   createForm() {
@@ -41,7 +41,7 @@ export class LoginComponent implements OnInit{
         next: (res: any) => {
           console.log("login",res);
           localStorage.setItem('accessToken', res.token);
-          localStorage.setItem("contrasena_id", res.data.contrasena_id);
+          localStorage.setItem("untitled_id", res.data.untitled_id);
           localStorage.setItem("email_id",res.data.email_id);
           localStorage.setItem('expiresin', res.expiresIn);
           localStorage.setItem('isLogin', 'true');
@@ -64,14 +64,17 @@ export class LoginComponent implements OnInit{
           }
         },
         error: (error: any) => {
-          if (error.error.status == 422) {
+          this.isSubmitted = false;
+          console.log(error);
+          if (error.error.status == 401 || error.error.status == 422) {
             this._toastrService.warning(error.error.message);
           } else {
-            this._toastrService.error(error.error.message);
+            this._toastrService.error("Internal Server Error");
           }
         },
       })
     }else {
+      this.isSubmitted = false;
       this.form.markAllAsTouched();
       this._toastrService.warning('Please fill required fields');
     }

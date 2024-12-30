@@ -79,14 +79,22 @@ html, body {
     color: #fff;
     background-color:#363062;
     border-color: transparent;
-    width: 60%;
+    padding: 7px 30px;
     border-radius: 20px;
 }
 .add-btn :hover{
     color: white !important;
 }
+.download-btn{
+    padding: 7px 20px;
+    border-radius: 20px;
+}
 .btn:focus {
     outline: none;
+    box-shadow:none;
+}
+.btn-success:focus {
+    border-color: transparent;
     box-shadow:none;
 }
 .btn:hover {

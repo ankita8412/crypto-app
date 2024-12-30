@@ -1,63 +1,62 @@
 <div class="container-fluid m-0">
-    <div class="row mb-5 justify-content-between">
-      <div class="col-md-5 m-0 p-0">
-        <i class="fa-solid fa-magnifying-glass searching-icon"></i>
-        <input
-          type="search"
-          placeholder="Search here"
-          aria-label="Search"
-          class="search-input mb-3"/>
-      </div>
-      <div class="col-md-2 mt-4">
-        <button class="btn add-btn" (click)="openDialog()">Add</button>
-      </div>
-      <div class="card m-0 p-0 mt-2">
-        <div class="col-md-12">
-          <div class="table-responsive">
-            <table class="table table-bordered text-center">
-              <thead>
-                <tr>
-                  <th scope="col">Sr.No</th>
-                  <th scope="col">Coins</th>
-                  <th scope="col">Base Price</th>
-                  <th scope="col">Current Price</th>
-                  <th scope="col">Return X</th>
-                  <th scope="col">Final Sale Price</th>
-                  <th scope="col">Available Coins</th>
-                  <th *ngFor="let i of [1, 2, 3, 4, 5]" scope="col">Sale Target {{ i }} Coins</th>
-                  <th *ngFor="let i of [1, 2, 3, 4, 5]" scope="col">Sale Target {{ i }}</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr *ngFor="let item of allSetTargetList ; let i= index">
-                  <td>{{ i + 1 }}</td>
-                  <td>{{ (item.coin.split(' (')[0]) || "--" }}</td>
-                  <td>{{ item.base_price || "--" }}</td>
-                  <!-- <td>{{ item.currant_price || "--" }}</td> -->
-                  <td>{{ item.currentPrice || "--" }}</td>
-                  <td>{{ item.return_x || "--" }}</td>
-                  <td>{{ item.final_sale_price || "--"}}</td>
-                  <td>{{ item.available_coins || "--" }}</td>
-                  <td *ngFor="let footer of item.footer">{{footer.sale_target_coin || "--"}}</td>
-                  <td *ngFor="let footer of item.footer">{{footer.sale_target || "--"}} <br>
-                    <small class="status-btn reached-text"> {{footer.target_status}}</small>
-                    <small class="status-btn2 reached-text"> {{footer.complition_status}}</small>
-                    <!-- <small><img src="../../../../assets/dashboard/Pencil.svg" alt=""></small> -->
-                  </td>
-                </tr>
-                <tr class="fw-bold text-center" *ngIf="allSetTargetList.length === 0">
-                  <td colspan="17" class="text-danger">No Data Available</td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-          <!-- <div class="col-md-12 mt-5">
-            <mat-paginator [length]="total" [pageSize]="perPage" [pageSizeOptions]="[5, 10, 25, 100]"
-            aria-label="Select page" [showFirstLastButtons]="true" (page)="onPageChange($event)">
-            </mat-paginator>
-          </div> -->
-        </div> 
-      </div>
+  <div class="row mb-5 justify-content-between">
+    <div class="col-md-5 m-0 p-0">
+      <i class="fa-solid fa-magnifying-glass searching-icon"></i>
+      <input
+        type="search"
+        placeholder="Search here"
+        aria-label="Search"
+        class="search-input mb-3"/>
+    </div>
+    <div class="col-md-2 mt-4">
+      <button class="btn add-btn" (click)="openDialog()">Add</button>
+    </div>
+    <div class="card m-0 p-0 mt-2">
+      <div class="col-md-12">
+        <div class="table-responsive">
+          <table class="table table-bordered text-center">
+            <thead>
+              <tr>
+                <th scope="col">Sr.No</th>
+                <th scope="col">Coins</th>
+                <th scope="col">Base Price</th>
+                <th scope="col">Current Price</th>
+                <th scope="col">Return X</th>
+                <th scope="col">Final Sale Price</th>
+                <th scope="col">Available Coins</th>
+                <th *ngFor="let i of [1, 2, 3, 4, 5]" scope="col">Sale Target {{ i }} Coins</th>
+                <th *ngFor="let i of [1, 2, 3, 4, 5]" scope="col">Sale Target {{ i }}</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let item of allSetTargetList ; let i= index">
+                <td>{{ i + 1 }}</td>
+                <td>{{ (item.coin.split(' (')[0]) || "--" }}</td>
+                <td>{{ item.base_price || "--" }}</td>
+                <!-- <td>{{ item.currant_price || "--" }}</td> -->
+                <td>{{ item.currentPrice || "--" }}</td>
+                <td>{{ item.return_x || "--" }}</td>
+                <td>{{ item.final_sale_price || "--"}}</td>
+                <td>{{ item.available_coins || "--" }}</td>
+                <td *ngFor="let footer of item.footer">{{footer.sale_target_coin || "--"}}</td>
+                <td *ngFor="let footer of item.footer">{{footer.sale_target || "--"}} <br>
+                  <small class="status-btn reached-text"> {{footer.target_status}}</small>
+                  <small class="status-btn2 reached-text"  [ngStyle]="{ 'cursor': footer.complition_id === 3 ? 'pointer' : 'default' }" (click)="footer.complition_id === 3 && submit(item, footer, item.currentPrice)"> {{(footer.complition_status | titlecase) || "--"}}</small>
+                  <!-- <small><img src="../../../../assets/dashboard/Pencil.svg" alt=""></small> -->
+                </td>
+              </tr>
+              <tr class="fw-bold text-center" *ngIf="allSetTargetList.length === 0">
+                <td colspan="17" class="text-danger">No Data Available</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <!-- <div class="col-md-12 mt-5">
+          <mat-paginator [length]="total" [pageSize]="perPage" [pageSizeOptions]="[5, 10, 25, 100]"
+          aria-label="Select page" [showFirstLastButtons]="true" (page)="onPageChange($event)">
+          </mat-paginator>
+        </div> -->
+      </div> 
     </div>
   </div>
-  
+</div>
