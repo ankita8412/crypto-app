@@ -3,6 +3,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { SetTargetComponent } from './set-target/set-target.component';
 import { TraderService } from '../../trader/trader.service';
 import Swal from 'sweetalert2';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-admin-target',
@@ -26,7 +27,8 @@ export class AdminTargetComponent implements OnInit {
   untitled_id: any;
   constructor(
     private dialog: MatDialog,
-    private _traderService: TraderService
+    private _traderService: TraderService,
+    private _toastrService:ToastrService
   ) {}
 
   ngOnInit(): void {
@@ -164,6 +166,40 @@ export class AdminTargetComponent implements OnInit {
       },
     });
   }
+
+  downloadReport(){
+    this._traderService.downloadReport().subscribe({
+      next: (blob: Blob) => {
+        // Create a new Blob URL for the downloaded file
+        const url = window.URL.createObjectURL(blob);
+
+        // Create an anchor element and trigger the download
+        const link = document.createElement('a');
+        link.href = url;
+
+        // Set the file name
+        link.download = 'Sale-Target-Report.xlsx';  // Set a proper filename
+
+        // Append to the DOM and trigger click to download
+        link.click();
+
+        // Clean up - revoke the object URL
+        window.URL.revokeObjectURL(url);
+      },
+      error: (err: any) => {
+        console.log(err);
+        
+        if (err.error.status == 401 || err.error.status == 422) {
+          this._toastrService.warning(err.error.message);
+        } else {
+          this._toastrService.error('Internal Server Error');
+        }
+      }
+    })
+  }
+
+
+
   // onPageChange(event: PageEvent): void {
   //   this.page = event.pageIndex + 1;
   //   this.perPage = event.pageSize;

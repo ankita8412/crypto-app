@@ -81,6 +81,7 @@ html, body {
     border-color: transparent;
     padding: 7px 30px;
     border-radius: 20px;
+    font-size: 12px;
 }
 .add-btn :hover{
     color: white !important;
@@ -88,15 +89,13 @@ html, body {
 .download-btn{
     padding: 7px 20px;
     border-radius: 20px;
+    font-size: 12px;
 }
 .btn:focus {
     outline: none;
     box-shadow:none;
 }
-.btn-success:focus {
-    border-color: transparent;
-    box-shadow:none;
-}
+
 .btn:hover {
     color: white;
 }
