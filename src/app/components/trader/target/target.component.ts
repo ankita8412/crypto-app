@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { SetTargetComponent } from './set-target/set-target.component';
 import { TraderService } from '../trader.service';
 import { MatDialog } from '@angular/material/dialog';
+import Swal from 'sweetalert2';
 import { PageEvent } from '@angular/material/paginator';
 
 @Component({
@@ -23,19 +24,22 @@ export class TargetComponent implements OnInit {
   currant_price: any;
   coin: any;
   complition_id:any
+  untitled_id:any
   constructor(
     private dialog: MatDialog,
     private _traderService: TraderService
   ) {}
 
   ngOnInit(): void {
+    let data: any = localStorage.getItem('data')
+    this.untitled_id = JSON.parse(data)?.untitled_id
     this.getAllSetTargetList();
     // Set up the interval
     this.refreshInterval = setInterval(() => {
-      this.getAllSetTargetList();
       this.updateTargetCompitionStatus();
       this.UpdateCurrentPriceStatus();
-    }, 30000);
+      this.getAllSetTargetList();
+    }, 10000);
   }
   ngOnDestroy() {
     if (this.refreshInterval) {
@@ -122,8 +126,26 @@ export class TargetComponent implements OnInit {
       next: (res: any) => {},
     });
   }
-  updateSellToSoldStatus(item: any,footer:any) {
-    if (!item.currant_price || item.currant_price === '--') {
+
+  submit(item: any, footer: any, currentPrice: any) {
+    Swal.fire({
+      title: 'Are you sure?',
+      text: 'Do you want to Sold?',
+      icon: 'question',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes, Sold!',
+    }).then((result: any) => {
+      if (result.isConfirmed) {
+        this.updateSellToSoldStatus(item, footer, currentPrice);
+      }
+    });
+  }
+
+
+  updateSellToSoldStatus(item: any, footer: any, currentPrice: any) {
+    if (!currentPrice || currentPrice === '--') {
       console.error('Cannot update without a valid currentPrice');
       return;
     }
@@ -131,14 +153,21 @@ export class TargetComponent implements OnInit {
       console.error('Cannot update without a valid set_footer_id');
       return;
     }
-    const body = { complition_id: 4 ,currant_price: item.currant_price,set_footer_id: footer.set_footer_id };
+    const body = {
+      complition_id: 4,
+      currant_price: currentPrice,
+      set_footer_id: footer.set_footer_id
+    };
     this._traderService.updateSellToSoldStatus(body).subscribe({
       next: (res: any) => {
-        console.log("updateSellToSoldStatus");
-        
+        console.log("updateSellToSoldStatus successful");
       },
-    }); 
+      error: (err: any) => {
+        console.error('Error in updateSellToSoldStatus:', err);
+      }
+    });
   }
+  
   // onPageChange(event: PageEvent): void {
   //   this.page = event.pageIndex + 1;
   //   this.perPage = event.pageSize;

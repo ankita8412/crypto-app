@@ -41,7 +41,7 @@
                 <td *ngFor="let footer of item.footer">{{footer.sale_target_coin || "--"}}</td>
                 <td *ngFor="let footer of item.footer">{{footer.sale_target || "--"}} <br>
                   <small class="status-btn reached-text"> {{footer.target_status}}</small>
-                  <small class="status-btn2 reached-text"  [ngStyle]="{ 'cursor': footer.complition_id === 3 ? 'pointer' : 'default' }" (click)="updateSellToSoldStatus(item,footer)"> {{(footer.complition_status | titlecase) || "--"}}</small>
+                  <small class="status-btn2 reached-text"  [ngStyle]="{ 'cursor': footer.complition_id === 3 ? 'pointer' : 'default' }" (click)="footer.complition_id === 3 && submit(item, footer, item.currentPrice)"> {{(footer.complition_status | titlecase) || "--"}}</small>
                   <!-- <small><img src="../../../../assets/dashboard/Pencil.svg" alt=""></small> -->
                 </td>
               </tr>
