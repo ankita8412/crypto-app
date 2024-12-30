@@ -4,34 +4,58 @@ import { TraderService } from '../trader.service';
 @Component({
   selector: 'app-coins',
   templateUrl: './coins.component.html',
-  styleUrls: ['./coins.component.scss']
+  styleUrls: ['./coins.component.scss'],
 })
-export class CoinsComponent implements OnInit{
-
-page = 1;
+export class CoinsComponent implements OnInit {
+  page = 1;
   perPage = 50;
   total = 0;
   searchKey: any = '';
-  allSetTargetList:Array<any> = [];
-  constructor(private _traderService:TraderService){}
+  refreshInterval: any;
+  currentPrice: any;
+  allCoinList: Array<any> = [];
+  constructor(private _traderService: TraderService) {}
 
   ngOnInit(): void {
-    this.getAllSetTargetList();
+    this.getAllCoinListWma();
+    this.refreshInterval = setInterval(() => {
+      this.getAllCoinListWma();
+    }, 10000);
   }
-  // get all set target list
-  getAllSetTargetList(){
-    this._traderService.getAllSetTargetList(this.page,this.perPage).subscribe({
+  ngOnDestroy() {
+    if (this.refreshInterval) {
+      clearInterval(this.refreshInterval);
+    }
+  }
+  // get all active coin list
+  getAllCoinListWma() {
+    this._traderService.getAllCoinListWma(this.searchKey).subscribe({
       next: (res: any) => {
-        console.log(res);
         if (res.data.length > 0) {
-          this.allSetTargetList = res.data;
-          // this.total = res.pagination.total;
+          this.allCoinList = res.data;
+          // Fetch current price for each coin
+          this.allCoinList.forEach((coin: any) => {
+            this._traderService
+              .getCurrentPriceByTicker(coin.ticker_symbol)
+              .subscribe({
+                next: (res: any) => {
+                  coin.currentPrice = res.data.currentPrice; // Assuming the API response contains `price`
+                },
+                error: (err: any) => {
+                  console.error(
+                    `Error fetching price for ticker ${coin.ticker_symbol}:`,
+                    err
+                  );
+                },
+              });
+          });
         } else {
-          this.allSetTargetList = [];
-          // this.total = 0
+          this.allCoinList = [];
         }
-      }
+      },
+      error: (err: any) => {
+        console.error('Error fetching coin list:', err);
+      },
     });
   }
 }
-

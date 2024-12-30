@@ -1,17 +1,15 @@
-<div class="container-fluid m-0 p-0 mb-5">
-  <div class="row g-2 m-0 pt-4 justify-content-evenly">
-    <div class="col-md-3 p-4 dashboard-menu card text-center">
+<div class="container-fluid p-0 mb-5">
+  <div class="row g-2 m-0 pt-4 justify-content-start">
+    <div class="col-md-2 p-4 dashboard-menu card text-center m-2">
+      <h4 class="fs-3 fw-bold">{{setTargetCount}}</h4>
+      <small class="fw-medium">Set Target</small>
+    </div>
+    <!-- <div class="col-md-3 p-4 dashboard-menu card text-center">
       <small>abcd</small>
     </div>
     <div class="col-md-3 p-4 dashboard-menu card text-center">
       <small>abcd</small>
-    </div>
-    <div class="col-md-3 p-4 dashboard-menu card text-center">
-      <small>abcd</small>
-    </div>
-    <div class="col-md-3 p-4 dashboard-menu card text-center">
-      <small>abcd</small>
-    </div>
+    </div> -->
   </div>
   <div class="row">
     <div class="col-md-5 align-self-start">
@@ -24,38 +22,57 @@
       />
     </div>
   </div>
-  <div class="row m-0">
-    <div class="card p-0 mt-2">
-      <div class="col-md-12">
-        <div class="table-responsive">
-          <table class="table">
-            <thead>
-              <tr>
-                <th scope="col">Sr.No</th>
-                <th scope="col">Coin</th>
-                <th scope="col">Rank</th>
-                <th scope="col">Current Price</th>
-                <th scope="col">Market Cap</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr *ngFor="let item of allSetTargetList ; let i= index">
-                <td>{{ i + 1 }}</td>
-                <td><span class="short-name">
-                  {{ (item.coin.split(' (')[1]?.replace(')', '') || "--") }}
-                </span> {{ (item.coin.split(' (')[0]) || "--" }} </td>
-                <td>--</td>
-                <td>{{ item.currant_price || "--" }}</td>
-                <td>--</td>
-              </tr>
-              <tr class="fw-bold text-center"
-                  *ngIf="allSetTargetList.length === 0">
-                  <td colspan="10" class="text-danger">No Data Available</td>
-                </tr>
-            </tbody>
-          </table>
-        </div>
+  <div class="card m-0 p-0 mt-2">
+    <div class="col-md-12">
+      <div class="table-responsive">
+        <table class="table table-bordered text-center">
+          <thead>
+            <tr>
+              <th scope="col">Sr.No</th>
+              <th scope="col">Coins</th>
+              <th scope="col">Base Price</th>
+              <th scope="col">Current Price</th>
+              <th scope="col">Return X</th>
+              <th scope="col">Final Sale Price</th>
+              <th scope="col">Available Coins</th>
+              <th *ngFor="let i of [1, 2, 3, 4, 5]" scope="col">Sale Target {{ i }} Coins</th>
+              <th *ngFor="let i of [1, 2, 3, 4, 5]" scope="col">Sale Target {{ i }}</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let item of allSetTargetList ; let i= index">
+              <td>{{ i + 1 }}</td>
+              <td>{{ (item.coin.split(' (')[0]) || "--" }}</td>
+              <td>{{ item.base_price || "--" }}</td>
+              <!-- <td>{{ item.currant_price || "--" }}</td> -->
+              <td>{{ item.currentPrice || "--" }}</td>
+              <td>{{ item.return_x || "--" }}</td>
+              <td>{{ item.final_sale_price || "--"}}</td>
+              <td>{{ item.available_coins || "--" }}</td>
+              <td *ngFor="let footer of item.footer">{{footer.sale_target_coin || "--"}}</td>
+              <td *ngFor="let footer of item.footer">{{footer.sale_target || "--"}} <br>
+                <small class="status-btn reached-text"> {{footer.target_status}}</small>
+                <small class="status-btn2 reached-text"  
+                [ngStyle]="{ 'cursor': footer.complition_id === 3 ? 'pointer' : 'default' ,
+                  'background-color': footer.complition_id === 3 ? 'green' : (footer.complition_id === 4 ? 'red' : '#ececec'),
+                  'color': footer.complition_id === 3 || footer.complition_id === 4 ? 'white' : 'inherit'
+                }" 
+                (click)="footer.complition_id === 3 && submit(item, footer, item.currentPrice)">
+                 {{(footer.complition_status | titlecase) || "--"}}</small>
+                <!-- <small><img src="../../../../assets/dashboard/Pencil.svg" alt=""></small> -->
+              </td>
+            </tr>
+            <tr class="fw-bold text-center" *ngIf="allSetTargetList.length === 0">
+              <td colspan="17" class="text-danger">No Data Available</td>
+            </tr>
+          </tbody>
+        </table>
       </div>
-    </div>
+      <!-- <div class="col-md-12 mt-5">
+        <mat-paginator [length]="total" [pageSize]="perPage" [pageSizeOptions]="[5, 10, 25, 100]"
+        aria-label="Select page" [showFirstLastButtons]="true" (page)="onPageChange($event)">
+        </mat-paginator>
+      </div> -->
+    </div> 
   </div>
 </div>

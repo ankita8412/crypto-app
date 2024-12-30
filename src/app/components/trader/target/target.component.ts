@@ -131,12 +131,12 @@ export class TargetComponent implements OnInit {
   submit(item: any, footer: any, currentPrice: any) {
     Swal.fire({
       title: 'Are you sure?',
-      text: 'Do you want to Sold?',
+      text: 'Do you want to Sell?',
       icon: 'question',
       showCancelButton: true,
       confirmButtonColor: '#3085d6',
       cancelButtonColor: '#d33',
-      confirmButtonText: 'Yes, Sold!',
+      confirmButtonText: 'Yes!',
     }).then((result: any) => {
       if (result.isConfirmed) {
         this.updateSellToSoldStatus(item, footer, currentPrice);

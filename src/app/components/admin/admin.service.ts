@@ -37,4 +37,10 @@ export class AdminService {
   getAllUsersList(): Observable<any>{
     return this.http.get(this.baseUrl + 'api/admin')
   }
+  getdashboardUserCount(): Observable<any>{
+    return this.http.get(this.baseUrl + 'api/admin/user-count')
+  }
+  getdashboardSaleTargetCount(): Observable<any>{
+    return this.http.get(this.baseUrl + 'api/sale-target-header/set-target-count')
+  }
 }
