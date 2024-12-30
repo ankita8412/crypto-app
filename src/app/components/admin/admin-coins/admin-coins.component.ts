@@ -1,35 +1,61 @@
 import { Component, OnInit } from '@angular/core';
 import { TraderService } from '../../trader/trader.service';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-admin-coins',
   templateUrl: './admin-coins.component.html',
-  styleUrls: ['./admin-coins.component.scss']
+  styleUrls: ['./admin-coins.component.scss'],
 })
-export class AdminCoinsComponent implements OnInit{
-page = 1;
+export class AdminCoinsComponent implements OnInit {
+  page = 1;
   perPage = 50;
   total = 0;
   searchKey: any = '';
-  allCoinList:Array<any> = [];
-  constructor(private _traderService:TraderService){}
-
+  refreshInterval: any;
+  currentPrice: any;
+  allCoinList: Array<any> = [];
+  constructor(private _traderService: TraderService) {}
   ngOnInit(): void {
-    this.getAllSetTargetList();
+    this.getAllCoinListWma();
+    this.refreshInterval = setInterval(() => {
+      this.getAllCoinListWma();
+    }, 10000);
   }
-  // get all set target list
-  getAllSetTargetList(){
-    this._traderService.getAllSetTargetList(this.page,this.perPage).subscribe({
+  ngOnDestroy() {
+    if (this.refreshInterval) {
+      clearInterval(this.refreshInterval);
+    }
+  }
+  // get all active coin list
+  getAllCoinListWma() {
+    this._traderService.getAllCoinListWma(this.searchKey).subscribe({
       next: (res: any) => {
-        console.log(res);
         if (res.data.length > 0) {
           this.allCoinList = res.data;
-          // this.total = res.pagination.total;
+          // Fetch current price for each coin
+          this.allCoinList.forEach((coin: any) => {
+            this._traderService
+              .getCurrentPriceByTicker(coin.ticker_symbol)
+              .subscribe({
+                next: (res: any) => {
+                  coin.currentPrice = res.data.currentPrice; // Assuming the API response contains `price`
+                },
+                error: (err: any) => {
+                  console.error(
+                    `Error fetching price for ticker ${coin.ticker_symbol}:`,
+                    err
+                  );
+                },
+              });
+          });
         } else {
           this.allCoinList = [];
-          // this.total = 0
         }
-      }
+      },
+      error: (err: any) => {
+        console.error('Error fetching coin list:', err);
+      },
     });
   }
 }

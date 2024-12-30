@@ -128,20 +128,22 @@ export class SetTargetComponent implements OnInit {
     this.form.get('final_sale_price')?.setValue(finalSalePrice);
   }
   submit() {
+  
     Swal.fire({
       title: 'Are you sure?',
-      text: 'Do you want to submit the form?',
+      text: 'Do you want to Set Target?',
       icon: 'question',
       showCancelButton: true,
       confirmButtonColor: '#3085d6',
       cancelButtonColor: '#d33',
-      confirmButtonText: 'Yes, submit!',
+      confirmButtonText: 'Yes!',
     }).then((result: any) => {
       if (result.isConfirmed) {
         this.addSetTarget();
       }
     });
   }
+
   addSetTarget() {
     if (this.form.valid) {
       this._traderService.addSetTarget(this.form.getRawValue()).subscribe({

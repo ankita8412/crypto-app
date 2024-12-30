@@ -56,4 +56,7 @@ export class TraderService {
       responseType: 'blob',
     })
   }
+  // checkCoinExits(coin:any): Observable<any>{
+  //   return this.http.post(this.baseUrl + 'api/coin/check-coin' ,coin)
+  // }
 }
