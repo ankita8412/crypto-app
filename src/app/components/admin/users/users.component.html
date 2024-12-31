@@ -40,7 +40,7 @@
                   <td>{{ item.status == 1 ? "Activated" : "Deactivated" }} </td>
                   <td><mat-slide-toggle
                     (change)="changeEvent($event, item.untitled_id) "
-                    class="" [checked]="item.status == 1 ? true : false">
+                    class="example-margin" [checked]="item.status == 1 ? true : false">
                   </mat-slide-toggle>
                   </td>
                   <!-- <td> <i class="fa fa-solid fa-pen-to-square fs-4 pointer"
