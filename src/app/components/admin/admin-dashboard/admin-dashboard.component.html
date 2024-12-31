@@ -23,9 +23,12 @@
           placeholder="Search here"
           aria-label="Search"
           class="search-input mb-3"
+          #searchInput
+          (input)="getSearchInput(searchInput.value)"
         />
       </div>
     </div>
+    <small class="list-header">Set Target List</small>
     <div class="card m-0 p-0 mt-2">
       <div class="col-md-12">
         <div class="table-responsive">
@@ -33,7 +36,7 @@
             <thead>
               <tr>
                 <th scope="col">Sr.No</th>
-                <th scope="col">Coins</th>
+                <th scope="col">Coin</th>
                 <th scope="col">Base Price</th>
                 <th scope="col">Current Price</th>
                 <th scope="col">Return X</th>
@@ -57,11 +60,11 @@
                 <td *ngFor="let footer of item.footer">{{footer.sale_target || "--"}} <br>
                   <small class="status-btn reached-text"> {{footer.target_status}}</small>
                   <small class="status-btn2 reached-text"  
-                  [ngStyle]="{ 'cursor': footer.complition_id === 3 ? 'pointer' : 'default' ,
+                  [ngStyle]="{
                     'background-color': footer.complition_id === 3 ? 'green' : (footer.complition_id === 4 ? 'red' : '#ececec'),
                     'color': footer.complition_id === 3 || footer.complition_id === 4 ? 'white' : 'inherit'
                   }" 
-                  (click)="footer.complition_id === 3 && submit(item, footer, item.currentPrice)">
+                  >
                    {{(footer.complition_status | titlecase) || "--"}}</small>
                   <!-- <small><img src="../../../../assets/dashboard/Pencil.svg" alt=""></small> -->
                 </td>

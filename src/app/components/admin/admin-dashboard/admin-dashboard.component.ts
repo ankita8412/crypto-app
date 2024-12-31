@@ -4,6 +4,8 @@ import { MatDialog } from '@angular/material/dialog';
 import { ToastrService } from 'ngx-toastr';
 import Swal from 'sweetalert2';
 import { AdminService } from '../admin.service';
+import { FormControl } from '@angular/forms';
+import { debounceTime } from 'rxjs';
 @Component({
   selector: 'app-admin-dashboard',
   templateUrl: './admin-dashboard.component.html',
@@ -27,6 +29,8 @@ export class AdminDashboardComponent implements OnInit{
   coin: any;
   complition_id: any;
   untitled_id: any;
+  searchControl: FormControl = new FormControl('');
+  
   constructor(
     private _adminService: AdminService,
     private _traderService: TraderService,
@@ -45,33 +49,19 @@ export class AdminDashboardComponent implements OnInit{
       this.UpdateCurrentPriceStatus();
       this.getAllSetTargetList();
     }, 10000);
+    this.searchControl.valueChanges.pipe(debounceTime(550))  
   }
   ngOnDestroy() {
     if (this.refreshInterval) {
       clearInterval(this.refreshInterval);
     }
   }
-  // get all set target list
-  // getAllSetTargetList(){
-  //   this._traderService.getAllSetTargetList(this.page,this.perPage).subscribe({
-  //     next: (res: any) => {
-  //       console.log("getAllSetTargetList",res);
-
-  //       if (res.data.length > 0) {
-  //         this.allSetTargetList = res.data;
-  //         // this.getAllSetTargetList();
-  //         this.UpdateCurrentPriceStatus();
-  //         // this.total = res.pagination.total;
-  //       } else {
-  //         this.allSetTargetList = [];
-  //         // this.total = 0
-  //       }
-  //     }
-  //   });
-  // }
-
+  getSearchInput(searchKey: any){
+    this.searchKey = searchKey;
+    this.getAllSetTargetList();
+  }
   getAllSetTargetList(): void {
-    this._traderService.getAllSetTargetList(this.page, this.perPage).subscribe({
+    this._traderService.getAllSetTargetList(this.page, this.perPage,this.searchKey).subscribe({
       next: (res: any) => {
         if (res.data.length > 0) {
           this.allSetTargetList = res.data;
@@ -218,6 +208,4 @@ export class AdminDashboardComponent implements OnInit{
   //   this.perPage = event.pageSize;
   //   this.getAllSetTargetList();
   // }
-  //open ...view sports
-
 }

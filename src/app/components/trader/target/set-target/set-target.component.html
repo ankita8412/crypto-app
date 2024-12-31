@@ -7,7 +7,7 @@
           <div class="col-md-3" style="padding: 0;">
             <mat-select
               #singleSelect
-              placeholder="Select Coin"
+              placeholder="Select Coin *"
               formControlName="coin"
               class="form-control theme-input"
               (selectionChange)="onCoinChange($event)"
@@ -38,7 +38,7 @@
                 control['coin'].invalid &&
                 (control['coin'].dirty || control['coin'].touched)
               ">
-              <small>Please Select Valid Coin.</small>
+              <small>Coin Required.</small>
             </div>
           </div>
           <div class="col-md-4 mb-3 ms-5">
@@ -66,7 +66,7 @@
               type="number"
               class="form-control"
               id="base_price"
-              placeholder="Base Price"
+              placeholder="Base Price *"
               formControlName="base_price"
               [ngClass]="{
                 'is-invalid':
@@ -81,7 +81,7 @@
                 control['base_price'].invalid &&
                 (control['base_price'].dirty || control['base_price'].touched)
               ">
-              <small>Please Provide Valid Base Price.</small>
+              <small> Base Price Required.</small>
             </div>
           </div>
           <div class="col-md-4 mb-3">
@@ -89,7 +89,7 @@
               type="number"
               class="form-control"
               id="return_x"
-              placeholder="Return X"
+              placeholder="Return X *"
               formControlName="return_x"
               [ngClass]="{
                 'is-invalid':
@@ -105,7 +105,7 @@
                 (control['return_x'].dirty || control['return_x'].touched)
               "
             >
-              <small>Please Provide Valid Return X.</small>
+              <small>Return X Required.</small>
             </div>
           </div>
           <div class="col-md-4 mb-3">
@@ -113,7 +113,7 @@
               type="number"
               class="form-control"
               id="available_coins"
-              placeholder="Available Coins"
+              placeholder="Available Coins *"
               formControlName="available_coins"
               [ngClass]="{
                 'is-invalid':
@@ -130,7 +130,7 @@
                   control['available_coins'].touched)
               "
             >
-              <small>Please Provide Valid Available Coins.</small>
+              <small> Available Coins Required.</small>
             </div>
           </div>
           <div class="col-md-4 mb-3">
@@ -170,7 +170,7 @@
             </button>
           </div>
           <div class="col-md-2">
-            <button class="btn submit-btn" (click)="submit()">Submit</button>
+            <button class="btn submit-btn" (click)="addSetTarget()">Submit</button>
           </div>
         </div>
       </form>

@@ -34,8 +34,14 @@ export class AdminService {
     return this.http.get(this.baseUrl + 'api/admin/' + id)
   }
   // get all users list
-  getAllUsersList(): Observable<any>{
-    return this.http.get(this.baseUrl + 'api/admin')
+  getAllUsersList(key:any): Observable<any>{
+    let params = {
+      key:key
+  };
+  if ( key === '' || key === 'null') delete params.key;
+    return this.http.get(this.baseUrl + 'api/admin',{
+      params:params
+    });
   }
   getdashboardUserCount(): Observable<any>{
     return this.http.get(this.baseUrl + 'api/admin/user-count')

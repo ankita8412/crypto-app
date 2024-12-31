@@ -33,16 +33,20 @@ export class TraderService {
     return this.http.post(this.baseUrl + 'api/sale-target-header' ,data)
   }
   // get set target list
-  getAllSetTargetList(page:any,perPage:any): Observable<any>{
+  getAllSetTargetList(page:any,perPage:any,key:any): Observable<any>{
     let params = {
       page: page,
-      perPage: perPage
+      perPage: perPage,
+      key:key
   };
   if (page == '' || perPage == '') {
       delete params.page;
       delete params.perPage;
   }
-    return this.http.get(this.baseUrl + 'api/sale-target-header')
+  if ( key === '' || key === 'null') delete params.key;
+    return this.http.get(this.baseUrl + 'api/sale-target-header',{
+      params:params
+    });
   }
   // update current price
   updateTargetCompitionStatus(): Observable<any>{

@@ -59,13 +59,15 @@ export class AppComponent implements OnInit,AfterContentChecked{
 
   logout() {
       Swal.fire({
-        title: 'Are you sure?',
-        text: 'Do you want to logout',
+        text: 'Do you want to logout ?',
         icon: 'question',
         showCancelButton: true,
         confirmButtonColor: '#3085d6',
         cancelButtonColor: '#d33',
-        confirmButtonText: 'Yes, Logout!',
+        confirmButtonText: 'Yes',
+        customClass: {
+          popup: 'small-swal' // Add a custom class
+        }
       }).then((result: any) => {
         if (result.isConfirmed) {
           this.logoutUser();

@@ -49,27 +49,12 @@ export class DashboardComponent implements OnInit{
         clearInterval(this.refreshInterval);
       }
     }
-    // get all set target list
-    // getAllSetTargetList(){
-    //   this._traderService.getAllSetTargetList(this.page,this.perPage).subscribe({
-    //     next: (res: any) => {
-    //       console.log("getAllSetTargetList",res);
-  
-    //       if (res.data.length > 0) {
-    //         this.allSetTargetList = res.data;
-    //         // this.getAllSetTargetList();
-    //         this.UpdateCurrentPriceStatus();
-    //         // this.total = res.pagination.total;
-    //       } else {
-    //         this.allSetTargetList = [];
-    //         // this.total = 0
-    //       }
-    //     }
-    //   });
-    // }
-  
+    getSearchInput(searchKey: any){
+      this.searchKey = searchKey;
+      this.getAllSetTargetList();
+    }  
     getAllSetTargetList(): void {
-      this._traderService.getAllSetTargetList(this.page, this.perPage).subscribe({
+      this._traderService.getAllSetTargetList(this.page, this.perPage,this.searchKey).subscribe({
         next: (res: any) => {
           if (res.data.length > 0) {
             this.allSetTargetList = res.data;
@@ -89,7 +74,6 @@ export class DashboardComponent implements OnInit{
           }
         },
         error: (err: any) => {
-          console.error('Error fetching target list:', err);
         },
       });
     }
@@ -104,7 +88,6 @@ export class DashboardComponent implements OnInit{
       callback: (price: number | null) => void
     ): void {
       if (!tickerSymbol) {
-        console.warn('Ticker symbol is required.');
         callback(null);
         return;
       }
@@ -118,7 +101,6 @@ export class DashboardComponent implements OnInit{
       this.getCurrentPrice(this.tickerSymbol, (price) => {
         if (price !== null) {
         } else {
-          console.warn(`Failed to fetch current price for ${this.tickerSymbol}.`);
         }
       });
     }
@@ -146,11 +128,9 @@ export class DashboardComponent implements OnInit{
   
     updateSellToSoldStatus(item: any, footer: any, currentPrice: any) {
       if (!currentPrice || currentPrice === '--') {
-        console.error('Cannot update without a valid currentPrice');
         return;
       }
       if (!footer.set_footer_id) {
-        console.error('Cannot update without a valid set_footer_id');
         return;
       }
       const body = {
@@ -162,7 +142,6 @@ export class DashboardComponent implements OnInit{
         next: (res: any) => {
         },
         error: (err: any) => {
-          console.error('Error in updateSellToSoldStatus:', err);
         },
       });
     }
