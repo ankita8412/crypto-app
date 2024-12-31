@@ -15,7 +15,6 @@
       <button class="btn add-btn ms-2" (click)="openDialog()">Add</button>
     </div>
     <small class="list-header">Set Target List</small>
-
     <div class="card m-0 p-0 mt-2">
       <div class="col-md-12">
         <div class="table-responsive">
@@ -23,6 +22,7 @@
             <thead>
               <tr>
                 <th scope="col">Sr.No</th>
+                <th scope="col">Edit</th>
                 <th scope="col">Coins</th>
                 <th scope="col">Base Price</th>
                 <th scope="col">Current Price</th>
@@ -36,6 +36,9 @@
             <tbody>
               <tr *ngFor="let item of allSetTargetList ; let i= index">
                 <td>{{ i + 1 }}</td>
+                <td>
+                  <img src="assets/dashboard/Pencil.svg" alt="Pencil Image" class="" (click)="openDialog()">
+                </td>
                 <td>{{ (item.coin.split(' (')[0]) || "--" }}</td>
                 <td>{{ item.base_price || "--" }}</td>
                 <!-- <td>{{ item.currant_price || "--" }}</td> -->
@@ -53,7 +56,6 @@
                   }" 
                   (click)="footer.complition_id === 3 && submit(item, footer, item.currentPrice)">
                    {{(footer.complition_status | titlecase) || "--"}}</small>
-                  <!-- <small><img src="../../../../assets/dashboard/Pencil.svg" alt=""></small> -->
                 </td>
               </tr>
               <tr class="fw-bold text-center" *ngIf="allSetTargetList.length === 0">
