@@ -6,12 +6,15 @@
         type="search"
         placeholder="Search here"
         aria-label="Search"
-        class="search-input mb-3"/>
+        class="search-input mb-3"
+        #searchInput
+          (input)="getSearchInput(searchInput.value)"/>
     </div>
     <div class="col-md-3 mt-4">
       <button class="btn btn-success download-btn" (click)="downloadReport()">Download</button>
       <button class="btn add-btn ms-2" (click)="openDialog()">Add</button>
     </div>
+  <small class="list-header">Set Target List</small>
     <div class="card m-0 p-0 mt-2">
       <div class="col-md-12">
         <div class="table-responsive">
@@ -19,7 +22,7 @@
             <thead>
               <tr>
                 <th scope="col">Sr.No</th>
-                <th scope="col">Coins</th>
+                <th scope="col">Coin</th>
                 <th scope="col">Base Price</th>
                 <th scope="col">Current Price</th>
                 <th scope="col">Return X</th>

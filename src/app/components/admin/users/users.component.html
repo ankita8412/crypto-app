@@ -6,13 +6,16 @@
           type="search"
           placeholder="Search here"
           aria-label="Search"
-          class="search-input mb-3"/>
+          class="search-input mb-3"
+          #searchInput
+          (input)="getSearchInput(searchInput.value)"/>
       </div>
       <div class="col-md-2 mt-4">
         <button class="btn add-btn" (click)="openDialog()">Add</button>
       </div>
     </div>
     <div class="row m-0 p-0 mb-5">
+    <small class="list-header">Users List</small>
       <div class="card p-0 mt-2">
         <div class="col-md-12">
           <div class="table-responsive">
@@ -34,11 +37,11 @@
                   <td>{{item.user_name}}</td>
                   <td>{{item.email_id || "--" }}</td>
                   <td>{{item.user_type}}</td>
-                  <td> {{ item.status == 1 ? "Activated" : "Deactivated" }} </td>
-                  <td> <mat-slide-toggle
-                    (change)=" changeEvent($event, item.untitled_id) "
-                    class="m-0" [checked]="item.status == 1 ? true : false">
-                    </mat-slide-toggle>
+                  <td>{{ item.status == 1 ? "Activated" : "Deactivated" }} </td>
+                  <td><mat-slide-toggle
+                    (change)="changeEvent($event, item.untitled_id) "
+                    class="" [checked]="item.status == 1 ? true : false">
+                  </mat-slide-toggle>
                   </td>
                   <!-- <td> <i class="fa fa-solid fa-pen-to-square fs-4 pointer"
                     (click)="openDialog(item.untitled_id)"></i>

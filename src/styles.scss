@@ -11,6 +11,7 @@ html, body {
 .brand-logo{
     height: 110px;
     width: 110px;
+    cursor: pointer;
 }
 .brand-name{
     font-family: "Poppins", sans-serif;
@@ -159,12 +160,22 @@ td{
     box-shadow: none;
 }
 .mdc-switch__ripple {
-    top: 10% !important;
+    top: 14% !important;
 }
 .mat-mdc-slide-toggle .mdc-switch .mdc-switch__ripple {
     height: var(--mdc-switch-state-layer-size, 0px) !important;
     width: var(--mdc-switch-state-layer-size, 0px) !important;
 }
+.small-swal {
+    width: 300px !important;
+    height: 285px; 
+  }
+  .list-header{
+    font-size: 18px;
+    font-weight: 500;
+    margin-top: 10px;
+    margin-bottom: 10px;
+  }
 @media  (max-width:540px) {
     .brand-logo {
         height: 50px;

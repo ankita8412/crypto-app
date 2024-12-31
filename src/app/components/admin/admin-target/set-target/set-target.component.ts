@@ -81,7 +81,6 @@ export class SetTargetComponent implements OnInit{
          }
        },
        error: (err) => {
-         console.error('Error fetching coin list', err);
          this.allCoinList = [];
          this.filteredCoinArray = [];
        },
@@ -119,21 +118,21 @@ export class SetTargetComponent implements OnInit{
      const finalSalePrice = basePrice * returnX;
      this.form.get('final_sale_price')?.setValue(finalSalePrice);
    }
-     submit() {  
-       Swal.fire({
-         title: 'Are you sure?',
-         text: 'Do you want to Set Target?',
-         icon: 'question',
-         showCancelButton: true,
-         confirmButtonColor: '#3085d6',
-         cancelButtonColor: '#d33',
-         confirmButtonText: 'Yes!'
-       }).then((result:any) => {
-         if (result.isConfirmed) {
-           this.addSetTarget();
-         }
-       })
-     }
+    //  submit() {  
+    //    Swal.fire({
+    //      title: 'Are you sure?',
+    //      text: 'Do you want to Set Target?',
+    //      icon: 'question',
+    //      showCancelButton: true,
+    //      confirmButtonColor: '#3085d6',
+    //      cancelButtonColor: '#d33',
+    //      confirmButtonText: 'Yes!'
+    //    }).then((result:any) => {
+    //      if (result.isConfirmed) {
+    //        this.addSetTarget();
+    //      }
+    //    })
+    //  }
      addSetTarget(){
      if (this.form.valid) {
        this._traderService.addSetTarget(this.form.getRawValue()).subscribe({

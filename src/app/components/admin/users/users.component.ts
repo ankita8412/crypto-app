@@ -1,9 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { AddUserComponent } from './add-update-user/add-user.component';
 import { MatDialog } from '@angular/material/dialog';
-import { FormGroup } from '@angular/forms';
+import { FormControl, FormGroup } from '@angular/forms';
 import { AdminService } from '../admin.service';
 import { ToastrService } from 'ngx-toastr';
+import { debounceTime } from 'rxjs';
 
 @Component({
   selector: 'app-users',
@@ -14,6 +15,7 @@ export class UsersComponent implements OnInit {
   form!: FormGroup;
   searchKey = '';
   allUserList: Array<any> = [];
+  searchControl: FormControl = new FormControl('');
   constructor(
     private dialog: MatDialog,
     private _adminService: AdminService,
@@ -22,12 +24,15 @@ export class UsersComponent implements OnInit {
 
   ngOnInit(): void {
     this.getAllUsersList();
+    this.searchControl.valueChanges.pipe(debounceTime(550))
   }
-
+  getSearchInput(searchKey: any){
+    this.searchKey = searchKey;
+    this.getAllUsersList();
+  }
   getAllUsersList() {
-    this._adminService.getAllUsersList().subscribe({
+    this._adminService.getAllUsersList(this.searchKey).subscribe({
       next: (res: any) => {
-        console.log('getAllSetTargetList', res);
         if (res.data) {
           this.allUserList = res.data;
           // this.total = res.pagination.total;
@@ -47,7 +52,7 @@ export class UsersComponent implements OnInit {
     this._adminService.userEnableDisable(id, status).subscribe({
       next: (res: any) => {
         this._toastrService.success(res.message);
-        // this._toastrService.clear();
+        this._toastrService.clear();
         this.getAllUsersList();
       },
       error: (error: any) => {

@@ -30,7 +30,7 @@ export class AddUserComponent implements OnInit {
       this.getUserById(this.untitled_id)
       this.isEdit = true;
     }
-    this.getAllUserTypeWmaList();
+    this.getAllUserTypeWmaList();    
   }
   
   createForm() {
@@ -48,7 +48,6 @@ export class AddUserComponent implements OnInit {
     this._adminService.getAllUserTypeWmaList().subscribe({
       next: (res: any) => {
         if (res.data.length> 0) {
-           console.log("getAllUserType",res.data);
           this.allUserTypeList = res.data;
         }
       }
@@ -56,13 +55,15 @@ export class AddUserComponent implements OnInit {
   }
   submit() {
     Swal.fire({
-      title: 'Are you sure?',
-      text: 'Do you want to submit the form?',
+      text: 'Do you want to Add User?',
       icon: 'question',
       showCancelButton: true,
       confirmButtonColor: '#3085d6',
       cancelButtonColor: '#d33',
-      confirmButtonText: 'Yes, submit!',
+      confirmButtonText: 'Yes',
+      customClass: {
+        popup: 'small-swal' // Add a custom class
+      }
     }).then((result: any) => {
       if (result.isConfirmed) {
         // this.addUser();

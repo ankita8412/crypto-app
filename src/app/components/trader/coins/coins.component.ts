@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { TraderService } from '../trader.service';
+import { debounceTime } from 'rxjs';
+import { FormControl } from '@angular/forms';
 
 @Component({
   selector: 'app-coins',
@@ -14,6 +16,7 @@ export class CoinsComponent implements OnInit {
   refreshInterval: any;
   currentPrice: any;
   allCoinList: Array<any> = [];
+    searchControl: FormControl = new FormControl('');
   constructor(private _traderService: TraderService) {}
 
   ngOnInit(): void {
@@ -21,6 +24,8 @@ export class CoinsComponent implements OnInit {
     this.refreshInterval = setInterval(() => {
       this.getAllCoinListWma();
     }, 10000);
+    this.searchControl.valueChanges.pipe(debounceTime(550))  
+    
   }
   ngOnDestroy() {
     if (this.refreshInterval) {
@@ -42,10 +47,6 @@ export class CoinsComponent implements OnInit {
                   coin.currentPrice = res.data.currentPrice; // Assuming the API response contains `price`
                 },
                 error: (err: any) => {
-                  console.error(
-                    `Error fetching price for ticker ${coin.ticker_symbol}:`,
-                    err
-                  );
                 },
               });
           });
@@ -54,8 +55,11 @@ export class CoinsComponent implements OnInit {
         }
       },
       error: (err: any) => {
-        console.error('Error fetching coin list:', err);
       },
     });
+  }
+  getSearchInput(searchKey: any){
+    this.searchKey = searchKey;
+    this.getAllCoinListWma();
   }
 }

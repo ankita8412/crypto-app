@@ -7,9 +7,11 @@
         placeholder="Search here"
         aria-label="Search"
         class="search-input mb-3"
+        #searchInput (input)="getSearchInput(searchInput.value)"
       />
     </div>
     <div class="row m-0 p-0">
+      <small class="list-header">Active Coin List</small>
       <div class="card p-0 mt-2">
         <div class="col-md-12">
           <div class="table-responsive">

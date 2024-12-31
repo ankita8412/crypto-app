@@ -5,6 +5,8 @@ import { MatDialog } from '@angular/material/dialog';
 import Swal from 'sweetalert2';
 import { PageEvent } from '@angular/material/paginator';
 import { ToastrService } from 'ngx-toastr';
+import { debounceTime } from 'rxjs';
+import { FormControl } from '@angular/forms';
 
 @Component({
   selector: 'app-target',
@@ -26,6 +28,8 @@ export class TargetComponent implements OnInit {
   coin: any;
   complition_id:any
   untitled_id:any
+    searchControl: FormControl = new FormControl('');
+  
   constructor(
     private dialog: MatDialog,
     private _traderService: TraderService,
@@ -42,33 +46,16 @@ export class TargetComponent implements OnInit {
       this.UpdateCurrentPriceStatus();
       this.getAllSetTargetList();
     }, 10000);
+        this.searchControl.valueChanges.pipe(debounceTime(550))
+    
   }
   ngOnDestroy() {
     if (this.refreshInterval) {
       clearInterval(this.refreshInterval);
     }
   }
-  // get all set target list
-  // getAllSetTargetList(){
-  //   this._traderService.getAllSetTargetList(this.page,this.perPage).subscribe({
-  //     next: (res: any) => {
-  //       console.log("getAllSetTargetList",res);
-
-  //       if (res.data.length > 0) {
-  //         this.allSetTargetList = res.data;
-  //         // this.getAllSetTargetList();
-  //         this.UpdateCurrentPriceStatus();
-  //         // this.total = res.pagination.total;
-  //       } else {
-  //         this.allSetTargetList = [];
-  //         // this.total = 0
-  //       }
-  //     }
-  //   });
-  // }
-
   getAllSetTargetList(): void {
-    this._traderService.getAllSetTargetList(this.page, this.perPage).subscribe({
+    this._traderService.getAllSetTargetList(this.page, this.perPage,this.searchKey).subscribe({
       next: (res: any) => {
         if (res.data.length > 0) {
           this.allSetTargetList = res.data;
@@ -88,9 +75,12 @@ export class TargetComponent implements OnInit {
         }
       },
       error: (err: any) => {
-        console.error('Error fetching target list:', err);
       },
     });
+  }
+  getSearchInput(searchKey: any){
+    this.searchKey = searchKey;
+    this.getAllSetTargetList();
   }
   
   // Helper function to extract the ticker symbol
@@ -103,7 +93,6 @@ export class TargetComponent implements OnInit {
     callback: (price: number | null) => void
   ): void {
     if (!tickerSymbol) {
-      console.warn('Ticker symbol is required.');
       callback(null);
       return;
     }
@@ -116,9 +105,7 @@ export class TargetComponent implements OnInit {
   UpdateCurrentPriceStatus(): void {
     this.getCurrentPrice(this.tickerSymbol, (price) => {
       if (price !== null) {
-        console.log(`Updated current price for ${this.tickerSymbol}:`, price);
       } else {
-        console.warn(`Failed to fetch current price for ${this.tickerSymbol}.`);
       }
     });
   }
@@ -130,13 +117,15 @@ export class TargetComponent implements OnInit {
 
   submit(item: any, footer: any, currentPrice: any) {
     Swal.fire({
-      title: 'Are you sure?',
       text: 'Do you want to Sell?',
       icon: 'question',
       showCancelButton: true,
       confirmButtonColor: '#3085d6',
       cancelButtonColor: '#d33',
-      confirmButtonText: 'Yes!',
+      confirmButtonText: 'Yes',
+      customClass: {
+        popup: 'small-swal' // Add a custom class
+      }
     }).then((result: any) => {
       if (result.isConfirmed) {
         this.updateSellToSoldStatus(item, footer, currentPrice);
@@ -146,11 +135,9 @@ export class TargetComponent implements OnInit {
 
   updateSellToSoldStatus(item: any, footer: any, currentPrice: any) {
     if (!currentPrice || currentPrice === '--') {
-      console.error('Cannot update without a valid currentPrice');
       return;
     }
     if (!footer.set_footer_id) {
-      console.error('Cannot update without a valid set_footer_id');
       return;
     }
     const body = {
@@ -160,10 +147,8 @@ export class TargetComponent implements OnInit {
     };
     this._traderService.updateSellToSoldStatus(body).subscribe({
       next: (res: any) => {
-        console.log("updateSellToSoldStatus successful");
       },
       error: (err: any) => {
-        console.error('Error in updateSellToSoldStatus:', err);
       }
     });
   }
@@ -188,8 +173,6 @@ export class TargetComponent implements OnInit {
         window.URL.revokeObjectURL(url);
       },
       error: (err: any) => {
-        console.log(err);
-        
         if (err.error.status == 401 || err.error.status == 422) {
           this._toastrService.warning(err.error.message);
         } else {
