@@ -1,6 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { MatDialog } from '@angular/material/dialog';
-import { SetTargetComponent } from './set-target/set-target.component';
 import { TraderService } from '../../trader/trader.service';
 import Swal from 'sweetalert2';
 import { ToastrService } from 'ngx-toastr';
@@ -29,7 +27,6 @@ export class AdminTargetComponent implements OnInit {
   untitled_id: any;
   searchControl: FormControl = new FormControl('');
   constructor(
-    private dialog: MatDialog,
     private _traderService: TraderService,
     private _toastrService:ToastrService
   ) {}
@@ -63,7 +60,6 @@ export class AdminTargetComponent implements OnInit {
           this.allSetTargetList = res.data;
           this.allSetTargetList.forEach((item: any) => {
             this.tickerSymbol = this.extractTickerSymbol(item.coin); // Dynamically extract tickerSymbol
-
             if (this.tickerSymbol) {
               this.getCurrentPrice(this.tickerSymbol, (currentPrice) => {
                 item.currentPrice = currentPrice || '--'; // Add current price to the item
@@ -154,20 +150,11 @@ export class AdminTargetComponent implements OnInit {
   downloadReport(){
     this._traderService.downloadReport().subscribe({
       next: (blob: Blob) => {
-        // Create a new Blob URL for the downloaded file
         const url = window.URL.createObjectURL(blob);
-
-        // Create an anchor element and trigger the download
         const link = document.createElement('a');
         link.href = url;
-
-        // Set the file name
         link.download = 'Sale-Target-Report.xlsx';  // Set a proper filename
-
-        // Append to the DOM and trigger click to download
         link.click();
-
-        // Clean up - revoke the object URL
         window.URL.revokeObjectURL(url);
       },
       error: (err: any) => {
@@ -179,25 +166,29 @@ export class AdminTargetComponent implements OnInit {
       }
     })
   }
+  //delete record
+  deleteRecord(event: any, id: any) {
+    let status = 0;
+    if (event.checked) {
+      status = 1;
+    }
+    this._traderService.deleteRecordById(id, status).subscribe({
+      next: (res: any) => {
+        this._toastrService.success(res.message);
+        // this._toastrService.clear();
+        this.getAllSetTargetList();
+      },
+      error: (error: any) => {
+        if (error.status == 422) {
+          this._toastrService.warning(error.message);
+        }
+      },
+    });
+  }
   
   // onPageChange(event: PageEvent): void {
   //   this.page = event.pageIndex + 1;
   //   this.perPage = event.pageSize;
   //   this.getAllSetTargetList();
   // }
-  //open ...view sports
-  openDialog(data?: any) {
-    const dialogRef = this.dialog.open(SetTargetComponent, {
-      data: data,
-      width: '70%',
-      panelClass: 'mat-mdc-dialog-container',
-    });
-    dialogRef.afterClosed().subscribe((message: any) => {
-      if (message) {
-        this.getAllSetTargetList();
-      } else {
-        console.log('nothing happen');
-      }
-    });
-  }
 }
