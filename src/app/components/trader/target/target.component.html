@@ -12,9 +12,9 @@
     </div>
     <div class="col-md-3 mt-4">
       <button class="btn btn-success download-btn" (click)="downloadReport()">Download</button>
-      <button class="btn add-btn ms-2" (click)="openDialog()">Add</button>
+      <button class="btn add-btn ms-2" [routerLink]="[ '/trader', { outlets: { trader_Menu: 'add-set-target' } } ]" >Add</button>
     </div>
-  <small class="list-header">Set Target List</small>
+    <small class="list-header">Set Target List</small>
     <div class="card m-0 p-0 mt-2">
       <div class="col-md-12">
         <div class="table-responsive">
@@ -22,7 +22,9 @@
             <thead>
               <tr>
                 <th scope="col">Sr.No</th>
-                <th scope="col">Coin</th>
+                <th>Delete</th>
+                <th scope="col">Edit</th>
+                <th scope="col">Coins</th>
                 <th scope="col">Base Price</th>
                 <th scope="col">Current Price</th>
                 <th scope="col">Return X</th>
@@ -35,6 +37,10 @@
             <tbody>
               <tr *ngFor="let item of allSetTargetList ; let i= index">
                 <td>{{ i + 1 }}</td>
+                <td><i class="fa-solid fa-trash cursor-pointer" (click)="deleteRecord($event, item.sale_target_id)"></i></td>
+                <td>
+                  <img src="assets/dashboard/Pencil.svg" alt="Pencil Image" class="cursor-pointer" [routerLink]="[ '/trader', { outlets: { trader_Menu: [ 'edit-set-target', item.sale_target_id ] } } ]">
+                </td>
                 <td>{{ (item.coin.split(' (')[0]) || "--" }}</td>
                 <td>{{ item.base_price || "--" }}</td>
                 <!-- <td>{{ item.currant_price || "--" }}</td> -->
@@ -52,7 +58,6 @@
                   }" 
                   (click)="footer.complition_id === 3 && submit(item, footer, item.currentPrice)">
                    {{(footer.complition_status | titlecase) || "--"}}</small>
-                  <!-- <small><img src="../../../../assets/dashboard/Pencil.svg" alt=""></small> -->
                 </td>
               </tr>
               <tr class="fw-bold text-center" *ngIf="allSetTargetList.length === 0">

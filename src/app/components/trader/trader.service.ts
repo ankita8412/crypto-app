@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
@@ -32,6 +32,14 @@ export class TraderService {
   addSetTarget(data:any): Observable<any>{
     return this.http.post(this.baseUrl + 'api/sale-target-header' ,data)
   }
+  // get set target by id
+  getSetTargetById(id: any): Observable<any> {
+    return this.http.get(this.baseUrl + 'api/sale-target-header/' + id)
+  }
+   //update betting type...
+  editSetTarget(id: any, data: any,): Observable<any> {
+  return this.http.put(this.baseUrl + 'api/sale-target-header/' + id, data);
+  }
   // get set target list
   getAllSetTargetList(page:any,perPage:any,key:any): Observable<any>{
     let params = {
@@ -60,7 +68,10 @@ export class TraderService {
       responseType: 'blob',
     })
   }
-  // checkCoinExits(coin:any): Observable<any>{
-  //   return this.http.post(this.baseUrl + 'api/coin/check-coin' ,coin)
-  // }
+  deleteRecordById(id:any,status:any):Observable<any>{
+      let params = new HttpParams().set('status', status);
+      return this.http.delete(this.baseUrl + 'api/sale-target-header/' + id,{
+      params: params
+    });
+  }
 }

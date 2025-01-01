@@ -1,7 +1,7 @@
 <div class="container-fluid">
-    <div class="row m-0 pt-4 pb-4">
-      <small class="text-center fw-bold fs-5 mb-4">Set Target</small>
-      <div class="col-md-12">
+    <div class="row m-0 pt-4 pb-4 justify-content-center">
+      <small class="text-center fw-bold fs-5 mb-4">{{ isEdit ? " Edit" : "Add " }} Set Target</small>
+      <div class="card col-md-9 p-5">
         <form [formGroup]="form">
           <div class="row d-flex justify-content-center">
             <div class="col-md-3" style="padding: 0;">
@@ -16,7 +16,7 @@
                     control['coin'].invalid &&
                     (control['coin'].dirty || control['coin'].touched)
                 }"
-                style="width: 265px;">
+                style="width:250px;">
                 <mat-option>
                   <ngx-mat-select-search
                     [(ngModel)]="searchKey"
@@ -166,12 +166,12 @@
           </div>
           <div class="d-flex justify-content-center mt-3">
             <div class="col-md-2">
-              <button class="btn cancel-btn" (click)="closeDialog()">
+              <button class="btn cancel-btn" [routerLink]="[ '/admin', { outlets: { admin_Menu: 'admin-target'} } ]">
                 Cancel
               </button>
             </div>
             <div class="col-md-2">
-              <button class="btn submit-btn" (click)="addSetTarget()">Submit</button>
+              <button class="btn submit-btn" (click)="submit()">{{ isEdit ? "Update" :  "Submit" }}</button>
             </div>
           </div>
         </form>

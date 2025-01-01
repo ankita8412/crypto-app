@@ -7,39 +7,46 @@ import { TargetComponent } from './target/target.component';
 import { SetTargetComponent } from './target/set-target/set-target.component';
 
 const routes: Routes = [
-  { path: "", redirectTo: "trader", pathMatch: "full" },
+  { path: '', redirectTo: 'trader', pathMatch: 'full' },
   {
-      path: "",
-      component: DashboardComponent,
-      canActivate: [AuthGuard]
+    path: '',
+    component: DashboardComponent,
+    canActivate: [AuthGuard],
   },
   {
-      path: "dashboard",
-      component: DashboardComponent,
-      pathMatch: "full",
-      outlet: "trader_Menu",
-      canActivate: [AuthGuard]
+    path: 'dashboard',
+    component: DashboardComponent,
+    pathMatch: 'full',
+    outlet: 'trader_Menu',
+    canActivate: [AuthGuard],
   },
   {
-    path: "coins",
-    component:CoinsComponent,
-    pathMatch: "full",
-    outlet: "trader_Menu",
-    canActivate: [AuthGuard]
+    path: 'coins',
+    component: CoinsComponent,
+    pathMatch: 'full',
+    outlet: 'trader_Menu',
+    canActivate: [AuthGuard],
   },
   {
-    path: "target",
-    component:TargetComponent,
-    pathMatch: "full",
-    outlet: "trader_Menu",
-    canActivate: [AuthGuard]
+    path: 'target',
+    component: TargetComponent,
+    pathMatch: 'full',
+    outlet: 'trader_Menu',
+    canActivate: [AuthGuard],
   },
   {
-    path: "set-target",
-    component:SetTargetComponent,
-    pathMatch: "full",
-    outlet: "trader_Menu",
-    canActivate: [AuthGuard]
+    path: 'add-set-target',
+    component: SetTargetComponent,
+    pathMatch: 'full',
+    outlet: 'trader_Menu',
+    canActivate: [AuthGuard],
+  },
+  {
+    path: 'edit-set-target/:id',
+    component: SetTargetComponent,
+    pathMatch: 'full',
+    outlet: 'trader_Menu',
+    canActivate: [AuthGuard],
   },
   // {
   //   path: "",
@@ -48,11 +55,10 @@ const routes: Routes = [
   //   outlet: "trader_Menu",
   //   canActivate: [AuthGuard]
   // },
-
 ];
 
 @NgModule({
   imports: [RouterModule.forChild(routes)],
-  exports: [RouterModule]
+  exports: [RouterModule],
 })
-export class TraderRoutingModule { }
+export class TraderRoutingModule {}

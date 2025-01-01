@@ -37,7 +37,14 @@ const routes: Routes = [
     canActivate: [AuthGuard]
   },
   {
-    path: "admin-set-target",
+    path: "add-set-target",
+    component: SetTargetComponent,
+    pathMatch: "full",
+    outlet: "admin_Menu",
+    canActivate: [AuthGuard]
+  },
+  {
+    path: "edit-set-target/:id",
     component: SetTargetComponent,
     pathMatch: "full",
     outlet: "admin_Menu",
