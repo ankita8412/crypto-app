@@ -165,8 +165,6 @@ export class SetTargetComponent implements OnInit {
 
   updateSetTarget() {
     let data = this.form.getRawValue();
-    console.log("form value",this.form.value);
-    
     if (this.form.valid) {
       this._traderService.editSetTarget(this.sale_target_id, data).subscribe({
         next: (res: any) => {

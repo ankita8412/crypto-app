@@ -1,11 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { UsersComponent } from '../users.component';
-import { MatDialogRef } from '@angular/material/dialog';
 import Swal from 'sweetalert2';
 import { ToastrService } from 'ngx-toastr';
 import { AdminService } from '../../admin.service';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 @Component({
   selector: 'app-add-user',
   templateUrl: './add-user.component.html',
@@ -19,8 +17,7 @@ export class AddUserComponent implements OnInit {
   allUserTypeList: Array<any> = [];
   constructor(
     private _toastrService: ToastrService,
-    private _adminService: AdminService,
-    private dialogRef: MatDialogRef<UsersComponent>,
+    private _adminService: AdminService, private router: Router,
     private fb: FormBuilder,private url: ActivatedRoute) {}
   
     ngOnInit(): void {
@@ -38,7 +35,7 @@ export class AddUserComponent implements OnInit {
       user_name: [null, Validators.required],
       email_id: [null, Validators.required],
       user_type_id: [null, Validators.required],
-      password: [null,Validators.required],
+      password: [null],
     });
   }
   get control() {
@@ -54,8 +51,9 @@ export class AddUserComponent implements OnInit {
     });
   }
   submit() {
+    const actionText = this.isEdit ? 'Edit' : 'Add';
     Swal.fire({
-      text: 'Do you want to Add User?',
+      text: `Do you want to ${actionText} User?`,
       icon: 'question',
       showCancelButton: true,
       confirmButtonColor: '#3085d6',
@@ -66,7 +64,6 @@ export class AddUserComponent implements OnInit {
       }
     }).then((result: any) => {
       if (result.isConfirmed) {
-        // this.addUser();
       this.isEdit ? this.updateUser() : this.addUser()
       }
     });
@@ -77,7 +74,10 @@ export class AddUserComponent implements OnInit {
         next: (res: any) => {
           if (res.status == 201 || res.status == 200) {
             this._toastrService.success(res.message);
-            this.closeDialog('message');
+            this.router.navigate([
+              '/admin',
+              { outlets: { admin_Menu: 'users' } },
+            ]);
           } else {
             this._toastrService.warning(res.message);
           }
@@ -104,8 +104,11 @@ export class AddUserComponent implements OnInit {
           next: (res: any) => {
             if (res.status == 200) {
               this._toastrService.success(res.message)
+              this.router.navigate([
+                '/admin',
+                { outlets: { admin_Menu: 'users' } },
+              ]);
               // this._toastrService.clear()
-              this.closeDialog('message');
             } else {
               this._toastrService.warning(res.message)
             }
@@ -130,11 +133,7 @@ export class AddUserComponent implements OnInit {
         this.control['user_name'].patchValue(data.user_name)
         this.control['email_id'].patchValue(data.email_id)
         this.control['user_type_id'].patchValue(data.user_type_id)
-        this.control['password'].patchValue(data.password)
       }
     })
-  }
-  closeDialog(message?: any) {
-    this.dialogRef.close(message);
   }
 }

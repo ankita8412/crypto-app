@@ -7,6 +7,7 @@ import { AdminTargetComponent } from './admin-target/admin-target.component';
 import { SetTargetComponent } from './admin-target/set-target/set-target.component';
 import { MastersComponent } from './masters/masters.component';
 import { UsersComponent } from './users/users.component';
+import { AddUserComponent } from './users/add-update-user/add-user.component';
 
 const routes: Routes = [
   { path: "", redirectTo: "admin", pathMatch: "full" },
@@ -60,6 +61,20 @@ const routes: Routes = [
   {
     path: "users",
     component: UsersComponent,
+    pathMatch: "full",
+    outlet: "admin_Menu",
+    canActivate: [AuthGuard]
+  },
+  {
+    path: "add-user",
+    component: AddUserComponent,
+    pathMatch: "full",
+    outlet: "admin_Menu",
+    canActivate: [AuthGuard]
+  },
+  {
+    path: "edit-user/:id",
+    component: AddUserComponent,
     pathMatch: "full",
     outlet: "admin_Menu",
     canActivate: [AuthGuard]

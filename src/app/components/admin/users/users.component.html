@@ -11,7 +11,7 @@
           (input)="getSearchInput(searchInput.value)"/>
       </div>
       <div class="col-md-2 mt-4">
-        <button class="btn add-btn" (click)="openDialog()">Add</button>
+        <button class="btn add-btn" [routerLink]="[ '/admin', { outlets: { admin_Menu: 'add-user' } } ]" >Add</button>
       </div>
     </div>
     <div class="row mb-5">
@@ -28,7 +28,7 @@
                   <th scope="col">User Type</th>
                   <th scope="col">Status</th>
                   <th scope="col">Status</th>
-                  <!-- <th scope="col">Edit</th> -->
+                  <th scope="col">Edit</th>
                 </tr>
               </thead>
               <tbody>
@@ -41,11 +41,11 @@
                   <td><mat-slide-toggle
                     (change)="changeEvent($event, item.untitled_id) "
                     class="example-margin" [checked]="item.status == 1 ? true : false">
-                  </mat-slide-toggle>
+                    </mat-slide-toggle>
                   </td>
-                  <!-- <td> <i class="fa fa-solid fa-pen-to-square fs-4 pointer"
-                    (click)="openDialog(item.untitled_id)"></i>
-                  </td> -->
+                  <td> 
+                    <img src="assets/dashboard/Pencil.svg" alt="Pencil Image" class="cursor-pointer" [routerLink]="[ '/admin', { outlets: { admin_Menu: [ 'edit-user', item.untitled_id ] } } ]">
+                  </td>
                 </tr>
                 <tr class="fw-bold text-center"
                 *ngIf="allUserList.length === 0">
