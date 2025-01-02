@@ -46,7 +46,6 @@ export class AuthInterceptorService implements HttpInterceptor{
   }
 
   private handleAuthError(err: HttpErrorResponse): Observable<any> {
-    console.log(err);
     this._toastrService.clear();
     this._sharedService.setLoading(false);
     if (err.error.status == 401) {

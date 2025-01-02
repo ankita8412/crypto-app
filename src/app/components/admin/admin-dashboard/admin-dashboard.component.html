@@ -1,10 +1,10 @@
 <div class="container-fluid mb-5 p-0">
     <div class="row g-2 pt-4 p-0 m-0 justify-content-start">
-      <div class="col-md-2 p-4 dashboard-menu card text-center m-2">
+      <div class="col-md-2 p-4 dashboard-menu card text-center m-2 cursor-pointer" [routerLink]="['/admin', { outlets: { admin_Menu: 'users' } }]">
         <h4 class="fs-3 fw-bold">{{userCount}}</h4>
         <small class="fw-medium">Users</small>
       </div>
-      <div class="col-md-2 p-4 dashboard-menu card text-center m-2">
+      <div class="col-md-2 p-4 dashboard-menu card text-center m-2 cursor-pointer" [routerLink]="['/admin', { outlets: { admin_Menu: 'admin-target' } }]">
         <h4 class="fs-3 fw-bold">{{setTargetCount}}</h4>
         <small class="fw-medium">Set Target</small>
       </div>

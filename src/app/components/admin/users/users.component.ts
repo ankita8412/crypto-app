@@ -1,6 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { AddUserComponent } from './add-update-user/add-user.component';
-import { MatDialog } from '@angular/material/dialog';
 import { FormControl, FormGroup } from '@angular/forms';
 import { AdminService } from '../admin.service';
 import { ToastrService } from 'ngx-toastr';
@@ -17,7 +15,6 @@ export class UsersComponent implements OnInit {
   allUserList: Array<any> = [];
   searchControl: FormControl = new FormControl('');
   constructor(
-    private dialog: MatDialog,
     private _adminService: AdminService,
     private _toastrService: ToastrService
   ) {}
@@ -60,20 +57,6 @@ export class UsersComponent implements OnInit {
           this._toastrService.warning(error.message);
         }
       },
-    });
-  }
-  openDialog(data?: any) {
-    const dialogRef = this.dialog.open(AddUserComponent, {
-      data: data,
-      width: '50%',
-      panelClass: 'mat-mdc-dialog-container',
-    });
-    dialogRef.afterClosed().subscribe((message: any) => {
-      if (message) {
-        this.getAllUsersList();
-      } else {
-        console.log('nothing happen');
-      }
     });
   }
 }
