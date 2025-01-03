@@ -37,9 +37,9 @@
             <tbody>
               <tr *ngFor="let item of allSetTargetList ; let i= index">
                 <td>{{ i + 1 }}</td>
-                <td><i class="fa-solid fa-trash cursor-pointer" (click)="deleteRecord($event, item.sale_target_id)"></i></td>
+                <td><i class="fa-solid fa-trash cursor-pointer delete-icon" (click)="deleteRecord($event, item.sale_target_id)"></i></td>
                 <td>
-                  <img src="assets/dashboard/Pencil.svg" alt="Pencil Image" class="cursor-pointer" [routerLink]="[ '/trader', { outlets: { trader_Menu: [ 'edit-set-target', item.sale_target_id ] } } ]">
+                  <img src="assets/dashboard/Pencil.svg" alt="Pencil Image" class="cursor-pointer edit-pencile" [routerLink]="[ '/trader', { outlets: { trader_Menu: [ 'edit-set-target', item.sale_target_id ] } } ]">
                 </td>
                 <td>{{ (item.coin.split(' (')[0]) || "--" }}</td>
                 <td>{{ item.base_price || "--" }}</td>

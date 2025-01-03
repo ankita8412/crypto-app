@@ -22,7 +22,7 @@
             <table class="table">
               <thead>
                 <tr>
-                  <th scope="col">Sr.No</th>
+                  <th scope="col" class="first-col">Sr.No</th>
                   <th scope="col">User Name</th>
                   <th scope="col">Email Id</th>
                   <th scope="col">User Type</th>
@@ -33,10 +33,10 @@
               </thead>
               <tbody>
                 <tr *ngFor="let item of allUserList ; let i= index">
-                  <td>{{ i + 1 }}</td>
-                  <td>{{item.user_name}}</td>
-                  <td>{{item.email_id || "--" }}</td>
-                  <td>{{item.user_type}}</td>
+                  <td class="first-col">{{ i + 1 }}</td>
+                  <td>{{(item.user_name | titlecase) || "--"}}</td>
+                  <td>{{ item.email_id || "--" }}</td>
+                  <td>{{ (item.user_type | titlecase ) || "--"}}</td>
                   <td>{{ item.status == 1 ? "Activated" : "Deactivated" }} </td>
                   <td><mat-slide-toggle
                     (change)="changeEvent($event, item.untitled_id) "
@@ -44,7 +44,7 @@
                     </mat-slide-toggle>
                   </td>
                   <td> 
-                    <img src="assets/dashboard/Pencil.svg" alt="Pencil Image" class="cursor-pointer" [routerLink]="[ '/admin', { outlets: { admin_Menu: [ 'edit-user', item.untitled_id ] } } ]">
+                    <img src="assets/dashboard/Pencil.svg" alt="Pencil Image" class="cursor-pointer edit-pencile" [routerLink]="[ '/admin', { outlets: { admin_Menu: [ 'edit-user', item.untitled_id ] } } ]">
                   </td>
                 </tr>
                 <tr class="fw-bold text-center"
