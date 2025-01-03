@@ -1,3 +1,6 @@
+<div class="loading" *ngIf="!isLoading">
+  <div class="lds-spinner"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>
+</div>
 <div class="container-fluid m-0">
   <div class="row mb-5 justify-content-between">
     <div class="col-md-5 p-0">
@@ -11,15 +14,16 @@
       />
     </div>
     <div class="row m-0 p-0">
-      <small class="list-header">Available Coin List</small>
+      <small class="list-header">Top 100 Coins</small>
       <div class="card p-0 mt-2">
         <div class="col-md-12">
           <div class="table-responsive">
             <table class="table">
               <thead>
                 <tr>
-                  <th scope="col">#</th>
+                  <th scope="col" class="first-col">#</th>
                   <th scope="col">Coin</th>
+                  <th scope="col">Rank</th>
                   <th scope="col">Price</th>
                   <th scope="col">1h</th>
                   <th scope="col">24h</th>
@@ -30,10 +34,11 @@
               </thead>
               <tbody>
                 <tr *ngFor="let item of allCoinList; let i = index">
-                  <td>{{ i + 1 }}</td>
+                  <td class="first-col">{{ i + 1 }}</td>
                   <td><img [src]=" 'https://www.cryptocompare.com/' + item.ImageUrl" alt="coin images" class="img-fluid coin-images"><span class="coin-name ms-2">{{ item.FullName.split(" (")[0] }}</span>  <span class="coin-short-name">
                     {{ item.Name || "--" }}
                   </span></td>
+                  <td>{{item.Rank}}</td>
                   <td>{{ (item.PRICE) || "--" }}</td>
                   <td>{{ (item.oneh + '%') || "--" }}</td>
                   <td>{{ (item.one24h + '%') || "--" }}</td>

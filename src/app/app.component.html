@@ -15,11 +15,15 @@
                 </div>
                 <div class="col-md-2 m-2 dashboard-menu  text-center" [routerLinkActive]="'is-active'" [routerLink]="['/trader', { outlets: { trader_Menu: 'coins' } }]">
                     <div class="mb-1"><img src="assets/dashboard/coin.svg" alt="Coin" class="img-fluid"></div>
-                    <small>Coins</small>
+                    <small>Exchange Coins</small>
                 </div>
                 <div class="col-md-2 m-2 dashboard-menu  text-center" [routerLinkActive]="'is-active'" [routerLink]="['/trader', { outlets: { trader_Menu: 'target' } }]">
                     <div class="mb-1"><img src="assets/dashboard/target.svg" alt="Target" class="img-fluid"></div>
-                    <small>Target</small>
+                    <small>Set Target</small>
+                </div>
+                <div class="col-md-2 m-2 dashboard-menu  text-center" [routerLinkActive]="'is-active'" [routerLink]="['/trader', { outlets: { trader_Menu: 'sold-coins' } }]">
+                    <div class="mb-1"><img src="assets/dashboard/coin.svg" alt="Target" class="img-fluid"></div>
+                    <small>Sold Coins</small>
                 </div>
                 <!-- <div class="col-md-2 m-2 dashboard-menu  text-center">
                     <div class="mb-1"><img src="../assets/dashboard/report.svg" alt="Report" class="img-fluid"></div>
@@ -29,7 +33,7 @@
         </div>
         <div class="col-md-3 align-self-center">
             <!-- <small>Profile</small> -->
-            <img src="assets/dashboard/profile.png" alt="placeholder" class="img-fluid placeholder-img ms-3">
+            <img src="assets/dashboard/Profile.svg" alt="placeholder" class="img-fluid placeholder-img ms-3">
             <!-- <img src="assets/dashboard/setting.svg" alt="setting" class="img-fluid ms-3 profile-img"> -->
             <img src="assets/dashboard/logout.svg" alt="logout" class="img-fluid ms-3 profile-img" (click)="logout()">
         </div>
@@ -64,17 +68,21 @@
                 </div>
                 <div class="col-md-2 m-2 dashboard-menu  text-center" [routerLinkActive]="'is-active'" [routerLink]="['/admin', { outlets: { admin_Menu: 'admin-coins' } }]">
                     <div class="mb-1"><img src="assets/dashboard/coin.svg" alt="Coin" class="img-fluid"></div>
-                    <small>Coins</small>
+                    <small>Exchange Coins</small>
                 </div>
                 <div class="col-md-2 m-2 dashboard-menu  text-center" [routerLinkActive]="'is-active'"  [routerLink]="['/admin', { outlets: { admin_Menu: 'admin-target' } }]">
                     <div class="mb-1"><img src="assets/dashboard/target.svg" alt="Target" class="img-fluid"></div>
-                    <small>Target</small>
+                    <small>Set Target</small>
+                </div>
+                <div class="col-md-2 m-2 dashboard-menu  text-center" [routerLinkActive]="'is-active'"  [routerLink]="['/admin', { outlets: { admin_Menu: 'sold-coins' } }]">
+                    <div class="mb-1"><img src="assets/dashboard/coin.svg" alt="Target" class="img-fluid"></div>
+                    <small>Sold Coins</small>
                 </div>
             </div>
         </div>
         <div class="col-md-3 align-self-center">
             <!-- <small>Profile</small> -->
-            <img src="assets/dashboard/profile.png" alt="placeholder" class="img-fluid placeholder-img ms-3">
+            <img src="assets/dashboard/Profile.svg" alt="placeholder" class="img-fluid placeholder-img ms-3">
             <!-- <img src="assets/dashboard/setting.svg" alt="setting" class="img-fluid ms-3 profile-img"> -->
             <img src="assets/dashboard/logout.svg" alt="logout" class="img-fluid ms-3 profile-img" (click)="logout()">
         </div>

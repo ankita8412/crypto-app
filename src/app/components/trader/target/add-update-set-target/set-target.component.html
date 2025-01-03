@@ -146,23 +146,26 @@
           </div>
         </div>
         <div class="row justify-content-center" formArrayName="setTargetFooter">
-          <mat-form-field  *ngFor="let item of setTargetFooterArray.controls; let i = index"
-          class="col-md-2 target-input mb-3"
-          [formGroupName]="i" >
-            <mat-label>% Sale Target {{ i + 1}}</mat-label>
+          <mat-form-field 
+            *ngFor="let item of setTargetFooterArray.controls; let i = index"
+            class="col-md-2 target-input mb-3"
+            [formGroupName]="i">
+            <mat-label>% Sale Target {{ i + 1 }}</mat-label>
             <input matInput
               type="number"
               class="form-control"
               formControlName="sale_target_coin"
               [id]="item.get('sale_target_percent')?.value" 
               placeholder="0"
-              (input)="validateExactPercentage()"/>
+              maxlength="2" 
+              (input)="validateExactPercentage()" />
+            <mat-error *ngIf="item.get('sale_target_coin')?.hasError('pattern')">
+              Enter 2 digits only
+            </mat-error>
           </mat-form-field>
         </div>
-        <div class="col-md-12 text-center mt-3">
-          <div *ngIf="percentageError" class="text-danger">
-            Total percentage must be exactly 100%.
-          </div>
+        <div *ngIf="percentageError" class="text-danger">
+          The total percentage of all inputs must be exactly 100%.
         </div>
         <div class="d-flex justify-content-center mt-3">
           <div class="col-md-2">

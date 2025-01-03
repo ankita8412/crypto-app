@@ -157,7 +157,6 @@ export class TargetComponent implements OnInit {
           link.download = 'Sale-Target-Report.xlsx';  // Set a proper filename
           link.click();
           window.URL.revokeObjectURL(url);
-          this._toastrService.success();
         },
         error: (err: any) => {
           if (err.error.status == 401 || err.error.status == 422) {

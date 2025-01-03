@@ -27,7 +27,7 @@
       </div>
     </div>
     <div class="m-2">
-    <small class="list-header ms-1">Set Target List</small>
+    <small class="list-header ms-1">Sell Target</small>
     <div class="card mt-2">
       <div class="col-md-12">
         <div class="table-responsive">
@@ -46,12 +46,11 @@
               </tr>
             </thead>
             <tbody>
-              <tr *ngFor="let item of allSetTargetList ; let i= index">
+              <tr *ngFor="let item of allReachedSetTargetList ; let i= index">
                 <td>{{ i + 1 }}</td>
                 <td>{{ (item.coin.split(' (')[0]) || "--" }}</td>
                 <td>{{ item.base_price || "--" }}</td>
-                <!-- <td>{{ item.currant_price || "--" }}</td> -->
-                <td>{{ item.currentPrice || "--" }}</td>
+                <td>{{ item.currant_price || "--" }}</td>
                 <td>{{ item.return_x || "--" }}</td>
                 <td>{{ item.final_sale_price || "--"}}</td>
                 <td>{{ item.available_coins || "--" }}</td>
@@ -65,10 +64,9 @@
                   }" 
                   >
                    {{(footer.complition_status | titlecase) || "--"}}</small>
-                  <!-- <small><img src="../../../../assets/dashboard/Pencil.svg" alt=""></small> -->
                 </td>
               </tr>
-              <tr class="fw-bold text-center" *ngIf="allSetTargetList.length === 0">
+              <tr class="fw-bold text-center" *ngIf="allReachedSetTargetList.length === 0">
                 <td colspan="17" class="text-danger">No Data Available</td>
               </tr>
             </tbody>
