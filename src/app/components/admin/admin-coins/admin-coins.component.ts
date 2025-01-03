@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { TraderService } from '../../trader/trader.service';
-import { environment } from 'src/environments/environment';
 import { FormControl } from '@angular/forms';
 import { debounceTime } from 'rxjs';
 
@@ -18,12 +17,13 @@ export class AdminCoinsComponent implements OnInit {
   currentPrice: any;
   allCoinList: Array<any> = [];
   refreshInterval: any;
+  isLoading = false;
   constructor(private _traderService: TraderService) {}
   ngOnInit(): void {
     this.refreshInterval = setInterval(() => {
       this.getAllCoinList();
     }, 5000);
-    this.searchControl.valueChanges.pipe(debounceTime(5000))
+    this.searchControl.valueChanges.pipe(debounceTime(550))
   }
   ngOnDestroy() {
     if (this.refreshInterval) {
@@ -36,8 +36,10 @@ export class AdminCoinsComponent implements OnInit {
       next: (res: any) => {
         if (res.data.length > 0) {
           this.allCoinList = res.data;
+          this.isLoading = true;
         } else {
           this.allCoinList = [];
+          this.isLoading = false;
         }
       },
     });

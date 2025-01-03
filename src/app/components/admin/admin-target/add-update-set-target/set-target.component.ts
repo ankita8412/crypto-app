@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { AbstractControl, FormArray, FormBuilder, FormGroup, ValidationErrors, Validators } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
 import { ActivatedRoute, Router } from '@angular/router';
 import { TraderService } from 'src/app/components/trader/trader.service';
@@ -48,7 +48,7 @@ export class SetTargetComponent implements OnInit {
       available_coins: [null, Validators.required],
       final_sale_price: [null, Validators.required],
       ticker_symbol: [null,Validators.required],
-      setTargetFooter: this.fb.array(this.createTargetInputs(5)),
+      setTargetFooter: this.fb.array(this.createTargetInputs(5), this.totalPercentageValidator()),
     });
   }
   get control() {
@@ -58,25 +58,40 @@ export class SetTargetComponent implements OnInit {
   get setTargetFooterArray(): FormArray {
     return this.form.get('setTargetFooter') as FormArray;
   }
-
-  submit() {
-    this.isEdit ? this.updateSetTarget() : this.addSetTarget();
-  }
   // Helper to generate form groups
   createTargetInputs(count: number): FormGroup[] {
     return Array.from({ length: count }, (_, index) =>
       this.fb.group({
-        sale_target_coin: ['', [Validators.min(0), Validators.max(100)]],
+        sale_target_coin: [
+          '',
+          [
+            Validators.pattern('^[0-9]{1,2}$'), // Allow only 1 or 2 digits
+            Validators.min(0),
+            Validators.max(100),
+          ],
+        ],
         sale_target_percent: [`${index + 1}`], // Dynamic ID
       })
     );
   }
-  // Validate that the total percentage is exactly 100%
-  validateExactPercentage() {
-    const totalPercentage = this.setTargetFooterArray.controls
-      .map((control) => control.value.sale_target_coin || 0)
-      .reduce((sum, current) => sum + current, 0);
-    this.percentageError = totalPercentage !== 100;
+  // Custom validator for total percentage
+  totalPercentageValidator() {
+    return (formArray: AbstractControl): ValidationErrors | null => {
+      const total = (formArray as FormArray).controls.reduce((sum, control) => {
+        const value = parseInt(control.get('sale_target_coin')?.value, 10) || 0;
+        return sum + value;
+      }, 0);
+      return total === 100 ? null : { totalNot100: true };
+    };
+  }
+  // Validate and prevent submission
+  validateExactPercentage(): void {
+    this.form.updateValueAndValidity();
+    this.percentageError = this.form.hasError('totalNot100', 'setTargetFooter');
+  }
+  submit() {
+    this.validateExactPercentage();
+    this.isEdit ? this.updateSetTarget() : this.addSetTarget();
   }
   //get coin list...
   getAllCoinList(searchKey: string = '') {

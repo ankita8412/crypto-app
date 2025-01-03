@@ -16,13 +16,14 @@ export class CoinsComponent implements OnInit {
   searchControl: FormControl = new FormControl('');
   currentPrice: any;
   refreshInterval:any;
+  isLoading = false;
   allCoinList: Array<any> = [];
   constructor(private _traderService: TraderService) {}
   ngOnInit(): void {
     this.refreshInterval = setInterval(() => {
       this.getAllCoinList();
     }, 5000);
-    this.searchControl.valueChanges.pipe(debounceTime(5000))
+    this.searchControl.valueChanges.pipe(debounceTime(550))
   }
   ngOnDestroy() {
     if (this.refreshInterval) {
@@ -35,8 +36,10 @@ export class CoinsComponent implements OnInit {
       next: (res: any) => {
         if (res.data.length > 0) {
           this.allCoinList = res.data;
+          this.isLoading = true;
         } else {
           this.allCoinList = [];
+          this.isLoading = false;
         }
       },
     });

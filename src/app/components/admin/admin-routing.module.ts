@@ -4,10 +4,11 @@ import { AdminDashboardComponent } from './admin-dashboard/admin-dashboard.compo
 import { AuthGuard } from 'src/app/shared/auth-guard.service';
 import { AdminCoinsComponent } from './admin-coins/admin-coins.component';
 import { AdminTargetComponent } from './admin-target/admin-target.component';
-import { SetTargetComponent } from './admin-target/set-target/set-target.component';
+import { SetTargetComponent } from './admin-target/add-update-set-target/set-target.component';
 import { MastersComponent } from './masters/masters.component';
 import { UsersComponent } from './users/users.component';
 import { AddUserComponent } from './users/add-update-user/add-user.component';
+import { AdminSoldCoinsComponent } from './admin-sold-coins/admin-sold-coins.component';
 
 const routes: Routes = [
   { path: "", redirectTo: "admin", pathMatch: "full" },
@@ -75,6 +76,13 @@ const routes: Routes = [
   {
     path: "edit-user/:id",
     component: AddUserComponent,
+    pathMatch: "full",
+    outlet: "admin_Menu",
+    canActivate: [AuthGuard]
+  },
+  {
+    path: "sold-coins",
+    component: AdminSoldCoinsComponent,
     pathMatch: "full",
     outlet: "admin_Menu",
     canActivate: [AuthGuard]

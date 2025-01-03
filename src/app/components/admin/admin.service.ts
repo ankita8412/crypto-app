@@ -49,4 +49,22 @@ export class AdminService {
   getdashboardSaleTargetCount(): Observable<any>{
     return this.http.get(this.baseUrl + 'api/sale-target-header/set-target-count')
   }
+  getAllReachedSetTargetList(key:any): Observable<any>{
+    let params = {
+      key:key
+  };
+  if ( key === '' || key === 'null') delete params.key;
+    return this.http.get(this.baseUrl + 'api/sale-target-header/reached',{
+      params:params
+    });
+  }
+  getAllSoldSetTargetList(key : any):Observable<any>{
+    let params = {
+      key:key
+    }
+    if ( key === '' || key === 'null') delete params.key;
+    return this.http.get(this.baseUrl + 'api/sale-target-header/sold-coin', {
+      params : params
+    })
+  }
 }

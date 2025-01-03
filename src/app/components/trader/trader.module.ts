@@ -4,8 +4,9 @@ import { TraderRoutingModule } from './trader-routing.module';
 import { CoinsComponent } from './coins/coins.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { TargetComponent } from './target/target.component';
-import { SetTargetComponent } from './target/set-target/set-target.component';
+import { SetTargetComponent } from './target/add-update-set-target/set-target.component';
 import { SharedModule } from 'src/app/shared/shared.module';
+import { SoldCoinsComponent } from './sold-coins/sold-coins.component';
 
 
 @NgModule({
@@ -13,7 +14,8 @@ import { SharedModule } from 'src/app/shared/shared.module';
     CoinsComponent,
     DashboardComponent,
     TargetComponent,
-    SetTargetComponent
+    SetTargetComponent,
+    SoldCoinsComponent
   ],
   imports: [
     CommonModule,

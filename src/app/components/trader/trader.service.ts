@@ -78,6 +78,7 @@ export class TraderService {
     let params = {
       key:key
     }
+    if ( key === '' || key === 'null') delete params.key;
     return this.http.get(this.baseUrl + 'api/coin', {
       params : params
     })

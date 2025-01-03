@@ -4,7 +4,8 @@ import { AuthGuard } from 'src/app/shared/auth-guard.service';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { CoinsComponent } from './coins/coins.component';
 import { TargetComponent } from './target/target.component';
-import { SetTargetComponent } from './target/set-target/set-target.component';
+import { SetTargetComponent } from './target/add-update-set-target/set-target.component';
+import { SoldCoinsComponent } from './sold-coins/sold-coins.component';
 
 const routes: Routes = [
   { path: '', redirectTo: 'trader', pathMatch: 'full' },
@@ -48,13 +49,13 @@ const routes: Routes = [
     outlet: 'trader_Menu',
     canActivate: [AuthGuard],
   },
-  // {
-  //   path: "",
-  //   component:,
-  //   pathMatch: "full",
-  //   outlet: "trader_Menu",
-  //   canActivate: [AuthGuard]
-  // },
+  {
+    path: "sold-coins",
+    component:SoldCoinsComponent,
+    pathMatch: "full",
+    outlet: "trader_Menu",
+    canActivate: [AuthGuard]
+  },
 ];
 
 @NgModule({
