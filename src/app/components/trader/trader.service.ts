@@ -74,4 +74,12 @@ export class TraderService {
       params: params
     });
   }
+  getAllCoinList(key : any):Observable<any>{
+    let params = {
+      key:key
+    }
+    return this.http.get(this.baseUrl + 'api/coin', {
+      params : params
+    })
+  }
 }

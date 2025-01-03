@@ -97,7 +97,6 @@ html, body {
     outline: none;
     box-shadow:none;
 }
-
 .btn:hover {
     color: white;
 }
@@ -138,11 +137,12 @@ td{
     border-radius: 15px !important;
     box-shadow: 0 0px 0px 0 rgba(0, 0, 0, 0.2), 0 6px 15px 0 rgba(0, 0, 0, 0.19);
 }
-.short-name{
-    margin-right: 20px !important;
-    background-color: #ececec;
-    padding: 3px 15px;
-    border-radius: 5px;
+.coin-short-name{
+    margin-left: 5px !important;
+    color: #64748b;
+}
+.coin-name{
+    font-weight: 500;
 }
 .status-btn , .status-btn2{
     background-color: #ececec;
@@ -179,6 +179,15 @@ td{
   .cursor-pointer{
     cursor: pointer;
   }
+  .count-card{
+    background-color: #8E82D9;
+    color: white;
+    cursor: pointer;
+}
+.coin-images{
+    height: 24px;
+    width: 24px;
+}
 @media  (max-width:540px) {
     .brand-logo {
         height: 50px;
