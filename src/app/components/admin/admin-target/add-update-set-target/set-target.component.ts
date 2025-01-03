@@ -18,6 +18,8 @@ export class SetTargetComponent implements OnInit {
   allCoinList: Array<any> = [];
   filteredCoinArray: Array<any> = [];
   percentageError: boolean = false;
+  showDropdown : boolean = false;
+  isClickInsideDropdown: boolean = false;
   private searchKeyChanged: Subject<string> = new Subject<string>();
   constructor(
     private _traderService: TraderService,
@@ -92,6 +94,18 @@ export class SetTargetComponent implements OnInit {
   submit() {
     this.validateExactPercentage();
     this.isEdit ? this.updateSetTarget() : this.addSetTarget();
+  }
+  onFocus(): void {
+    // Show the dropdown on input focus
+    this.showDropdown = true;
+  }
+  onFocusOut() {
+    setTimeout(() => {
+      if (!this.isClickInsideDropdown) {
+        this.showDropdown = false;
+      }
+      this.isClickInsideDropdown = false;
+    }, 100);
   }
   //get coin list...
   getAllCoinList(searchKey: string = '') {

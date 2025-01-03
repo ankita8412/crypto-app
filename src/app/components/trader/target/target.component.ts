@@ -36,15 +36,18 @@ export class TargetComponent implements OnInit {
       let data: any = localStorage.getItem('data');
       this.untitled_id = JSON.parse(data)?.untitled_id;
       this.getAllSetTargetList();
-      // Set up the interval
-      this.refreshInterval = setInterval(() => {
-        this.updateTargetCompitionStatus();
-        this.UpdateCurrentPriceStatus();
-        this.getAllSetTargetList();
-      }, 5000);
+      this.setIntervalApi();
       this.searchControl.valueChanges.pipe(debounceTime(550))  
       
     }
+    setIntervalApi(){
+      // Set up the interval
+      this.refreshInterval = setInterval(() => {
+      this.UpdateCurrentPriceStatus();
+      this.updateTargetCompitionStatus();
+      this.getAllSetTargetList();
+      }, 20000);
+      }
     ngOnDestroy() {
       if (this.refreshInterval) {
         clearInterval(this.refreshInterval);
