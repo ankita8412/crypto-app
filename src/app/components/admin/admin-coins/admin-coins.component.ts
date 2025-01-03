@@ -15,16 +15,15 @@ export class AdminCoinsComponent implements OnInit {
   total = 0;
   searchKey: any = '';
   searchControl: FormControl = new FormControl('');
-  refreshInterval: any;
   currentPrice: any;
   allCoinList: Array<any> = [];
+  refreshInterval: any;
   constructor(private _traderService: TraderService) {}
   ngOnInit(): void {
-    this.getAllCoinListWma();
     this.refreshInterval = setInterval(() => {
-      this.getAllCoinListWma();
-    }, 10000);
-    this.searchControl.valueChanges.pipe(debounceTime(550))
+      this.getAllCoinList();
+    }, 5000);
+    this.searchControl.valueChanges.pipe(debounceTime(5000))
   }
   ngOnDestroy() {
     if (this.refreshInterval) {
@@ -32,33 +31,19 @@ export class AdminCoinsComponent implements OnInit {
     }
   }
   // get all active coin list
-  getAllCoinListWma() {
-    this._traderService.getAllCoinListWma(this.searchKey).subscribe({
+  getAllCoinList() {
+    this._traderService.getAllCoinList(this.searchKey).subscribe({
       next: (res: any) => {
         if (res.data.length > 0) {
           this.allCoinList = res.data;
-          // Fetch current price for each coin
-          this.allCoinList.forEach((coin: any) => {
-            this._traderService
-              .getCurrentPriceByTicker(coin.ticker_symbol)
-              .subscribe({
-                next: (res: any) => {
-                  coin.currentPrice = res.data.currentPrice; // Assuming the API response contains `price`
-                },
-                error: (err: any) => {
-                },
-              });
-          });
         } else {
           this.allCoinList = [];
         }
-      },
-      error: (err: any) => {
       },
     });
   }
   getSearchInput(searchKey: any){
     this.searchKey = searchKey;
-    this.getAllCoinListWma();
+    this.getAllCoinList();
   }
 }

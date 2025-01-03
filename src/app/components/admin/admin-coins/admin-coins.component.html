@@ -11,31 +11,34 @@
       />
     </div>
     <div class="row m-0 p-0">
-      <small class="list-header">Active Coin List</small>
+      <small class="list-header">Available Coin List</small>
       <div class="card p-0 mt-2">
         <div class="col-md-12">
           <div class="table-responsive">
             <table class="table">
               <thead>
                 <tr>
-                  <th scope="col">Sr.No</th>
-                  <!-- <th scope="col">Coin Image </th> -->
-                  <th scope="col">Coin Name</th>
-                  <th scope="col">Ticker</th>
-                  <th scope="col">Current Price</th>
+                  <th scope="col">#</th>
+                  <th scope="col">Coin</th>
+                  <th scope="col">Price</th>
+                  <th scope="col">1h</th>
+                  <th scope="col">24h</th>
+                  <!-- <th scope="col">24h Volume</th> -->
+                  <th scope="col">Market Cap</th>
+
                 </tr>
               </thead>
               <tbody>
                 <tr *ngFor="let item of allCoinList; let i = index">
                   <td>{{ i + 1 }}</td>
-                  <!-- <td><img [src]="baseUrlImage + 'assets/' + item.image_url" alt="coin images" class="img-fluid"></td> -->
-                  <td>{{ item.coin_name.split(" (")[0] }}</td>
-                  <td>
-                    <span class="short-name">
-                      {{ item.ticker_symbol || "--" }}
-                    </span>
-                  </td>
-                  <td>{{ item.currentPrice || "--" }}</td>
+                  <td><img [src]="'https://www.cryptocompare.com/' + item.ImageUrl" alt="coin images" class="img-fluid coin-images"><span class="coin-name ms-2">{{ item.FullName.split(" (")[0] }}</span>  <span class="coin-short-name">
+                    {{ item.Name || "--" }}
+                  </span></td>
+                  <td>{{ (item.PRICE) || "--" }}</td>
+                  <td>{{ (item.oneh + '%') || "--" }}</td>
+                  <td>{{ (item.one24h + '%') || "--" }}</td>
+                  <!-- <td></td> -->
+                  <td>{{item.MKTCAP || "--"}}</td>
                 </tr>
                 <tr
                   class="fw-bold text-center"

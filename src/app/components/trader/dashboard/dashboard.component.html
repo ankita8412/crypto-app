@@ -1,8 +1,10 @@
 <div class="container-fluid p-0 mb-5">
   <div class="row g-2 m-0 p-0 pt-4 justify-content-start">
-    <div class="col-md-2 p-4 dashboard-menu card text-center m-2 cursor-pointer" [routerLink]="['/trader', { outlets: { trader_Menu: 'target' } }]">
-      <h4 class="fs-3 fw-bold">{{setTargetCount}}</h4>
+    <div class="col-md-2" [routerLink]="['/trader', { outlets: { trader_Menu: 'target' } }]">
+      <div class="card p-4 text-center m-2 cursor-pointer">
+      <h4 class="fs-2 fw-bold">{{setTargetCount}}</h4>
       <small class="fw-medium">Set Target</small>
+    </div>
     </div>
   </div>
   <div class="row p-0 m-0">

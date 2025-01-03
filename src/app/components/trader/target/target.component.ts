@@ -41,7 +41,7 @@ export class TargetComponent implements OnInit {
         this.updateTargetCompitionStatus();
         this.UpdateCurrentPriceStatus();
         this.getAllSetTargetList();
-      }, 10000);
+      }, 5000);
       this.searchControl.valueChanges.pipe(debounceTime(550))  
       
     }
