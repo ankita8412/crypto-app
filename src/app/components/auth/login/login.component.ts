@@ -39,7 +39,6 @@ export class LoginComponent implements OnInit{
     if (this.form.valid) {
       this._authSerivce.login(data).subscribe({
         next: (res: any) => {
-          console.log("login",res);
           localStorage.setItem('accessToken', res.token);
           localStorage.setItem("untitled_id", res.data.untitled_id);
           localStorage.setItem("email_id",res.data.email_id);
@@ -65,7 +64,6 @@ export class LoginComponent implements OnInit{
         },
         error: (error: any) => {
           this.isSubmitted = false;
-          console.log(error);
           if (error.error.status == 401 || error.error.status == 422) {
             this._toastrService.warning(error.error.message);
           } else {

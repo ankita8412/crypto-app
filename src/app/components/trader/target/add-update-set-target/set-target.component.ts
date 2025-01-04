@@ -99,10 +99,10 @@ export class SetTargetComponent implements OnInit {
   validateExactPercentage(): void {
     this.form.updateValueAndValidity();
     this.percentageError = this.form.hasError('totalNot100', 'setTargetFooter');
-    if (this.percentageError) {
-      this._toastrService.warning('The total percentage of all inputs must be exactly 100%.');
-      this._toastrService.clear();
-    }
+    // if (this.percentageError) {
+    //   this._toastrService.warning('The total percentage of all inputs must be exactly 100%.');
+    //   this._toastrService.clear();
+    // }
   }
 
   submit() {
@@ -191,10 +191,10 @@ export class SetTargetComponent implements OnInit {
       this.form.markAllAsTouched();
       this._toastrService.warning('Fill required fields');
     }
-    this.validateExactPercentage();
-    if (this.percentageError) {
-      return; 
-    }
+    // this.validateExactPercentage();
+    // if (this.percentageError) {
+    //   return; 
+    // }
   }
 
   updateSetTarget() {
@@ -224,19 +224,19 @@ export class SetTargetComponent implements OnInit {
       this.form.markAllAsTouched();
       this._toastrService.warning('Fill required fields');
     }
-    this.validateExactPercentage();
-    if (this.percentageError) {
-      return; 
-    }
+    // this.validateExactPercentage();
+    // if (this.percentageError) {
+    //   return; 
+    // }
   }
 
   getSetTargetById(id: any) {
     this._traderService.getSetTargetById(id).subscribe({
       next: (res: any) => {
         const targetData = res.data;
-        console.log('getSetTargetById', res.data);
         this.control['coin'].patchValue(targetData.coin);
         this.control['base_price'].patchValue(targetData.base_price);
+        this.control['base_price'].disable();
         this.control['currant_price'].patchValue(targetData.currant_price);
         this.control['available_coins'].patchValue(targetData.available_coins);
         this.control['final_sale_price'].patchValue(

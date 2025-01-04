@@ -23,13 +23,14 @@ export class AdminTargetComponent implements OnInit {
   tickerSymbol: any;
   currant_price: any;
   coin: any;
-  base_price:any
+  base_price: any;
   complition_id: any;
   untitled_id: any;
+  isLoading: boolean = false;
   searchControl: FormControl = new FormControl('');
   constructor(
     private _traderService: TraderService,
-    private _toastrService:ToastrService
+    private _toastrService: ToastrService
   ) {}
 
   ngOnInit(): void {
@@ -37,47 +38,48 @@ export class AdminTargetComponent implements OnInit {
     this.untitled_id = JSON.parse(data)?.untitled_id;
     this.getAllSetTargetList();
     this.setIntervalApi();
-    this.searchControl.valueChanges.pipe(debounceTime(550))  
+    this.searchControl.valueChanges.pipe(debounceTime(550));
   }
-  setIntervalApi(){
-  // Set up the interval
-  this.refreshInterval = setInterval(() => {
-    this.UpdateCurrentPriceStatus();
-    this.updateTargetCompitionStatus();
-    this.getAllSetTargetList();
-  }, 5000);
+  setIntervalApi() {
+    // Set up the interval
+    this.refreshInterval = setInterval(() => {
+      this.UpdateCurrentPriceStatus();
+      this.updateTargetCompitionStatus();
+      this.getAllSetTargetList();
+    }, 5000);
   }
   ngOnDestroy() {
     if (this.refreshInterval) {
       clearInterval(this.refreshInterval);
     }
   }
-  getSearchInput(searchKey: any){
+  getSearchInput(searchKey: any) {
     this.searchKey = searchKey;
     this.getAllSetTargetList();
   }
   getAllSetTargetList(): void {
-    this._traderService.getAllSetTargetList(this.page, this.perPage,this.searchKey).subscribe({
-      next: (res: any) => {
-        if (res.data.length > 0) {
-          this.allSetTargetList = res.data;
-          this.allSetTargetList.forEach((item: any) => {
-            this.tickerSymbol = this.extractTickerSymbol(item.coin); // Dynamically extract tickerSymbol
-            if (this.tickerSymbol) {
-              this.getCurrentPrice(this.tickerSymbol, (currentPrice) => {
-                item.currentPrice = currentPrice || '--'; // Add current price to the item
-              });
-            } else {
-              item.currentPrice = '--'; // Default value if no ticker symbol
-            }
-          });
-        } else {
-          this.allSetTargetList = [];
-        }
-      },
-      error: (err: any) => {
-      },
-    });
+    this._traderService
+      .getAllSetTargetList(this.page, this.perPage, this.searchKey)
+      .subscribe({
+        next: (res: any) => {
+          if (res.data.length > 0) {
+            this.allSetTargetList = res.data;
+            this.allSetTargetList.forEach((item: any) => {
+              this.tickerSymbol = this.extractTickerSymbol(item.coin); // Dynamically extract tickerSymbol
+              if (this.tickerSymbol) {
+                this.getCurrentPrice(this.tickerSymbol, (currentPrice) => {
+                  item.currentPrice = currentPrice || '--'; // Add current price to the item
+                });
+              } else {
+                item.currentPrice = '--'; // Default value if no ticker symbol
+              }
+            });
+          } else {
+            this.allSetTargetList = [];
+          }
+        },
+        error: (err: any) => {},
+      });
   }
 
   // Helper function to extract the ticker symbol
@@ -121,10 +123,11 @@ export class AdminTargetComponent implements OnInit {
       cancelButtonColor: '#d33',
       confirmButtonText: 'Yes',
       customClass: {
-        popup: 'small-swal' // Add a custom class
-      }
+        popup: 'small-swal', // Add a custom class
+      },
     }).then((result: any) => {
       if (result.isConfirmed) {
+        this.isLoading = true;
         this.updateSellToSoldStatus(item, footer, currentPrice);
       }
     });
@@ -141,24 +144,31 @@ export class AdminTargetComponent implements OnInit {
       complition_id: 4,
       currant_price: currentPrice,
       set_footer_id: footer.set_footer_id,
-      coin : item.coin,
-      base_price : item.base_price
+      coin: item.coin,
+      base_price: item.base_price,
     };
     this._traderService.updateSellToSoldStatus(body).subscribe({
       next: (res: any) => {
+        if (res) {
+          this.isLoading = false;
+          this.getAllSetTargetList();
+        } else {
+          this.isLoading = false;
+        }
       },
       error: (err: any) => {
+        this.isLoading = false;
       },
     });
   }
 
-  downloadReport(){
+  downloadReport() {
     this._traderService.downloadReport().subscribe({
       next: (blob: Blob) => {
         const url = window.URL.createObjectURL(blob);
         const link = document.createElement('a');
         link.href = url;
-        link.download = 'Sale-Target-Report.xlsx';  // Set a proper filename
+        link.download = 'Sale-Target-Report.xlsx'; // Set a proper filename
         link.click();
         window.URL.revokeObjectURL(url);
       },
@@ -168,8 +178,8 @@ export class AdminTargetComponent implements OnInit {
         } else {
           this._toastrService.warning('No Data Found');
         }
-      }
-    })
+      },
+    });
   }
   //delete record
   deleteRecord(event: any, id: any) {
@@ -190,7 +200,7 @@ export class AdminTargetComponent implements OnInit {
       },
     });
   }
-  
+
   // onPageChange(event: PageEvent): void {
   //   this.page = event.pageIndex + 1;
   //   this.perPage = event.pageSize;

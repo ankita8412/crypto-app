@@ -158,6 +158,8 @@
               [id]="item.get('sale_target_percent')?.value" 
               placeholder="0"
               maxlength="2" 
+              min="0"
+              max="99"
               (input)="validateExactPercentage()" />
             <mat-error *ngIf="item.get('sale_target_coin')?.hasError('pattern')">
               Enter 2 digits only
