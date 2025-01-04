@@ -2,7 +2,7 @@
   <div class="row g-2 m-0 p-0 pt-4 justify-content-start">
     <div class="col-md-2" [routerLink]="['/trader', { outlets: { trader_Menu: 'target' } }]">
       <div class="card p-4 text-center m-2 cursor-pointer">
-      <h4 class="fs-2 fw-bold">{{setTargetCount}}</h4>
+      <h4 class="fs-2 fw-bold">{{ ( setTargetCount || 0) }}</h4>
       <small class="fw-medium">Set Target</small>
     </div>
     </div>
@@ -61,7 +61,7 @@
               </td>
             </tr>
             <tr class="fw-bold text-center" *ngIf="allReachedSetTargetList.length === 0">
-              <td colspan="17" class="text-danger">No Data Available</td>
+              <td colspan="17" class="text-danger no-data">No Data Available</td>
             </tr>
           </tbody>
         </table>

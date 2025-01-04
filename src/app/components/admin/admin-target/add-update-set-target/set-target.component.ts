@@ -18,8 +18,6 @@ export class SetTargetComponent implements OnInit {
   allCoinList: Array<any> = [];
   filteredCoinArray: Array<any> = [];
   percentageError: boolean = false;
-  showDropdown : boolean = false;
-  isClickInsideDropdown: boolean = false;
   private searchKeyChanged: Subject<string> = new Subject<string>();
   constructor(
     private _traderService: TraderService,
@@ -90,22 +88,12 @@ export class SetTargetComponent implements OnInit {
   validateExactPercentage(): void {
     this.form.updateValueAndValidity();
     this.percentageError = this.form.hasError('totalNot100', 'setTargetFooter');
+    // if (this.percentageError) {
+    //   this._toastrService.warning('The total percentage of all inputs must be exactly 100%.');
+    // }
   }
   submit() {
-    this.validateExactPercentage();
     this.isEdit ? this.updateSetTarget() : this.addSetTarget();
-  }
-  onFocus(): void {
-    // Show the dropdown on input focus
-    this.showDropdown = true;
-  }
-  onFocusOut() {
-    setTimeout(() => {
-      if (!this.isClickInsideDropdown) {
-        this.showDropdown = false;
-      }
-      this.isClickInsideDropdown = false;
-    }, 100);
   }
   //get coin list...
   getAllCoinList(searchKey: string = '') {
@@ -165,6 +153,10 @@ export class SetTargetComponent implements OnInit {
   }
 
   addSetTarget() {
+    // this.validateExactPercentage();
+    // if (this.percentageError) {
+    //   return; 
+    // }
     if (this.form.valid) {
       this._traderService.addSetTarget(this.form.getRawValue()).subscribe({
         next: (res: any) => {
@@ -193,6 +185,10 @@ export class SetTargetComponent implements OnInit {
   }
 
   updateSetTarget() {
+    // this.validateExactPercentage();
+    // if (this.percentageError) {
+    //   return; 
+    // }
     let data = this.form.getRawValue();
     if (this.form.valid) {
       this._traderService.editSetTarget(this.sale_target_id, data).subscribe({
@@ -211,7 +207,7 @@ export class SetTargetComponent implements OnInit {
           if (err.error.status == 401 || err.error.status == 422) {
             this._toastrService.warning(err.error.message);
           } else {
-            this._toastrService.error(err.error.message);
+            this._toastrService.error('Internal Server Error');
           }
         },
       });

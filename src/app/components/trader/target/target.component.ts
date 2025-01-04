@@ -46,7 +46,7 @@ export class TargetComponent implements OnInit {
       this.UpdateCurrentPriceStatus();
       this.updateTargetCompitionStatus();
       this.getAllSetTargetList();
-      }, 20000);
+      }, 5000);
       }
     ngOnDestroy() {
       if (this.refreshInterval) {

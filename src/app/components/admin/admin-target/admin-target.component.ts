@@ -23,6 +23,7 @@ export class AdminTargetComponent implements OnInit {
   tickerSymbol: any;
   currant_price: any;
   coin: any;
+  base_price:any
   complition_id: any;
   untitled_id: any;
   searchControl: FormControl = new FormControl('');
@@ -44,7 +45,7 @@ export class AdminTargetComponent implements OnInit {
     this.UpdateCurrentPriceStatus();
     this.updateTargetCompitionStatus();
     this.getAllSetTargetList();
-  }, 20000);
+  }, 5000);
   }
   ngOnDestroy() {
     if (this.refreshInterval) {
@@ -140,6 +141,8 @@ export class AdminTargetComponent implements OnInit {
       complition_id: 4,
       currant_price: currentPrice,
       set_footer_id: footer.set_footer_id,
+      coin : this.coin,
+      base_price : this.base_price
     };
     this._traderService.updateSellToSoldStatus(body).subscribe({
       next: (res: any) => {
