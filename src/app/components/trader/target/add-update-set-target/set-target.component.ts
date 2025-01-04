@@ -209,7 +209,7 @@ export class SetTargetComponent implements OnInit {
           if (err.error.status == 401 || err.error.status == 422) {
             this._toastrService.warning(err.error.message);
           } else {
-            this._toastrService.error(err.error.message);
+            this._toastrService.error('Internal Server Error');
           }
         },
       });
