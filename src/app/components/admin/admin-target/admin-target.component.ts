@@ -141,8 +141,8 @@ export class AdminTargetComponent implements OnInit {
       complition_id: 4,
       currant_price: currentPrice,
       set_footer_id: footer.set_footer_id,
-      coin : this.coin,
-      base_price : this.base_price
+      coin : item.coin,
+      base_price : item.base_price
     };
     this._traderService.updateSellToSoldStatus(body).subscribe({
       next: (res: any) => {

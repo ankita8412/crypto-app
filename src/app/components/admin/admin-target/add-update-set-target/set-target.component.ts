@@ -88,9 +88,10 @@ export class SetTargetComponent implements OnInit {
   validateExactPercentage(): void {
     this.form.updateValueAndValidity();
     this.percentageError = this.form.hasError('totalNot100', 'setTargetFooter');
-    // if (this.percentageError) {
-    //   this._toastrService.warning('The total percentage of all inputs must be exactly 100%.');
-    // }
+    if (this.percentageError) {
+      this._toastrService.warning('The total percentage of all inputs must be exactly 100%.');
+      this._toastrService.clear();
+    }
   }
   submit() {
     this.isEdit ? this.updateSetTarget() : this.addSetTarget();
@@ -153,10 +154,6 @@ export class SetTargetComponent implements OnInit {
   }
 
   addSetTarget() {
-    // this.validateExactPercentage();
-    // if (this.percentageError) {
-    //   return; 
-    // }
     if (this.form.valid) {
       this._traderService.addSetTarget(this.form.getRawValue()).subscribe({
         next: (res: any) => {
@@ -182,13 +179,13 @@ export class SetTargetComponent implements OnInit {
       this.form.markAllAsTouched();
       this._toastrService.warning('Fill required fields');
     }
+    this.validateExactPercentage();
+    if (this.percentageError) {
+      return; 
+    }
   }
 
   updateSetTarget() {
-    // this.validateExactPercentage();
-    // if (this.percentageError) {
-    //   return; 
-    // }
     let data = this.form.getRawValue();
     if (this.form.valid) {
       this._traderService.editSetTarget(this.sale_target_id, data).subscribe({
@@ -214,6 +211,10 @@ export class SetTargetComponent implements OnInit {
     } else {
       this.form.markAllAsTouched();
       this._toastrService.warning('Fill required fields');
+    }
+    this.validateExactPercentage();
+    if (this.percentageError) {
+      return; 
     }
   }
 
