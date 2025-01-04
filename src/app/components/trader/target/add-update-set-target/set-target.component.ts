@@ -99,10 +99,13 @@ export class SetTargetComponent implements OnInit {
   validateExactPercentage(): void {
     this.form.updateValueAndValidity();
     this.percentageError = this.form.hasError('totalNot100', 'setTargetFooter');
+    if (this.percentageError) {
+      this._toastrService.warning('The total percentage of all inputs must be exactly 100%.');
+      this._toastrService.clear();
+    }
   }
 
   submit() {
-    this.validateExactPercentage();
     this.isEdit ? this.updateSetTarget() : this.addSetTarget();
   }
   //get coin list...
@@ -188,6 +191,10 @@ export class SetTargetComponent implements OnInit {
       this.form.markAllAsTouched();
       this._toastrService.warning('Fill required fields');
     }
+    this.validateExactPercentage();
+    if (this.percentageError) {
+      return; 
+    }
   }
 
   updateSetTarget() {
@@ -216,6 +223,10 @@ export class SetTargetComponent implements OnInit {
     } else {
       this.form.markAllAsTouched();
       this._toastrService.warning('Fill required fields');
+    }
+    this.validateExactPercentage();
+    if (this.percentageError) {
+      return; 
     }
   }
 

@@ -23,6 +23,7 @@
                     <th scope="col">Coin</th>
                     <th scope="col">Base Price</th>
                     <th scope="col">Sold Price</th>
+                    <th scope="col">Sold Coins</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -32,6 +33,7 @@
                     <td><span class="coin-name ms-2">{{ item.coin.split(" (")[0] }}</span></td>
                     <td>{{ (item.base_price ) || "--" }}</td>
                     <td>{{ (item.sold_current_price) || "--" }}</td>
+                    <td>{{ (item.sale_target_coin) || "--" }}</td>
                   </tr>
                   <tr
                     class="fw-bold text-center"
