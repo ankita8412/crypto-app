@@ -38,10 +38,10 @@
                   <td><img [src]=" 'https://www.cryptocompare.com/' + item.ImageUrl" alt="coin images" class="img-fluid coin-images"><span class="coin-name ms-2">{{ item.FullName.split(" (")[0] }}</span>  <span class="coin-short-name">
                     {{ item.Name || "--" }}
                   </span></td>
-                  <td>{{item.Rank}}</td>
+                  <td>{{item.Rank || "--"}}</td>
                   <td>{{ (item.PRICE) || "--" }}</td>
-                  <td>{{ (item.oneh + '%') || "--" }}</td>
-                  <td>{{ (item.one24h + '%') || "--" }}</td>
+                  <td>{{ item.oneh !== undefined && item.oneh !== null ? item.oneh + '%' : '--' }}</td>
+                  <td>{{ item.one24h !== undefined && item.one24h !== null ? item.one24h + '%' : '--' }}</td>
                   <!-- <td></td> -->
                   <td>{{item.MKTCAP || "--"}}</td>
                 </tr>

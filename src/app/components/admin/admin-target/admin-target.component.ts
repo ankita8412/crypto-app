@@ -64,8 +64,10 @@ export class AdminTargetComponent implements OnInit {
         next: (res: any) => {
           if (res.data.length > 0) {
             this.allSetTargetList = res.data;
+            console.log('hii',this.allSetTargetList[0].ticker);
+            
             this.allSetTargetList.forEach((item: any) => {
-              this.tickerSymbol = this.extractTickerSymbol(item.coin); // Dynamically extract tickerSymbol
+              this.tickerSymbol = item.ticker; // Dynamically extract tickerSymbol
               if (this.tickerSymbol) {
                 this.getCurrentPrice(this.tickerSymbol, (currentPrice) => {
                   item.currentPrice = currentPrice || '--'; // Add current price to the item
@@ -127,7 +129,7 @@ export class AdminTargetComponent implements OnInit {
       },
     }).then((result: any) => {
       if (result.isConfirmed) {
-        this.isLoading = true;
+        // this.isLoading = true;
         this.updateSellToSoldStatus(item, footer, currentPrice);
       }
     });
@@ -150,14 +152,14 @@ export class AdminTargetComponent implements OnInit {
     this._traderService.updateSellToSoldStatus(body).subscribe({
       next: (res: any) => {
         if (res) {
-          this.isLoading = false;
+          // this.isLoading = false;
           this.getAllSetTargetList();
         } else {
-          this.isLoading = false;
+          // this.isLoading = false;
         }
       },
       error: (err: any) => {
-        this.isLoading = false;
+        // this.isLoading = false;
       },
     });
   }

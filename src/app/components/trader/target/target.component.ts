@@ -26,6 +26,7 @@ export class TargetComponent implements OnInit {
     coin: any;
     complition_id: any;
     untitled_id: any;
+    isLoading: boolean = false;
     searchControl: FormControl = new FormControl('');
     constructor(
       private _traderService: TraderService,
@@ -62,8 +63,10 @@ export class TargetComponent implements OnInit {
         next: (res: any) => {
           if (res.data.length > 0) {
             this.allSetTargetList = res.data;
+            console.log(this.allSetTargetList);
+            
             this.allSetTargetList.forEach((item: any) => {
-              this.tickerSymbol = this.extractTickerSymbol(item.coin); // Dynamically extract tickerSymbol
+              this.tickerSymbol = item.ticker; // Dynamically extract tickerSymbol
               if (this.tickerSymbol) {
                 this.getCurrentPrice(this.tickerSymbol, (currentPrice) => {
                   item.currentPrice = currentPrice || '--'; // Add current price to the item
@@ -113,6 +116,7 @@ export class TargetComponent implements OnInit {
       });
     }
   
+  
     submit(item: any, footer: any, currentPrice: any) {
       Swal.fire({
         text: 'Do you want to Sell?',
@@ -122,10 +126,11 @@ export class TargetComponent implements OnInit {
         cancelButtonColor: '#d33',
         confirmButtonText: 'Yes',
         customClass: {
-          popup: 'small-swal' // Add a custom class
-        }
+          popup: 'small-swal', // Add a custom class
+        },
       }).then((result: any) => {
         if (result.isConfirmed) {
+          // this.isLoading = true;
           this.updateSellToSoldStatus(item, footer, currentPrice);
         }
       });
@@ -142,17 +147,23 @@ export class TargetComponent implements OnInit {
         complition_id: 4,
         currant_price: currentPrice,
         set_footer_id: footer.set_footer_id,
-        coin : item.coin,
-        base_price : item.base_price
+        coin: item.coin,
+        base_price: item.base_price,
       };
       this._traderService.updateSellToSoldStatus(body).subscribe({
         next: (res: any) => {
+          if (res) {
+            // this.isLoading = false;
+            this.getAllSetTargetList();
+          } else {
+            // this.isLoading = false;
+          }
         },
         error: (err: any) => {
+          // this.isLoading = false;
         },
       });
     }
-  
     downloadReport(){
       this._traderService.downloadReport().subscribe({
         next: (blob: Blob) => {
