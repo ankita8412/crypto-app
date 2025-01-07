@@ -9,12 +9,14 @@
                   type="text"
                   class="form-control"
                   id="user_name"
-                  placeholder="User Name"
+                  placeholder="User Name *"
                   formControlName="user_name"
                   [ngClass]="{
                     'is-invalid':
                       control['user_name'].invalid &&
-                      (control['user_name'].dirty || control['user_name'].touched)
+                      (control['user_name'].dirty || control['user_name'].touched),
+                      'placeholder-danger': control['user_name'].invalid &&
+                  (control['user_name'].dirty || control['user_name'].touched)
                   }"
                 />
                 <div
@@ -31,12 +33,14 @@
                 type="text"
                 class="form-control"
                 id="email_id"
-                placeholder="Email Id"
+                placeholder="Email Id *"
                 formControlName="email_id"
                 [ngClass]="{
                   'is-invalid':
                     control['email_id'].invalid &&
-                    (control['email_id'].dirty || control['email_id'].touched)
+                    (control['email_id'].dirty || control['email_id'].touched),
+                    'placeholder-danger': control['email_id'].invalid &&
+                  (control['email_id'].dirty || control['email_id'].touched)
                 }"
               />
               <div
@@ -52,8 +56,13 @@
               <select class="form-select"
                 aria-label="select user_type_id"
                 formControlName="user_type_id"
-                type="text">
-                <option hidden value="null" disabled selected>Select User Type</option>
+                type="text"
+                [ngClass]="{
+                  'is-invalid':
+                    control['user_type_id'].invalid &&
+                    (control['user_type_id'].dirty || control['user_type_id'].touched)
+                }">
+                <option hidden value="null" disabled selected>Select User Type *</option>
                 <option
                   [value]="item.user_type_id"
                   *ngFor="let item of allUserTypeList">

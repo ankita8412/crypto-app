@@ -41,13 +41,13 @@ export class SetTargetComponent implements OnInit {
   }
   createForm() {
     this.form = this.fb.group({
+      ticker: [null,Validators.required],
       coin: [null, Validators.required],
       base_price: [null, Validators.required],
       currant_price: [null, Validators.required],
       return_x: [null, Validators.required],
       available_coins: [null, Validators.required],
       final_sale_price: [null, Validators.required],
-      ticker_symbol: [null,Validators.required],
       setTargetFooter: this.fb.array(this.createTargetInputs(5), this.totalPercentageValidator()),
     });
   }
@@ -116,21 +116,20 @@ export class SetTargetComponent implements OnInit {
       },
     });
   }
-
   onCoinChange(event: any) {
     const selectedCoinName = event.value; // Fetch the coin name
     const selectedCoin = this.allCoinList.find(
-      (item) => item.coin_name === selectedCoinName
+      (item) => item.short_name === selectedCoinName
     );
+    
     if (selectedCoin) {
-      this.control['coin'].patchValue(selectedCoin.coin_name); // Update form with the coin_name
+      this.control['coin'].patchValue(selectedCoin.coin_name.split(" (")[0]); // Update form with the coin_name
       this._traderService.getCoinById(selectedCoin.coin_id).subscribe({
         next: (res: any) => {
-          const tickerSymbol = res.data.ticker_symbol;
-          this.control['ticker_symbol'].patchValue(tickerSymbol);
-          if (tickerSymbol) {
+          this.control['ticker'].patchValue(selectedCoin.short_name);
+          if (selectedCoin.short_name) {
             this._traderService
-              .getCurrentPriceByTicker(tickerSymbol)
+              .getCurrentPriceByTicker(selectedCoin.short_name)
               .subscribe({
                 next: (res: any) => {
                   this.control['currant_price'].patchValue(
@@ -217,23 +216,28 @@ export class SetTargetComponent implements OnInit {
     //   return; 
     // }
   }
+
   getSetTargetById(id: any) {
     this._traderService.getSetTargetById(id).subscribe({
       next: (res: any) => {
         const targetData = res.data;
+        console.log('data',targetData.ticker);
+        this.searchKeyChanged.next(targetData.ticker);
+        this.control['ticker'].patchValue(targetData.ticker)
         this.control['coin'].patchValue(targetData.coin);
         this.control['base_price'].patchValue(targetData.base_price);
         this.control['base_price'].disable();
         this.control['currant_price'].patchValue(targetData.currant_price);
         this.control['available_coins'].patchValue(targetData.available_coins);
-        this.control['final_sale_price'].patchValue(targetData.final_sale_price);
-        const tickerSymbol = this.extractTickerSymbol(targetData.coin);
-        this.control['ticker_symbol'].patchValue(tickerSymbol);
+        this.control['final_sale_price'].patchValue(
+          targetData.final_sale_price
+        );
         this.control['return_x'].patchValue(targetData.return_x);
         this.patchFooterData(targetData.footer);
       },
     });
   }
+
   patchFooterData(footerData: any[]) {
     const footerArray = this.form.get('setTargetFooter') as FormArray;
     footerArray.clear(); // Clear existing controls

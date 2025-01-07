@@ -12,6 +12,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { debounceTime, Subject } from 'rxjs';
 
+
 @Component({
   selector: 'app-set-target',
   templateUrl: './set-target.component.html',
@@ -48,13 +49,14 @@ export class SetTargetComponent implements OnInit {
   }
   createForm() {
     this.form = this.fb.group({
-      coin: [null, Validators.required],
-      base_price: [null, Validators.required],
-      currant_price: [null, Validators.required],
-      return_x: [null, Validators.required],
-      available_coins: [null, Validators.required],
-      final_sale_price: [null, Validators.required],
-      ticker_symbol: [null, Validators.required],
+      ticker: ['', Validators.required],
+      coin: ['', Validators.required],
+      base_price: ['', Validators.required],
+      currant_price: ['', Validators.required],
+      return_x: ['', Validators.required],
+      available_coins: ['', Validators.required],
+      final_sale_price: ['', Validators.required],
+    
       setTargetFooter: this.fb.array(
         this.createTargetInputs(5),
         this.totalPercentageValidator()
@@ -115,6 +117,7 @@ export class SetTargetComponent implements OnInit {
         if (res.data && res.data.length > 0) {
           this.allCoinList = res.data;
           this.filteredCoinArray = res.data;
+
         } else {
           this.allCoinList = [];
           this.filteredCoinArray = [];
@@ -130,17 +133,17 @@ export class SetTargetComponent implements OnInit {
   onCoinChange(event: any) {
     const selectedCoinName = event.value; // Fetch the coin name
     const selectedCoin = this.allCoinList.find(
-      (item) => item.coin_name === selectedCoinName
+      (item) => item.short_name === selectedCoinName
     );
+    
     if (selectedCoin) {
-      this.control['coin'].patchValue(selectedCoin.coin_name); // Update form with the coin_name
+      this.control['coin'].patchValue(selectedCoin.coin_name.split(" (")[0]); // Update form with the coin_name
       this._traderService.getCoinById(selectedCoin.coin_id).subscribe({
         next: (res: any) => {
-          const tickerSymbol = res.data.ticker_symbol;
-          this.control['ticker_symbol'].patchValue(tickerSymbol);
-          if (tickerSymbol) {
+          this.control['ticker'].patchValue(selectedCoin.short_name);
+          if (selectedCoin.short_name) {
             this._traderService
-              .getCurrentPriceByTicker(tickerSymbol)
+              .getCurrentPriceByTicker(selectedCoin.short_name)
               .subscribe({
                 next: (res: any) => {
                   this.control['currant_price'].patchValue(
@@ -153,11 +156,13 @@ export class SetTargetComponent implements OnInit {
       });
     }
   }
-
+ 
   //Filter coin array
   filterCoinList() {
     this.searchKeyChanged.next(this.searchKey.trim());
   }
+
+  
   calculateFinalSalePrice(): void {
     const basePrice = this.form.get('base_price')?.value || 0;
     const returnX = this.form.get('return_x')?.value || 0;
@@ -166,6 +171,8 @@ export class SetTargetComponent implements OnInit {
   }
 
   addSetTarget() {
+    console.log('from ',this.form.value);
+    
     if (this.form.valid) {
       this._traderService.addSetTarget(this.form.getRawValue()).subscribe({
         next: (res: any) => {
@@ -191,10 +198,10 @@ export class SetTargetComponent implements OnInit {
       this.form.markAllAsTouched();
       this._toastrService.warning('Fill required fields');
     }
-    // this.validateExactPercentage();
-    // if (this.percentageError) {
-    //   return; 
-    // }
+    this.validateExactPercentage();
+    if (this.percentageError) {
+      return; 
+    }
   }
 
   updateSetTarget() {
@@ -234,6 +241,9 @@ export class SetTargetComponent implements OnInit {
     this._traderService.getSetTargetById(id).subscribe({
       next: (res: any) => {
         const targetData = res.data;
+        console.log('data',targetData.ticker);
+        this.searchKeyChanged.next(targetData.ticker);
+        this.control['ticker'].patchValue(targetData.ticker)
         this.control['coin'].patchValue(targetData.coin);
         this.control['base_price'].patchValue(targetData.base_price);
         this.control['base_price'].disable();
@@ -242,8 +252,6 @@ export class SetTargetComponent implements OnInit {
         this.control['final_sale_price'].patchValue(
           targetData.final_sale_price
         );
-        const tickerSymbol = this.extractTickerSymbol(targetData.coin);
-        this.control['ticker_symbol'].patchValue(tickerSymbol);
         this.control['return_x'].patchValue(targetData.return_x);
         this.patchFooterData(targetData.footer);
       },
