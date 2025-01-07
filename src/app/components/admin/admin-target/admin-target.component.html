@@ -1,6 +1,6 @@
-<!-- <div class="loading" *ngIf="isLoading">
+<div class="loading" *ngIf="isLoading">
   <div class="lds-spinner"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>
-</div> -->
+</div>
 <div class="container-fluid m-0">
   <div class="row mb-5 justify-content-between">
     <div class="col-md-5 m-0 p-0">
@@ -15,7 +15,7 @@
     </div>
     <div class="col-md-3 mt-4">
       <button class="btn btn-success download-btn" (click)="downloadReport()">Download</button>
-      <button class="btn add-btn ms-2" [routerLink]="[ '/admin', { outlets: { admin_Menu: 'add-set-target' } } ]" >Add</button>
+      <button class="btn add-btn ms-2" [routerLink]="[ '/trader', { outlets: { trader_Menu: 'add-set-target' } } ]" >Add</button>
     </div>
     <small class="list-header">Set Target List</small>
     <div class="card m-0 p-0 mt-2">
@@ -42,7 +42,7 @@
                 <td>{{ i + 1 }}</td>
                 <td><i class="fa-solid fa-trash cursor-pointer delete-icon" (click)="deleteRecord($event, item.sale_target_id)"></i></td>
                 <td>
-                  <img src="assets/dashboard/Pencil.svg" alt="Pencil Image" class="cursor-pointer edit-pencile" [routerLink]="[ '/admin', { outlets: { admin_Menu: [ 'edit-set-target', item.sale_target_id ] } } ]">
+                  <img src="assets/dashboard/Pencil.svg" alt="Pencil Image" class="cursor-pointer edit-pencile" [routerLink]="[ '/trader', { outlets: { trader_Menu: [ 'edit-set-target', item.sale_target_id ] } } ]">
                 </td>
                 <td>{{ (item.coin.split(' (')[0]) || "--" }}</td>
                 <td>{{ item.base_price || "--" }}</td>
