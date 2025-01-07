@@ -42,12 +42,11 @@ export class TargetComponent implements OnInit {
       
     }
     setIntervalApi(){
-      // Set up the interval
       this.refreshInterval = setInterval(() => {
-      this.UpdateCurrentPriceStatus();
+        this.UpdateCurrentPriceStatus();
       this.updateTargetCompitionStatus();
-      this.getAllSetTargetList();
-      }, 5000);
+      // this.getAllSetTargetList();
+      }, 7000);
       }
     ngOnDestroy() {
       if (this.refreshInterval) {
@@ -130,8 +129,8 @@ export class TargetComponent implements OnInit {
         },
       }).then((result: any) => {
         if (result.isConfirmed) {
-          // this.isLoading = true;
           this.updateSellToSoldStatus(item, footer, currentPrice);
+          this.isLoading = true;
         }
       });
     }
@@ -153,15 +152,10 @@ export class TargetComponent implements OnInit {
       this._traderService.updateSellToSoldStatus(body).subscribe({
         next: (res: any) => {
           if (res) {
-            // this.isLoading = false;
+            this.isLoading = false;
             this.getAllSetTargetList();
-          } else {
-            // this.isLoading = false;
           }
-        },
-        error: (err: any) => {
-          // this.isLoading = false;
-        },
+        }
       });
     }
     downloadReport(){

@@ -36,7 +36,7 @@
             </div>
             <div class="">
               <label for="exampleInputPassword1" class="form-label">Password</label>
-              <input type="password" class="form-control" id="exampleInputPassword1" placeholder="Password" formControlName="password"
+              <input class="form-control" id="exampleInputPassword1" placeholder="Password" formControlName="password"
               [type]="passwordVisible ? 'text' : 'password'"
               [ngClass]="{
                 'is-invalid':
@@ -44,13 +44,17 @@
                   (control['password'].dirty ||
                     control['password'].touched)
               }">
-              <div class="row d-flex justify-content-end">
-                <div class="col-2 h-0">
-                  <span class="eye"
-                    [ngClass]="{'is-password-invalid': control['password'].invalid && (control['password'].dirty || control['password'].touched)}"><i class="fa-regular fa-eye fs-5"
-                      matSuffix (click)="togglePasswordVisibility()"></i></span>
-                </div>
+             <div class="row d-flex justify-content-end">
+              <div class="col-2 h-0">
+                <span class="eye">
+                  <i 
+                    class="fa fs-5"
+                    [ngClass]="passwordVisible ? 'fa-eye':'fa-eye-slash' " 
+                    (click)="togglePasswordVisibility()">
+                  </i>
+                </span>
               </div>
+            </div>
                 <span class="text-danger ">
                     <div   class="d-flex justify-content-start" *ngIf="
                     control['password'].invalid &&
