@@ -10,4 +10,77 @@
     margin-left: -10px;
 }
 
+@media  (max-width:540px) {
+.first-col{
+    margin-right: 0rem !important;
+    margin-left: 0rem !important;
+}
+.brand-logo {
+    height: 50px;
+    width: 50px;
+    margin-top: 30px !important;
+}
+.brand-name {
+    font-size: 20px;
+    margin-top: 43px;
+    margin-right: 50px;
+    margin-left: 0px !important;
+}
+.py-4 {
+    padding-top: 0rem !important;
+    padding-bottom: 0rem !important;
+}
+.mx-3 {
+     margin-right: 0rem !important; 
+     margin-left: 0rem !important; 
+}
+// .align-self-center{
+//     align-self: normal !important;
+// }
+.heading{
+    font-size: 18px !important;
+    padding-top: 20px;
+}
+.form-label {
+    font-size: 12px;
+}
+.form-control, .form-select {
+    display: block;
+    background-color: transparent;
+    border: 1px solid #ced4da;
+    border-radius: 10px;
+    height: 45px;
+    font-size: 12px !important;
+}
+.fa-eye , .fa-eye-slash {
+    position: relative;
+    bottom: 35px;
+    margin-left: -20px !important;
+    font-size: 15px !important;
+}
+::placeholder {
+    font-size: 12px;
+}
+.error-msg{
+    font-size: 10px;
+}
+.password-link{
+    font-size: 12px !important;
+}
+.login-btn {
+    height: 40px;
+    font-size: 12px !important;
+    margin-top: 15px !important;
+}
+.login-image{
+    height: 100%;
+    width: 100%;
+}
+.image-col{
+    display: none;
+}
+}
+
+
+
   
