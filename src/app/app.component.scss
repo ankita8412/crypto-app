@@ -23,3 +23,13 @@
     background-color:#363062;
     color: #ececec;
 }
+@media  (max-width:540px) {
+    .brand-logo {
+        height: 50px;
+        width: 50px;
+        margin-top: 30px !important;
+    }
+    .brand-name {
+        margin-left: 0px !important;
+    }
+}
