@@ -43,9 +43,9 @@ export class TargetComponent implements OnInit {
     }
     setIntervalApi(){
       this.refreshInterval = setInterval(() => {
-        this.UpdateCurrentPriceStatus();
-      this.updateTargetCompitionStatus();
-      // this.getAllSetTargetList();
+        // this.UpdateCurrentPriceStatus();
+        this.updateTargetCompitionStatus();
+        this.getAllSetTargetList();
       }, 7000);
       }
     ngOnDestroy() {
@@ -62,8 +62,17 @@ export class TargetComponent implements OnInit {
         next: (res: any) => {
           if (res.data.length > 0) {
             this.allSetTargetList = res.data;
-            console.log(this.allSetTargetList);
-            
+            // console.log(this.allSetTargetList);
+            this.allSetTargetList.forEach((item: any) => {
+              this.tickerSymbol = item.ticker; // Dynamically extract tickerSymbol
+              if (this.tickerSymbol) {
+                this.getCurrentPrice(this.tickerSymbol, (currentPrice) => {
+                  item.currentPrice = currentPrice || '--'; // Add current price to the item
+                });
+              } else {
+                item.currentPrice = '--'; // Default value if no ticker symbol
+              }
+            });
             
           } else {
             this.allSetTargetList = [];
@@ -93,22 +102,20 @@ export class TargetComponent implements OnInit {
       });
     }
     // get current price
-    UpdateCurrentPriceStatus(): void {
-      this.allSetTargetList.forEach((item: any) => {
-        this.tickerSymbol = item.ticker; // Dynamically extract tickerSymbol
-        if (this.tickerSymbol) {
-          this.getCurrentPrice(this.tickerSymbol, (currentPrice) => {
-            item.currentPrice = currentPrice || '--'; // Add current price to the item
-          });
-        } else {
-          item.currentPrice = '--'; // Default value if no ticker symbol
-        }
-      });
-    }
+    // UpdateCurrentPriceStatus(): void {
+      
+    // }
     updateTargetCompitionStatus() {
       this._traderService.updateTargetCompitionStatus().subscribe({
         next: (res: any) => {
+          if (res.status == 201 || res.status == 200) {
+            // this._toastrService.success(res.message);
+         
+          } else {
+            this._toastrService.error(res.message);
+          }
         },
+    
       });
     }
   

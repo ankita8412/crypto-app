@@ -46,9 +46,9 @@ export class AdminDashboardComponent implements OnInit{
   }
   setIntervalApi(){
     this.refreshInterval = setInterval(() => {
-      this.UpdateCurrentPriceStatus();
+      // this.UpdateCurrentPriceStatus();
     this.updateTargetCompitionStatus();
-    // this.getAllSetTargetList();
+    this.getAllReachedSetTargetList();
     }, 7000);
     }
   ngOnDestroy() {
@@ -66,6 +66,16 @@ export class AdminDashboardComponent implements OnInit{
       next:(res:any) => {
         if (res.data.length > 0){
           this.allReachedSetTargetList = res.data
+          this.allReachedSetTargetList.forEach((item: any) => {
+            this.tickerSymbol = item.ticker; // Dynamically extract tickerSymbol
+            if (this.tickerSymbol) {
+              this.getCurrentPrice(this.tickerSymbol, (currentPrice) => {
+                item.currentPrice = currentPrice || '--'; // Add current price to the item
+              });
+            } else {
+              item.currentPrice = '--'; // Default value if no ticker symbol
+            }
+          });
         }
         else{
           this.allReachedSetTargetList = [];
@@ -102,21 +112,19 @@ export class AdminDashboardComponent implements OnInit{
       });
     }
     // get current price
-    UpdateCurrentPriceStatus(): void {
-      this.allReachedSetTargetList.forEach((item: any) => {
-        this.tickerSymbol = item.ticker; // Dynamically extract tickerSymbol
-        if (this.tickerSymbol) {
-          this.getCurrentPrice(this.tickerSymbol, (currentPrice) => {
-            item.currentPrice = currentPrice || '--'; // Add current price to the item
-          });
-        } else {
-          item.currentPrice = '--'; // Default value if no ticker symbol
-        }
-      });
-    }
+    // UpdateCurrentPriceStatus(): void {
+     
+    // }
     updateTargetCompitionStatus() {
       this._traderService.updateTargetCompitionStatus().subscribe({
-        next: (res: any) => {},
+        next: (res: any) => {
+          if (res.status == 201 || res.status == 200) {
+            // this._toastrService.success(res.message);
+         
+          } else {
+            this._toastrService.error(res.message);
+          }
+        },
       });
     }
    submit(item: any, footer: any, currentPrice: any) {
