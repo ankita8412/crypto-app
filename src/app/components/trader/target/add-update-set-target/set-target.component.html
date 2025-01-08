@@ -159,14 +159,14 @@
             <input matInput
               type="number"
               class="form-control"
-              formControlName="sale_target_coin"
+              formControlName="sale_target_value"
               [id]="item.get('sale_target_percent')?.value" 
               placeholder="0"
               maxlength="2" 
               min="0"
               max="99"
               (input)="validateExactPercentage()" />
-            <mat-error *ngIf="item.get('sale_target_coin')?.hasError('pattern')">
+            <mat-error *ngIf="item.get('sale_target_value')?.hasError('pattern')">
               Enter 2 digits only
             </mat-error>
           </mat-form-field>
@@ -176,7 +176,7 @@
         </div>
         <div class="d-flex justify-content-center mt-3">
           <div class="col-md-2">
-            <button class="btn cancel-btn" [routerLink]="[ '/trader', { outlets: { trader_Menu: 'target'} } ]">
+            <button class="btn cancel-btn" (click)="goToback()">
               Cancel
             </button>
           </div>

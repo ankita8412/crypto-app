@@ -76,7 +76,7 @@ export class SetTargetComponent implements OnInit {
   createTargetInputs(count: number): FormGroup[] {
     return Array.from({ length: count }, (_, index) =>
       this.fb.group({
-        sale_target_coin: [
+        sale_target_value: [
           '',
           [
             Validators.pattern('^[0-9]{1,2}$'), // Allow only 1 or 2 digits
@@ -92,7 +92,7 @@ export class SetTargetComponent implements OnInit {
   totalPercentageValidator() {
     return (formArray: AbstractControl): ValidationErrors | null => {
       const total = (formArray as FormArray).controls.reduce((sum, control) => {
-        const value = parseInt(control.get('sale_target_coin')?.value, 10) || 0;
+        const value = parseInt(control.get('sale_target_value')?.value, 10) || 0;
         return sum + value;
       }, 0);
       return total === 100 ? null : { totalNot100: true };
@@ -172,7 +172,7 @@ export class SetTargetComponent implements OnInit {
   }
 
   addSetTarget() {
-    console.log('from ',this.form.value);
+    // console.log('from',this.form.value);
     
     if (this.form.valid) {
       this._traderService.addSetTarget(this.form.getRawValue()).subscribe({
@@ -211,6 +211,8 @@ export class SetTargetComponent implements OnInit {
     if (this.form.valid) {
       this._traderService.editSetTarget(this.sale_target_id, data).subscribe({
         next: (res: any) => {
+         
+          
           if (res.status == 200) {
             this._toastrService.success(res.message);
             // this.router.navigate([
@@ -244,7 +246,7 @@ export class SetTargetComponent implements OnInit {
     this._traderService.getSetTargetById(id).subscribe({
       next: (res: any) => {
         const targetData = res.data;
-        console.log('data',targetData.ticker);
+        console.log('data',targetData);
         this.searchKeyChanged.next(targetData.ticker);
         this.control['ticker'].patchValue(targetData.ticker)
         this.control['coin'].patchValue(targetData.coin);
@@ -266,8 +268,8 @@ export class SetTargetComponent implements OnInit {
     footerData.forEach((item) => {
       footerArray.push(
         this.fb.group({
-          sale_target_coin: [
-            item.sale_target_coin * 10,
+          sale_target_value: [
+            item.sale_target_value ,
             [Validators.min(0), Validators.max(100)],
           ],
           sale_target_percent: [item.sale_target_percent],
