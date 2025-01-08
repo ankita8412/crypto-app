@@ -64,16 +64,7 @@ export class TargetComponent implements OnInit {
             this.allSetTargetList = res.data;
             console.log(this.allSetTargetList);
             
-            this.allSetTargetList.forEach((item: any) => {
-              this.tickerSymbol = item.ticker; // Dynamically extract tickerSymbol
-              if (this.tickerSymbol) {
-                this.getCurrentPrice(this.tickerSymbol, (currentPrice) => {
-                  item.currentPrice = currentPrice || '--'; // Add current price to the item
-                });
-              } else {
-                item.currentPrice = '--'; // Default value if no ticker symbol
-              }
-            });
+            
           } else {
             this.allSetTargetList = [];
           }
@@ -103,15 +94,21 @@ export class TargetComponent implements OnInit {
     }
     // get current price
     UpdateCurrentPriceStatus(): void {
-      this.getCurrentPrice(this.tickerSymbol, (price) => {
-        if (price !== null) {
+      this.allSetTargetList.forEach((item: any) => {
+        this.tickerSymbol = item.ticker; // Dynamically extract tickerSymbol
+        if (this.tickerSymbol) {
+          this.getCurrentPrice(this.tickerSymbol, (currentPrice) => {
+            item.currentPrice = currentPrice || '--'; // Add current price to the item
+          });
         } else {
+          item.currentPrice = '--'; // Default value if no ticker symbol
         }
       });
     }
     updateTargetCompitionStatus() {
       this._traderService.updateTargetCompitionStatus().subscribe({
-        next: (res: any) => {},
+        next: (res: any) => {
+        },
       });
     }
   
@@ -154,6 +151,9 @@ export class TargetComponent implements OnInit {
           if (res) {
             this.isLoading = false;
             this.getAllSetTargetList();
+            this._toastrService.success(res.message);
+          }else {
+            this._toastrService.warning(res.message);
           }
         }
       });

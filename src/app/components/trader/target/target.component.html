@@ -17,12 +17,16 @@
       <button class="btn btn-success download-btn" (click)="downloadReport()">Download</button>
       <button class="btn add-btn ms-2" [routerLink]="[ '/trader', { outlets: { trader_Menu: 'add-set-target' } } ]" >Add</button>
     </div>
-    <small class="list-header">Set Target List</small>
-    <div class="card m-0 p-0 mt-2">
+    <small class="list-header"></small>
+    <div class="card m-0 p-2 mt-2">
+      <div class="card-header d-flex justify-content-between p-3"> 
+        <strong>Set Target List</strong>
+    </div>
+    <div class="card-body">
       <div class="col-md-12">
         <div class="table-responsive">
-          <table class="table table-bordered text-center">
-            <thead>
+          <table class="table table-bordered text-center table-hover">
+            <thead class="table-secondary" >
               <tr>
                 <th scope="col">Sr.No</th>
                 <th>Delete</th>
@@ -75,6 +79,8 @@
           </mat-paginator>
         </div> -->
       </div> 
+    </div>
+  
     </div>
   </div>
 </div>

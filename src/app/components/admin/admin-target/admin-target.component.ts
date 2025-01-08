@@ -154,7 +154,10 @@ export class AdminTargetComponent implements OnInit {
             if (res) {
               this.isLoading = false;
               this.getAllSetTargetList();
-            } 
+              this._toastrService.success(res.message);
+            }else {
+              this._toastrService.warning(res.message);
+            }
           }
         });
       }

@@ -11,7 +11,7 @@ import { TraderService } from '../../trader.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { debounceTime, Subject } from 'rxjs';
-
+import { Location } from '@angular/common';
 
 @Component({
   selector: 'app-set-target',
@@ -32,7 +32,8 @@ export class SetTargetComponent implements OnInit {
     private fb: FormBuilder,
     private _toastrService: ToastrService,
     private url: ActivatedRoute,
-    private router: Router
+    private router: Router,
+    private location: Location,
   ) {}
 
   ngOnInit(): void {
@@ -178,10 +179,11 @@ export class SetTargetComponent implements OnInit {
         next: (res: any) => {
           if (res.status == 201 || res.status == 200) {
             this._toastrService.success(res.message);
-            this.router.navigate([
-              '/trader',
-              { outlets: { trader_Menu: 'target' } },
-            ]);
+            // this.router.navigate([
+            //   '/trader',
+            //   { outlets: { trader_Menu: 'target' } },
+            // ]);
+            this.goToback();
           } else {
             this._toastrService.warning(res.message);
           }
@@ -211,10 +213,11 @@ export class SetTargetComponent implements OnInit {
         next: (res: any) => {
           if (res.status == 200) {
             this._toastrService.success(res.message);
-            this.router.navigate([
-              '/trader',
-              { outlets: { trader_Menu: 'target' } },
-            ]);
+            // this.router.navigate([
+            //   '/trader',
+            //   { outlets: { trader_Menu: 'target' } },
+            // ]);
+            this.goToback();
           } else {
             this._toastrService.warning(res.message);
           }
@@ -280,4 +283,10 @@ export class SetTargetComponent implements OnInit {
     const match = /\(([^)]+)\)/.exec(coin);
     return match ? match[1] : coin;
   }
+
+    // cancel route location service
+    goToback() {
+      this.location.back();
+    }
 }
+
