@@ -4,7 +4,7 @@ import { ToastrService } from 'ngx-toastr';
 import { ActivatedRoute, Router } from '@angular/router';
 import { TraderService } from 'src/app/components/trader/trader.service';
 import { debounceTime, Subject } from 'rxjs';
-
+import { Location } from '@angular/common';
 @Component({
   selector: 'app-set-target',
   templateUrl: './set-target.component.html',
@@ -24,7 +24,8 @@ export class SetTargetComponent implements OnInit {
     private fb: FormBuilder,
     private _toastrService: ToastrService,
     private url: ActivatedRoute,
-    private router: Router
+    private router: Router,
+    private location: Location,
   ) {}
 
   ngOnInit(): void {
@@ -159,10 +160,11 @@ export class SetTargetComponent implements OnInit {
         next: (res: any) => {
           if (res.status == 201 || res.status == 200) {
             this._toastrService.success(res.message);
-            this.router.navigate([
-              '/admin',
-              { outlets: { admin_Menu: 'admin-target' } },
-            ]);
+            // this.router.navigate([
+            //   '/admin',
+            //   { outlets: { admin_Menu: 'admin-target' } },
+            // ]);
+            this.goToback();
           } else {
             this._toastrService.warning(res.message);
           }
@@ -191,10 +193,11 @@ export class SetTargetComponent implements OnInit {
         next: (res: any) => {
           if (res.status == 200) {
             this._toastrService.success(res.message);
-            this.router.navigate([
-              '/admin',
-              { outlets: { admin_Menu: 'admin-target' } },
-            ]);
+            // this.router.navigate([
+            //   '/admin',
+            //   { outlets: { admin_Menu: 'admin-target' } },
+            // ]);
+            this.goToback();
           } else {
             this._toastrService.warning(res.message);
           }
@@ -258,4 +261,8 @@ export class SetTargetComponent implements OnInit {
     const match = /\(([^)]+)\)/.exec(coin);
     return match ? match[1] : coin; 
   }
+    // cancel route location service
+    goToback() {
+      this.location.back();
+    }
 }
