@@ -62,18 +62,7 @@ export class AdminTargetComponent implements OnInit {
           next: (res: any) => {
             if (res.data.length > 0) {
               this.allSetTargetList = res.data;
-              console.log(this.allSetTargetList);
-              
-              this.allSetTargetList.forEach((item: any) => {
-                this.tickerSymbol = item.ticker; // Dynamically extract tickerSymbol
-                if (this.tickerSymbol) {
-                  this.getCurrentPrice(this.tickerSymbol, (currentPrice) => {
-                    item.currentPrice = currentPrice || '--'; // Add current price to the item
-                  });
-                } else {
-                  item.currentPrice = '--'; // Default value if no ticker symbol
-                }
-              });
+  
             } else {
               this.allSetTargetList = [];
             }
@@ -103,9 +92,14 @@ export class AdminTargetComponent implements OnInit {
       }
       // get current price
       UpdateCurrentPriceStatus(): void {
-        this.getCurrentPrice(this.tickerSymbol, (price) => {
-          if (price !== null) {
+        this.allSetTargetList.forEach((item: any) => {
+          this.tickerSymbol = item.ticker; // Dynamically extract tickerSymbol
+          if (this.tickerSymbol) {
+            this.getCurrentPrice(this.tickerSymbol, (currentPrice) => {
+              item.currentPrice = currentPrice || '--'; // Add current price to the item
+            });
           } else {
+            item.currentPrice = '--'; // Default value if no ticker symbol
           }
         });
       }
