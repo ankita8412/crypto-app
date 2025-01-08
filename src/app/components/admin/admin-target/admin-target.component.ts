@@ -25,7 +25,7 @@ export class AdminTargetComponent implements OnInit {
       coin: any;
       complition_id: any;
       untitled_id: any;
-      isLoading: boolean = false;
+      // isLoading: boolean = false;
       searchControl: FormControl = new FormControl('');
       constructor(
         private _traderService: TraderService,
@@ -131,7 +131,7 @@ export class AdminTargetComponent implements OnInit {
         }).then((result: any) => {
           if (result.isConfirmed) {
             this.updateSellToSoldStatus(item, footer, currentPrice);
-            this.isLoading = true;
+            // this.isLoading = true;
           }
         });
       }
@@ -153,7 +153,7 @@ export class AdminTargetComponent implements OnInit {
         this._traderService.updateSellToSoldStatus(body).subscribe({
           next: (res: any) => {
             if (res) {
-              this.isLoading = false;
+              // this.isLoading = false;
               this.getAllSetTargetList();
               this._toastrService.success(res.message);
             }else {
