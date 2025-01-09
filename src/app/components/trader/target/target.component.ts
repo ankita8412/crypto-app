@@ -155,12 +155,19 @@ export class TargetComponent implements OnInit {
       };
       this._traderService.updateSellToSoldStatus(body).subscribe({
         next: (res: any) => {
-          if (res) {
+          if (res.status == 201 || res.status == 200) {
             // this.isLoading = false;
             this.getAllSetTargetList();
             this._toastrService.success(res.message);
           }else {
             this._toastrService.warning(res.message);
+          }
+        },
+        error: (err: any) => {
+          if (err.error.status == 401 || err.error.status == 422) {
+            this._toastrService.warning(err.error.message);
+          } else {
+            this._toastrService.error('Internal Server Error');
           }
         }
       });

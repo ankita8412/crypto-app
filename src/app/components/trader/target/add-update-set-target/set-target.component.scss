@@ -1,7 +1,4 @@
-.target-input{
-    width: 20%;
-    margin-bottom: 0px !important;
-}
+
 ::placeholder{
     font-size: 14px;
 }
@@ -48,7 +45,19 @@
     height: calc(3em - 1px);
     line-height: calc(3em - 1px);
 }
+@media (min-width:768px){
+    .target-input{
+        width: 20%;
+        margin-bottom: 0px !important;
+    }
 
-.disabled-cursor {
-    cursor: not-allowed; 
-  }
+}
+@media (max-width:540px){
+    .target-input{
+        width: 100% !important;
+        margin-bottom: 0px !important;
+    }
+    :host ::ng-deep mat-select{
+        margin-bottom: 15px !important;
+    }
+}
