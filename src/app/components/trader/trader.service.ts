@@ -26,7 +26,7 @@ export class TraderService {
   }
   // get current price
   getCurrentPriceByTicker(tickerSymbol: string): Observable<any> {
-    return this.http.post(this.baseUrl + 'api/sale-target-header/currant-price', { tricker: tickerSymbol});
+    return this.http.post(this.baseUrl + 'api/sale-target-header/currant-price', { ticker: tickerSymbol});
   }
   // add set target 
   addSetTarget(data:any): Observable<any>{
@@ -82,5 +82,8 @@ export class TraderService {
     return this.http.get(this.baseUrl + 'api/coin', {
       params : params
     })
+  }
+  getAllCurrentPriceList():Observable<any>{
+    return this.http.get(this.baseUrl + 'api/current-price')
   }
 }
