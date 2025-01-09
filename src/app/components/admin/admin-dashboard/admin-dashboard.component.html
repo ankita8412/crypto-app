@@ -56,7 +56,7 @@
               <tr *ngFor="let item of allReachedSetTargetList ; let i= index">
                 <td>{{ i + 1 }}</td>
                 <td>
-                  <img src="assets/dashboard/Pencil.svg" alt="Pencil Image" class="cursor-pointer edit-pencile" [routerLink]="[ '/trader', { outlets: { trader_Menu: [ 'edit-set-target', item.sale_target_id ] } } ]">
+                  <img src="assets/dashboard/Pencil.svg" alt="Pencil Image" class="cursor-pointer edit-pencile" [routerLink]="[ '/admin', { outlets: { admin_Menu: [ 'edit-set-target', item.sale_target_id ] } } ]">
                 </td>
                 <td>{{ (item.coin.split(' (')[0]) || "--" }}</td>
                 <td>{{ item.base_price || "--" }}</td>
