@@ -18,6 +18,7 @@ export class DashboardComponent implements OnInit{
     complition_id: any;
     untitled_id: any;
     setTargetCount:any;
+    allCurrentPriceList: Array<any> = [];
     allReachedSetTargetList: Array<any> = [];
     searchControl: FormControl = new FormControl('');
     allSetTargetList: Array<any> = [];
@@ -63,16 +64,21 @@ export class DashboardComponent implements OnInit{
         next:(res:any) => {
           if (res.data.length > 0){
             this.allReachedSetTargetList = res.data
-            // console.log( this.allReachedSetTargetList);
-            this.allReachedSetTargetList.forEach((item: any) => {
-              this.tickerSymbol = item.ticker; // Dynamically extract tickerSymbol
-              if (this.tickerSymbol) {
-                this.getCurrentPrice(this.tickerSymbol, (currentPrice) => {
-                  item.currentPrice = currentPrice || '--'; // Add current price to the item
-                });
-              } else {
-                item.currentPrice = '--'; // Default value if no ticker symbol
-              }
+             // Fetch the current price list once and then map the prices
+             this.getAllCurrentPriceList(() => {
+              this.allReachedSetTargetList.forEach((item: any) => {
+                const tickerSymbol = item.ticker;
+    
+                // Find the matching ticker in the current price list
+                if (tickerSymbol) {
+                  const matchedItem = this.allCurrentPriceList?.find(
+                    (priceItem: any) => priceItem.ticker === tickerSymbol
+                  );
+                  item.currentPrice = matchedItem ? matchedItem.current_price : '--'; // Set current price or default value
+                } else {
+                  item.currentPrice = '--'; // Default value if no ticker
+                }
+              });
             });
           }
           else{
@@ -81,7 +87,6 @@ export class DashboardComponent implements OnInit{
         }
       })
     }
-  
     getdashboardSaleTargetCount(){
       this._adminService.getdashboardSaleTargetCount().subscribe({
         next:(res:any) => {
@@ -89,19 +94,19 @@ export class DashboardComponent implements OnInit{
         }
       })
     }
-    getCurrentPrice(
-      tickerSymbol: string,
-      callback: (price: number | null) => void
-    ): void {
-      if (!tickerSymbol) {
-        callback(null);
-        return;
-      }
-      this._traderService.getCurrentPriceByTicker(tickerSymbol).subscribe({
-        next: (res: any) => callback(res.data?.currentPrice || null),
-        error: () => callback(null),
-      });
-    }
+    // getCurrentPrice(
+    //   tickerSymbol: string,
+    //   callback: (price: number | null) => void
+    // ): void {
+    //   if (!tickerSymbol) {
+    //     callback(null);
+    //     return;
+    //   }
+    //   this._traderService.getCurrentPriceByTicker(tickerSymbol).subscribe({
+    //     next: (res: any) => callback(res.data?.currentPrice || null),
+    //     error: () => callback(null),
+    //   });
+    // }
     // get current price
     // UpdateCurrentPriceStatus(): void {
    
@@ -116,6 +121,19 @@ export class DashboardComponent implements OnInit{
             this._toastrService.warning(res.message);
           }
         },
+      });
+    }
+    getAllCurrentPriceList(callback: () => void): void {
+      this._traderService.getAllCurrentPriceList().subscribe({
+        next: (res: any) => {
+          if (res.status === 201 || res.status === 200) {
+            this.allCurrentPriceList = res.data;
+            callback(); 
+          } else {
+            this.allCurrentPriceList = [];
+            callback();
+          }
+        }
       });
     }
    submit(item: any, footer: any, currentPrice: any) {

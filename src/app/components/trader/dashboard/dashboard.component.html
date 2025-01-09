@@ -35,7 +35,6 @@
           <thead class="table-secondary" >
             <tr>
               <th scope="col">Sr.No</th>
-              <th scope="col">Edit</th>
               <th scope="col">Coins</th>
               <th scope="col">Base Price</th>
               <th scope="col">Current Price</th>
@@ -49,9 +48,6 @@
           <tbody>
             <tr *ngFor="let item of allReachedSetTargetList ; let i= index">
               <td>{{ i + 1 }}</td>
-              <td>
-                <img src="assets/dashboard/Pencil.svg" alt="Pencil Image" class="cursor-pointer edit-pencile" [routerLink]="[ '/trader', { outlets: { trader_Menu: [ 'edit-set-target', item.sale_target_id ] } } ]">
-              </td>
               <td>{{ (item.coin.split(' (')[0]) || "--" }}</td>
               <td>{{ item.base_price || "--" }}</td>
               <!-- <td>{{ item.currant_price || "--" }}</td> -->
