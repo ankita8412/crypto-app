@@ -46,7 +46,7 @@ export class AdminTargetComponent implements OnInit {
         // Set up the interval
         this.refreshInterval = setInterval(() => {
           // this.UpdateCurrentPriceStatus();
-          // this.updateTargetCompitionStatus();
+          this.updateTargetCompitionStatus();
           this.getAllSetTargetList();
         }, 7000);
         }
