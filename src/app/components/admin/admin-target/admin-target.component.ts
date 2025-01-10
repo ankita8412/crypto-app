@@ -166,6 +166,7 @@ export class AdminTargetComponent implements OnInit {
           return;
         }
         const body = {
+          sale_target_id: item.sale_target_id,
           complition_id: 4,
           currant_price: currentPrice,
           set_footer_id: footer.set_footer_id,
