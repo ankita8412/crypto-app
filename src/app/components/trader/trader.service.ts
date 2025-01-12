@@ -86,4 +86,8 @@ export class TraderService {
   getAllCurrentPriceList():Observable<any>{
     return this.http.get(this.baseUrl + 'api/current-price')
   }
+    // add set target 
+    addupdateCurrentPrice(data:any): Observable<any>{
+      return this.http.post(this.baseUrl + 'api/current-price/add-update' ,'')
+    }
 }
