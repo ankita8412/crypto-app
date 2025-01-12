@@ -24,7 +24,8 @@ export class AdminDashboardComponent implements OnInit{
   searchControl: FormControl = new FormControl('');
   allSetTargetList: Array<any> = [];
   updateStatus: Array<any> = [];
-  refreshInterval: any;
+  refreshInterval1: any;
+  refreshInterval2: any;
   currentPrice: any;
   allCoinList: Array<any> = [];
   tickerSymbol: any;
@@ -45,16 +46,25 @@ export class AdminDashboardComponent implements OnInit{
     this.searchControl.valueChanges.pipe(debounceTime(550))  
     this.setIntervalApi();
   }
-  setIntervalApi(){
-    this.refreshInterval = setInterval(() => {
-      // this.UpdateCurrentPriceStatus();
-    this.updateTargetCompitionStatus();
-    this.getAllReachedSetTargetList();
-    }, 7000);
-    }
+  setIntervalApi() {
+    // Interval for running every 7 seconds
+    this.refreshInterval1 = setInterval(() => {
+      this.updateTargetCompitionStatus();
+      this.getAllReachedSetTargetList();
+    }, 6000);
+  
+    // Interval for running every 10 seconds
+    this.refreshInterval2 = setInterval(() => {
+      this.addupdateCurrentPrice();
+    }, 8000);
+  }
+  
   ngOnDestroy() {
-    if (this.refreshInterval) {
-      clearInterval(this.refreshInterval);
+    if (this.refreshInterval1) {
+      clearInterval(this.refreshInterval1);
+    }
+    if (this.refreshInterval2) {
+      clearInterval(this.refreshInterval2);
     }
   }
   getSearchInput(searchKey: any){
@@ -145,6 +155,19 @@ export class AdminDashboardComponent implements OnInit{
             callback();
           }
         }
+      });
+    }
+    addupdateCurrentPrice() {
+      this._traderService.addupdateCurrentPrice('').subscribe({
+        next: (res: any) => {
+          if (res.status == 201 || res.status == 200) {
+            // this._toastrService.success(res.message);
+         
+          } else {
+            this._toastrService.error(res.message);
+          }
+        },
+    
       });
     }
    submit(item: any, footer: any, currentPrice: any) {

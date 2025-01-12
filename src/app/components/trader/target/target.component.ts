@@ -19,7 +19,8 @@ export class TargetComponent implements OnInit {
     allSetTargetList: Array<any> = [];
     allCurrentPriceList: Array<any> = [];
     updateStatus: Array<any> = [];
-    refreshInterval: any;
+    refreshInterval1: any;
+    refreshInterval2: any;
     currentPrice: any;
     allCoinList: Array<any> = [];
     tickerSymbol: any;
@@ -42,16 +43,25 @@ export class TargetComponent implements OnInit {
       this.searchControl.valueChanges.pipe(debounceTime(550))  
       
     }
-    setIntervalApi(){
-      this.refreshInterval = setInterval(() => {
-        // this.UpdateCurrentPriceStatus();
+    setIntervalApi() {
+      // Interval for running every 7 seconds
+      this.refreshInterval1 = setInterval(() => {
         this.updateTargetCompitionStatus();
         this.getAllSetTargetList();
-      }, 7000);
-      }
+      }, 6000);
+    
+      // Interval for running every 10 seconds
+      this.refreshInterval2 = setInterval(() => {
+        this.addupdateCurrentPrice();
+      }, 8000);
+    }
+    
     ngOnDestroy() {
-      if (this.refreshInterval) {
-        clearInterval(this.refreshInterval);
+      if (this.refreshInterval1) {
+        clearInterval(this.refreshInterval1);
+      }
+      if (this.refreshInterval2) {
+        clearInterval(this.refreshInterval2);
       }
     }
     getSearchInput(searchKey: any){
@@ -114,6 +124,19 @@ export class TargetComponent implements OnInit {
     // }
     updateTargetCompitionStatus() {
       this._traderService.updateTargetCompitionStatus().subscribe({
+        next: (res: any) => {
+          if (res.status == 201 || res.status == 200) {
+            // this._toastrService.success(res.message);
+         
+          } else {
+            this._toastrService.error(res.message);
+          }
+        },
+    
+      });
+    }
+    addupdateCurrentPrice() {
+      this._traderService.addupdateCurrentPrice('').subscribe({
         next: (res: any) => {
           if (res.status == 201 || res.status == 200) {
             // this._toastrService.success(res.message);
