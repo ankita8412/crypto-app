@@ -54,6 +54,7 @@ export class SetTargetComponent implements OnInit {
       coin: ['', Validators.required],
       base_price: ['', Validators.required],
       currant_price: ['', Validators.required],
+      market_cap: ['', Validators.required],
       return_x: ['', Validators.required],
       available_coins: ['', Validators.required],
       final_sale_price: ['', Validators.required],

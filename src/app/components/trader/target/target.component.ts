@@ -44,25 +44,26 @@ export class TargetComponent implements OnInit {
       
     }
     setIntervalApi() {
+          // // Interval for running every 10 seconds
+          // this.refreshInterval2 = setInterval(() => {
+          //   this.addupdateCurrentPrice();
+          // }, 5000);
       // Interval for running every 7 seconds
       this.refreshInterval1 = setInterval(() => {
         this.updateTargetCompitionStatus();
         this.getAllSetTargetList();
       }, 6000);
     
-      // Interval for running every 10 seconds
-      this.refreshInterval2 = setInterval(() => {
-        this.addupdateCurrentPrice();
-      }, 8000);
+  
     }
     
     ngOnDestroy() {
       if (this.refreshInterval1) {
         clearInterval(this.refreshInterval1);
       }
-      if (this.refreshInterval2) {
-        clearInterval(this.refreshInterval2);
-      }
+      // if (this.refreshInterval2) {
+      //   clearInterval(this.refreshInterval2);
+      // }
     }
     getSearchInput(searchKey: any){
       this.searchKey = searchKey;
