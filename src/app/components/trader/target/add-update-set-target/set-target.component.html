@@ -55,20 +55,26 @@
           <div class="col-md-3 mb-3">
             <input
               type="number"
-              class="form-control currant_price"
+              class="form-control"
               id="currant_price"
               placeholder="Current Price"
               formControlName="currant_price"
-              readonly
+              [readonly]="isCurrentPriceReadonly"
+              (input)="onInputChange()"
             />
+            <!-- Error message when unable to fetch price -->
+            <div *ngIf="fetchCurrentPriceError" class="text-danger">
+              <small>Unable to fetch the Api current price.</small>
+            </div>
           </div>
+          
           <div class="col-md-3 mb-3">
             <input
               type="number"
-              class="form-control currant_price"
+              class="form-control"
               id="market_cap"
               placeholder="Market Capital"
-              formControlName="currant_price"
+              formControlName="market_cap"
             />
           </div>
           </div>

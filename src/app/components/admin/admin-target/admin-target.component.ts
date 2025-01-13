@@ -75,21 +75,30 @@ export class AdminTargetComponent implements OnInit {
               this.allSetTargetList = res.data;
       
               // Fetch the current price list once and then map the prices
-              this.getAllCurrentPriceList(() => {
-                this.allSetTargetList.forEach((item: any) => {
-                  const tickerSymbol = item.ticker;
-      
-                  // Find the matching ticker in the current price list
-                  if (tickerSymbol) {
-                    const matchedItem = this.allCurrentPriceList?.find(
-                      (priceItem: any) => priceItem.ticker === tickerSymbol
-                    );
-                    item.currentPrice = matchedItem ? matchedItem.current_price : '--'; // Set current price or default value
-                  } else {
-                    item.currentPrice = '--'; // Default value if no ticker
-                  }
-                });
-              });
+          this.getAllCurrentPriceList(() => {
+            this.allSetTargetList.forEach((item: any) => {
+              const tickerSymbol = item.ticker;
+
+              // Find the matching ticker in the current price list
+              if (tickerSymbol) {
+                const matchedItem = this.allCurrentPriceList?.find(
+                  (priceItem: any) => priceItem.ticker === tickerSymbol
+                );
+
+                // If matchedItem is found, set currentPrice
+                if (matchedItem) {
+                  item.currentPrice = matchedItem.current_price;
+                  item.currentPriceColor = '';
+                } else {
+                  item.currentPrice = item.currant_price;
+                  item.currentPriceColor = 'red';
+
+                }
+              } else {
+                item.currentPrice = '--'; // Default value if no ticker
+              }
+            });
+          });
             } else {
               this.allSetTargetList = [];
             }
