@@ -1,50 +1,54 @@
 <div class="container-fluid m-0">
-    <div class="row mb-5 justify-content-between">
-      <div class="col-md-5 p-0">
-        <i class="fa-solid fa-magnifying-glass searching-icon"></i>
-        <input
-          type="search"
-          placeholder="Search here"
-          aria-label="Search"
-          class="search-input mb-3"
-          #searchInput (input)="getSearchInput(searchInput.value)"
-        />
-      </div>
-      <div class="row m-0 p-0">
-        <small class="list-header">Sold Coins</small>
-        <div class="card p-0 mt-2">
-          <div class="col-md-12">
-            <div class="table-responsive">
-              <table class="table">
-                <thead>
-                  <tr>
-                    <th scope="col" class="first-col">Sr.No</th>
-                    <th scope="col">Date</th>
-                    <th scope="col">Coin</th>
-                    <th scope="col">Base Price</th>
-                    <th scope="col">Sold Price</th>
-                    <th scope="col">Sold Coins</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr *ngFor="let item of allSoldSetTargetList; let i = index">
-                    <td class="first-col">{{ i + 1 }}</td>
-                    <td>{{ (item.created_at | date:'dd-MM-yyyy') }}</td>
-                    <td><span class="coin-name ms-2">{{ item.coin.split(" (")[0] }}</span></td>
-                    <td>{{ (item.base_price ) || "--" }}</td>
-                    <td>{{ (item.sold_current_price) || "--" }}</td>
-                    <td>{{ (item.sale_target_coin) || "--" }}</td>
-                  </tr>
-                  <tr
-                    class="fw-bold text-center"
-                    *ngIf="allSoldSetTargetList.length === 0">
-                    <td colspan="10" class="text-danger">No Data Available</td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
+  <div class="row mb-5 justify-content-between">
+    <div class="col-md-5 p-0">
+      <i class="fa-solid fa-magnifying-glass searching-icon"></i>
+      <input
+        type="search"
+        placeholder="Search here"
+        aria-label="Search"
+        class="search-input mb-3"
+        #searchInput (input)="getSearchInput(searchInput.value)"
+      />
+    </div>
+    <div class="row m-0 p-0">
+      <div class="card p-2 mt-2">
+        <div class="card-header d-flex justify-content-between p-3"> 
+          <strong>Sold Coins</strong>
+        </div>
+        <div class="card-body">
+        <div class="col-md-12">
+          <div class="table-responsive">
+            <table class="table table-bordered text-center table-hover">
+              <thead class="table-secondary" >
+                <tr>
+                  <th scope="col">Sr.No</th>
+                  <th scope="col">Date</th>
+                  <th scope="col">Coin</th>
+                  <th scope="col">Base Price</th>
+                  <th scope="col">Sold Price</th>
+                  <th scope="col">Sold Coins</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let item of allSoldSetTargetList; let i = index">
+                  <td>{{ i + 1 }}</td>
+                  <td>{{ (item.created_at | date:'dd-MM-yyyy') }}</td>
+                  <td>{{ item.coin.split(" (")[0] }}</td>
+                  <td>{{ (item.base_price ) || "--" }}</td>
+                  <td>{{ (item.sold_current_price) || "--" }}</td>
+                  <td>{{ (item.sale_target_coin) || "--" }}</td>
+                </tr>
+                <tr
+                  class="fw-bold text-center"
+                  *ngIf="allSoldSetTargetList.length === 0">
+                  <td colspan="10" class="text-danger no-data">No Data Available</td>
+                </tr>
+              </tbody>
+            </table>
           </div>
+        </div>
         </div>
       </div>
     </div>
   </div>
+</div>

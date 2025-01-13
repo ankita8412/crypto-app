@@ -15,14 +15,18 @@
       </div>
     </div>
     <div class="row mb-5">
-    <small class="list-header">Users List</small>
-      <div class="card p-0 mt-2">
+    <!-- <small class="list-header">Users List</small> -->
+      <div class="card p-2 mt-2">
+        <div class="card-header d-flex justify-content-between p-3"> 
+          <strong>Users List</strong>
+        </div>
+        <div class="card-body">
         <div class="col-md-12">
           <div class="table-responsive">
-            <table class="table">
-              <thead>
+            <table class="table table-bordered text-center table-hover">
+              <thead class="table-secondary" >
                 <tr>
-                  <th scope="col" class="first-col">Sr.No</th>
+                  <th scope="col">Sr.No</th>
                   <th scope="col">User Name</th>
                   <th scope="col">Email Id</th>
                   <th scope="col">User Type</th>
@@ -33,7 +37,7 @@
               </thead>
               <tbody>
                 <tr *ngFor="let item of allUserList ; let i= index">
-                  <td class="first-col">{{ i + 1 }}</td>
+                  <td>{{ i + 1 }}</td>
                   <td>{{(item.user_name | titlecase) || "--"}}</td>
                   <td>{{ item.email_id || "--" }}</td>
                   <td>{{ (item.user_type | titlecase ) || "--"}}</td>
@@ -49,11 +53,12 @@
                 </tr>
                 <tr class="fw-bold text-center"
                 *ngIf="allUserList.length === 0">
-                <td colspan="10" class="text-danger">No Data Available</td>
+                <td colspan="10" class="text-danger no-data">No Data Available</td>
                 </tr>
               </tbody>
             </table>
           </div>
+        </div>
         </div>
       </div>
     </div>
