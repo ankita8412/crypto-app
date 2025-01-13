@@ -26,6 +26,8 @@ export class SetTargetComponent implements OnInit {
   allCoinList: Array<any> = [];
   filteredCoinArray: Array<any> = [];
   percentageError: boolean = false;
+  fetchCurrentPriceError = false;
+  isCurrentPriceReadonly = true;
   private searchKeyChanged: Subject<string> = new Subject<string>();
   constructor(
     private _traderService: TraderService,
@@ -133,31 +135,63 @@ export class SetTargetComponent implements OnInit {
   }
 
   onCoinChange(event: any) {
-    const selectedCoinName = event.value; // Fetch the coin name
+    const selectedCoinName = event.value;
+  
+    // Reset current price and error states
+    this.form.controls['currant_price'].reset();
+    this.fetchCurrentPriceError = false;
+    this.isCurrentPriceReadonly = true;
+  
     const selectedCoin = this.allCoinList.find(
       (item) => item.short_name === selectedCoinName
     );
-    
+  
     if (selectedCoin) {
-      this.control['coin'].patchValue(selectedCoin.coin_name.split(" (")[0]); // Update form with the coin_name
+      this.form.controls['coin'].patchValue(selectedCoin.coin_name.split(' (')[0]);
+  
       this._traderService.getCoinById(selectedCoin.coin_id).subscribe({
-        next: (res: any) => {
-          this.control['ticker'].patchValue(selectedCoin.short_name);
+        next: () => {
+          this.form.controls['ticker'].patchValue(selectedCoin.short_name);
+  
           if (selectedCoin.short_name) {
-            this._traderService
-              .getCurrentPriceByTicker(selectedCoin.short_name)
-              .subscribe({
-                next: (res: any) => {
-                  this.control['currant_price'].patchValue(
-                    res.data.currentPrice
-                  );
-                },
-              });
+            this._traderService.getCurrentPriceByTicker(selectedCoin.short_name).subscribe({
+              next: (res: any) => {
+                if (res?.data?.currentPrice) {
+                  this.fetchCurrentPriceError = false; // Successfully fetched price
+                  this.isCurrentPriceReadonly = true; // Make field readonly
+                  this.form.controls['currant_price'].patchValue(res.data.currentPrice);
+                } else {
+                  this.fetchCurrentPriceError = true; // Unable to fetch price
+                  this.isCurrentPriceReadonly = false; // Allow typing
+                  this.form.controls['currant_price'].setErrors({ required: true });
+                }
+              },
+              error: (err) => {
+                console.error('API Error:', err); // Log the error for debugging
+                this.fetchCurrentPriceError = true; // Internal server error
+                this.isCurrentPriceReadonly = false; // Allow typing
+                this.form.controls['currant_price'].setErrors({ required: true });
+              },
+            });
           }
+        },
+        error: (err) => {
+          console.error('Get Coin By ID Error:', err); // Log error if needed
         },
       });
     }
   }
+  
+  onInputChange() {
+    // Allow typing without toggling readonly state
+    if (this.fetchCurrentPriceError) {
+      this.fetchCurrentPriceError = false;
+    }
+    if (!this.form.controls['currant_price'].value) {
+      this.fetchCurrentPriceError = true;
+    }
+  }
+  
  
   //Filter coin array
   filterCoinList() {
