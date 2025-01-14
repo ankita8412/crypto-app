@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { TraderService } from '../../trader/trader.service';
 import { FormControl } from '@angular/forms';
 import { debounceTime } from 'rxjs';
+import { PageEvent } from '@angular/material/paginator';
 
 @Component({
   selector: 'app-admin-coins',
@@ -32,14 +33,16 @@ export class AdminCoinsComponent implements OnInit {
   }
   // get all active coin list
   getAllCoinList() {
-    this._traderService.getAllCoinList(this.searchKey).subscribe({
+    this._traderService.getAllCoinList(this.page,this.perPage,this.searchKey).subscribe({
       next: (res: any) => {
         if (res.data.length > 0) {
           this.allCoinList = res.data;
           this.isLoading = true;
+          this.total = res.pagination.total;
         } else {
           this.allCoinList = [];
           this.isLoading = false;
+          this.total = 0 ;
         }
       },
     });
@@ -48,4 +51,9 @@ export class AdminCoinsComponent implements OnInit {
     this.searchKey = searchKey;
     this.getAllCoinList();
   }
+    onPageChange(event: PageEvent): void {
+          this.page = event.pageIndex + 1;
+          this.perPage = event.pageSize;
+          this.getAllCoinList();
+    }
 }

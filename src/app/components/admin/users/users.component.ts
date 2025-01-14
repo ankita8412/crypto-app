@@ -3,6 +3,7 @@ import { FormControl, FormGroup } from '@angular/forms';
 import { AdminService } from '../admin.service';
 import { ToastrService } from 'ngx-toastr';
 import { debounceTime } from 'rxjs';
+import { PageEvent } from '@angular/material/paginator';
 
 @Component({
   selector: 'app-users',
@@ -11,6 +12,9 @@ import { debounceTime } from 'rxjs';
 })
 export class UsersComponent implements OnInit {
   form!: FormGroup;
+  page = 1;
+  perPage = 50;
+  total = 0;
   searchKey = '';
   allUserList: Array<any> = [];
   searchControl: FormControl = new FormControl('');
@@ -28,14 +32,14 @@ export class UsersComponent implements OnInit {
     this.getAllUsersList();
   }
   getAllUsersList() {
-    this._adminService.getAllUsersList(this.searchKey).subscribe({
+    this._adminService.getAllUsersList(this.searchKey,this.page,this.perPage).subscribe({
       next: (res: any) => {
         if (res.data) {
           this.allUserList = res.data;
-          // this.total = res.pagination.total;
+          this.total = res.pagination.total;
         } else {
           this.allUserList = [];
-          // this.total = 0
+          this.total = 0
         }
       },
     });
@@ -59,4 +63,9 @@ export class UsersComponent implements OnInit {
       },
     });
   }
+  onPageChange(event: PageEvent): void {
+      this.page = event.pageIndex + 1;
+      this.perPage = event.pageSize;
+      this.getAllUsersList();
+    }
 }

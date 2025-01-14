@@ -100,11 +100,10 @@ export class TargetComponent implements OnInit {
               }
             });
           });
-
-
-
+          this.total = res.pagination.total;
         } else {
           this.allSetTargetList = [];
+          this.total = 0 ;
         }
       },
       error: (err: any) => {
@@ -268,10 +267,10 @@ export class TargetComponent implements OnInit {
       },
     });
   }
-  // onPageChange(event: PageEvent): void {
-  //   this.page = event.pageIndex + 1;
-  //   this.perPage = event.pageSize;
-  //   this.getAllSetTargetList();
-  // }
+  onPageChange(event: PageEvent): void {
+    this.page = event.pageIndex + 1;
+    this.perPage = event.pageSize;
+    this.getAllSetTargetList();
+  }
 
 }
