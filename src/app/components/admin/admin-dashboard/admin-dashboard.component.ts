@@ -51,13 +51,13 @@ export class AdminDashboardComponent implements OnInit{
     // Interval for running every 10 seconds
     this.refreshInterval2 = setInterval(() => {
       this.addupdateCurrentPrice();
-    }, 6000);
+    }, 8000);
 
     // Interval for running every 7 seconds
     this.refreshInterval1 = setInterval(() => {
       this.updateTargetCompitionStatus();
       this.getAllReachedSetTargetList();
-    }, 9000);
+    }, 10000);
   
 
   }
