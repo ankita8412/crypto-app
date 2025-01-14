@@ -44,16 +44,19 @@ export class DashboardComponent implements OnInit{
       this.setIntervalApi();
     }
     setIntervalApi() {
+       // Interval for running every 10 seconds
+       this.refreshInterval2 = setInterval(() => {
+        this.addupdateCurrentPrice();
+      }, 6000);
+
+
       // Interval for running every 7 seconds
       this.refreshInterval1 = setInterval(() => {
         this.updateTargetCompitionStatus();
         this.getAllReachedSetTargetList();
-      }, 6000);
+      }, 9000);
     
-      // // Interval for running every 10 seconds
-      // this.refreshInterval2 = setInterval(() => {
-      //   this.addupdateCurrentPrice();
-      // }, 8000);
+     
     }
     
     ngOnDestroy() {

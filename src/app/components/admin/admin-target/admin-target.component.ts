@@ -1,3 +1,4 @@
+import { AdminService } from './../admin.service';
 import { Component, OnInit } from '@angular/core';
 import { TraderService } from '../../trader/trader.service';
 import Swal from 'sweetalert2';
@@ -31,7 +32,8 @@ export class AdminTargetComponent implements OnInit {
       searchControl: FormControl = new FormControl('');
       constructor(
         private _traderService: TraderService,
-        private _toastrService:ToastrService
+        private _toastrService:ToastrService,
+        private _adminService:AdminService
       ) {}
     
       ngOnInit(): void {
@@ -44,16 +46,18 @@ export class AdminTargetComponent implements OnInit {
   
       }
       setIntervalApi() {
+
+        // Interval for running every 10 seconds
+        this.refreshInterval2 = setInterval(() => {
+          this.addupdateCurrentPrice();
+        }, 6000);
+
         // Interval for running every 7 seconds
         this.refreshInterval1 = setInterval(() => {
           this.updateTargetCompitionStatus();
           this.getAllSetTargetList();
-        }, 6000);
+        }, 9000);
       
-        // // Interval for running every 10 seconds
-        // this.refreshInterval2 = setInterval(() => {
-        //   this.addupdateCurrentPrice();
-        // }, 8000);
       }
       
       ngOnDestroy() {
@@ -203,7 +207,7 @@ export class AdminTargetComponent implements OnInit {
           coin: item.coin,
           base_price: item.base_price,
         };
-        this._traderService.updateSellToSoldStatus(body).subscribe({
+        this._adminService.updateSellToSoldStatus(body).subscribe({
           next: (res: any) => {
             if (res.status == 201 || res.status == 200) {
               // this.isLoading = false;
