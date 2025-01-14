@@ -4,6 +4,7 @@ import { FormControl } from '@angular/forms';
 import { TraderService } from '../trader.service';
 import Swal from 'sweetalert2';
 import { ToastrService } from 'ngx-toastr';
+import { PageEvent } from '@angular/material/paginator';
 
 @Component({
   selector: 'app-dashboard',
@@ -70,7 +71,7 @@ export class DashboardComponent implements OnInit{
     }  
 
     getAllReachedSetTargetList(){
-      this._adminService.getAllReachedSetTargetList(this.searchKey).subscribe({
+      this._adminService.getAllReachedSetTargetList(this.searchKey,this.page,this.perPage).subscribe({
         next:(res:any) => {
           if (res.data.length > 0){
             this.allReachedSetTargetList = res.data
@@ -90,9 +91,11 @@ export class DashboardComponent implements OnInit{
                 }
               });
             });
+            this.total = res.pagination.total;
           }
           else{
             this.allReachedSetTargetList = [];
+            this.total = 0 ;
           }
         }
       })
@@ -205,11 +208,11 @@ export class DashboardComponent implements OnInit{
           }
         });
       }
-    // onPageChange(event: PageEvent): void {
-    //   this.page = event.pageIndex + 1;
-    //   this.perPage = event.pageSize;
-    //   this.getAllReachedSetTargetList();
-    // }
+    onPageChange(event: PageEvent): void {
+      this.page = event.pageIndex + 1;
+      this.perPage = event.pageSize;
+      this.getAllReachedSetTargetList();
+    }
   
   }
   

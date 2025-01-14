@@ -74,9 +74,15 @@ export class TraderService {
       params: params
     });
   }
-  getAllCoinList(key : any):Observable<any>{
+  getAllCoinList(page:any,perPage:any,key:any):Observable<any>{
     let params = {
+      page: page,
+      perPage: perPage,
       key:key
+    }
+    if (page == '' || perPage == '') {
+      delete params.page;
+      delete params.perPage;
     }
     if ( key === '' || key === 'null') delete params.key;
     return this.http.get(this.baseUrl + 'api/coin', {

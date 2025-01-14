@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { debounceTime } from 'rxjs';
 import { AdminService } from '../../admin/admin.service';
+import { PageEvent } from '@angular/material/paginator';
 
 @Component({
   selector: 'app-sold-coins',
@@ -22,12 +23,14 @@ export class SoldCoinsComponent implements OnInit{
   }
   // get all active coin list
   getAllSoldSetTargetList() {
-    this._adminService.getAllSoldSetTargetList(this.searchKey).subscribe({
+    this._adminService.getAllSoldSetTargetList(this.searchKey,this.page,this.perPage).subscribe({
       next: (res: any) => {
         if (res.data.length > 0) {
           this.allSoldSetTargetList = res.data;
+          this.total = res.pagination.total;
         } else {
           this.allSoldSetTargetList = [];
+          this.total = 0 ;
         }
       },
     });
@@ -36,5 +39,10 @@ export class SoldCoinsComponent implements OnInit{
     this.searchKey = searchKey;
     this.getAllSoldSetTargetList();
   }
+    onPageChange(event: PageEvent): void {
+      this.page = event.pageIndex + 1;
+      this.perPage = event.pageSize;
+      this.getAllSoldSetTargetList();
+    }
 }
 

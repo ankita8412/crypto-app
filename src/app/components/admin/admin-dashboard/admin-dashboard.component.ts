@@ -5,6 +5,7 @@ import { debounceTime } from 'rxjs';
 import { TraderService } from '../../trader/trader.service';
 import Swal from 'sweetalert2';
 import { ToastrService } from 'ngx-toastr';
+import { PageEvent } from '@angular/material/paginator';
 @Component({
   selector: 'app-admin-dashboard',
   templateUrl: './admin-dashboard.component.html',
@@ -73,10 +74,12 @@ export class AdminDashboardComponent implements OnInit{
   }
 
   getAllReachedSetTargetList(){
-    this._adminService.getAllReachedSetTargetList(this.searchKey).subscribe({
+    this._adminService.getAllReachedSetTargetList(this.searchKey,this.page,this.perPage).subscribe({
       next:(res:any) => {
         if (res.data.length > 0){
           this.allReachedSetTargetList = res.data
+          this.total = res.pagination.total;
+
            // Fetch the current price list once and then map the prices
            this.getAllCurrentPriceList(() => {
             this.allReachedSetTargetList.forEach((item: any) => {
@@ -96,6 +99,7 @@ export class AdminDashboardComponent implements OnInit{
         }
         else{
           this.allReachedSetTargetList = [];
+          this.total = 0 ;
         }
       }
     })
@@ -216,9 +220,9 @@ export class AdminDashboardComponent implements OnInit{
           }
         });
       }
-  // onPageChange(event: PageEvent): void {
-  //   this.page = event.pageIndex + 1;
-  //   this.perPage = event.pageSize;
-  //   this.getAllReachedSetTargetList();
-  // }
+  onPageChange(event: PageEvent): void {
+    this.page = event.pageIndex + 1;
+    this.perPage = event.pageSize;
+    this.getAllReachedSetTargetList();
+  }
 }

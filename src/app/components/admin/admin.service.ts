@@ -34,11 +34,17 @@ export class AdminService {
     return this.http.get(this.baseUrl + 'api/admin/' + id)
   }
   // get all users list
-  getAllUsersList(key:any): Observable<any>{
+  getAllUsersList(key:any ,page:any,perPage:any ): Observable<any>{
     let params = {
-      key:key
+      key:key,
+      page:page,
+      perPage: perPage,
   };
   if ( key === '' || key === 'null') delete params.key;
+  if (page == '' || perPage == '') { 
+    delete params.page;
+    delete params.perPage;
+   }
     return this.http.get(this.baseUrl + 'api/admin',{
       params:params
     });
@@ -49,20 +55,32 @@ export class AdminService {
   getdashboardSaleTargetCount(): Observable<any>{
     return this.http.get(this.baseUrl + 'api/sale-target-header/set-target-count')
   }
-  getAllReachedSetTargetList(key:any): Observable<any>{
+  getAllReachedSetTargetList(key:any,page:any,perPage:any): Observable<any>{
     let params = {
-      key:key
+      key:key,
+      page:page,
+      perPage: perPage,
   };
   if ( key === '' || key === 'null') delete params.key;
+  if (page == '' || perPage == '') { 
+    delete params.page;
+    delete params.perPage;
+   }
     return this.http.get(this.baseUrl + 'api/sale-target-header/reached',{
       params:params
     });
   }
-  getAllSoldSetTargetList(key : any):Observable<any>{
+  getAllSoldSetTargetList(key : any ,page:any,perPage:any):Observable<any>{
     let params = {
-      key:key
+      key:key,
+      page:page,
+      perPage: perPage,
     }
     if ( key === '' || key === 'null') delete params.key;
+    if (page == '' || perPage == '') { 
+      delete params.page;
+      delete params.perPage;
+     }
     return this.http.get(this.baseUrl + 'api/sale-target-header/sold-coin', {
       params : params
     })
