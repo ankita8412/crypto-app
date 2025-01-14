@@ -67,4 +67,7 @@ export class AdminService {
       params : params
     })
   }
+  updateSellToSoldStatus(body:any): Observable<any>{
+    return this.http.put(this.baseUrl + 'api/sale-target-header/sell-to-sold',body)
+  }
 }

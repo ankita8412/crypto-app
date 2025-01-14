@@ -44,15 +44,15 @@ export class TargetComponent implements OnInit {
 
   }
   setIntervalApi() {
-    // // Interval for running every 10 seconds
-    // this.refreshInterval2 = setInterval(() => {
-    //   this.addupdateCurrentPrice();
-    // }, 5000);
+    // Interval for running every 10 seconds
+    this.refreshInterval2 = setInterval(() => {
+      this.addupdateCurrentPrice();
+    }, 6000);
     // Interval for running every 7 seconds
     this.refreshInterval1 = setInterval(() => {
       this.updateTargetCompitionStatus();
       this.getAllSetTargetList();
-    }, 6000);
+    }, 9000);
 
 
   }

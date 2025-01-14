@@ -47,16 +47,18 @@ export class AdminDashboardComponent implements OnInit{
     this.setIntervalApi();
   }
   setIntervalApi() {
+    // Interval for running every 10 seconds
+    this.refreshInterval2 = setInterval(() => {
+      this.addupdateCurrentPrice();
+    }, 6000);
+
     // Interval for running every 7 seconds
     this.refreshInterval1 = setInterval(() => {
       this.updateTargetCompitionStatus();
       this.getAllReachedSetTargetList();
-    }, 6000);
+    }, 9000);
   
-    // // Interval for running every 10 seconds
-    // this.refreshInterval2 = setInterval(() => {
-    //   this.addupdateCurrentPrice();
-    // }, 8000);
+
   }
   
   ngOnDestroy() {
@@ -204,7 +206,7 @@ export class AdminDashboardComponent implements OnInit{
           coin: item.coin,
           base_price: item.base_price,
         };
-        this._traderService.updateSellToSoldStatus(body).subscribe({
+        this._adminService.updateSellToSoldStatus(body).subscribe({
           next: (res: any) => {
             if (res) {
               this.isLoading = false;
