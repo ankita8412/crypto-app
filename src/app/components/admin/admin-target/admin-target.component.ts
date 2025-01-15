@@ -5,6 +5,7 @@ import Swal from 'sweetalert2';
 import { ToastrService } from 'ngx-toastr';
 import { FormControl } from '@angular/forms';
 import { debounceTime } from 'rxjs';
+import { PageEvent } from '@angular/material/paginator';
 
 @Component({
   selector: 'app-admin-target',
@@ -103,8 +104,10 @@ export class AdminTargetComponent implements OnInit {
               }
             });
           });
+          this.total = res.pagination.total;
             } else {
               this.allSetTargetList = [];
+              this.total = 0 ;
             }
           },
           error: (err: any) => {
@@ -264,10 +267,10 @@ export class AdminTargetComponent implements OnInit {
         },
       });
     }
-      // onPageChange(event: PageEvent): void {
-      //   this.page = event.pageIndex + 1;
-      //   this.perPage = event.pageSize;
-      //   this.getAllSetTargetList();
-      // }
+      onPageChange(event: PageEvent): void {
+        this.page = event.pageIndex + 1;
+        this.perPage = event.pageSize;
+        this.getAllSetTargetList();
+      }
       
     }
