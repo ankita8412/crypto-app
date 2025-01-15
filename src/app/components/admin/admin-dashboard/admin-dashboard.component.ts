@@ -204,7 +204,7 @@ export class AdminDashboardComponent implements OnInit{
         }
         const body = {
           sale_target_id: item.sale_target_id,
-          complition_id: 4,
+          complition_id: footer.complition_id,
           currant_price: currentPrice,
           set_footer_id: footer.set_footer_id,
           coin: item.coin,

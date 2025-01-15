@@ -61,7 +61,7 @@ export class TraderService {
     return this.http.put(this.baseUrl + 'api/sale-target-header',null)
   }
   updateSellToSoldStatus(body:any): Observable<any>{
-    return this.http.put(this.baseUrl + 'api/sale-target-header/sell-to-sold',body)
+    return this.http.patch(this.baseUrl + 'api/sale-target-header/sell-to-sold',body)
   }
   downloadReport():Observable<any>{
     return this.http.get(this.baseUrl + 'api/sale-target-header/download-set-target',{

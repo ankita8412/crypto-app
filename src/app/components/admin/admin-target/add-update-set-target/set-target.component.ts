@@ -188,7 +188,7 @@ export class SetTargetComponent implements OnInit {
     this.form.get('final_sale_price')?.setValue(finalSalePrice);
   }
   addSetTarget() {
-    console.log('from ',this.form.value);
+    // console.log('from ',this.form.value);
     
     if (this.form.valid) {
       this._traderService.addSetTarget(this.form.getRawValue()).subscribe({
@@ -259,13 +259,14 @@ export class SetTargetComponent implements OnInit {
     this._traderService.getSetTargetById(id).subscribe({
       next: (res: any) => {
         const targetData = res.data;
-        console.log('data',targetData.ticker);
+        // console.log('data',targetData.ticker);
         this.searchKeyChanged.next(targetData.ticker);
         this.control['ticker'].patchValue(targetData.ticker)
         this.control['coin'].patchValue(targetData.coin);
         this.control['base_price'].patchValue(targetData.base_price);
         this.control['base_price'].disable();
         this.control['currant_price'].patchValue(targetData.currant_price);
+        this.control['market_cap'].patchValue(targetData.market_cap);
         this.control['available_coins'].patchValue(targetData.available_coins);
         this.control['final_sale_price'].patchValue(
           targetData.final_sale_price

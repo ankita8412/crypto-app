@@ -167,7 +167,7 @@ export class SetTargetComponent implements OnInit {
                 }
               },
               error: (err) => {
-                console.error('API Error:', err); // Log the error for debugging
+                // console.error('API Error:', err); // Log the error for debugging
                 this.fetchCurrentPriceError = true; // Internal server error
                 this.isCurrentPriceReadonly = false; // Allow typing
                 this.form.controls['currant_price'].setErrors({ required: true });
@@ -281,13 +281,14 @@ export class SetTargetComponent implements OnInit {
     this._traderService.getSetTargetById(id).subscribe({
       next: (res: any) => {
         const targetData = res.data;
-        console.log('data',targetData);
+        // console.log('data',targetData);
         this.searchKeyChanged.next(targetData.ticker);
         this.control['ticker'].patchValue(targetData.ticker)
         this.control['coin'].patchValue(targetData.coin);
         this.control['base_price'].patchValue(targetData.base_price);
         this.control['base_price'].disable();
         this.control['currant_price'].patchValue(targetData.currant_price);
+        this.control['market_cap'].patchValue(targetData.market_cap);
         this.control['available_coins'].patchValue(targetData.available_coins);
         this.control['final_sale_price'].patchValue(
           targetData.final_sale_price
