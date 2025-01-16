@@ -5,6 +5,7 @@
       <form [formGroup]="form">
         <div class="row pb-4 d-flex justify-content-center ">
           <div class="col-md-3 px-2" >
+            <label *ngIf="isEdit" for="ticker_symbol" class="mb-2">Ticker</label>
             <mat-select
               #singleSelect
               placeholder="Select Ticker *"
@@ -43,6 +44,7 @@
             </div>
           </div>
           <div class="col-md-3 mb-3 ">
+            <label *ngIf="isEdit" for="ticker_symbol" class="mb-2">Coin Name</label>
             <input
               type="text"
               class="form-control coin"
@@ -53,6 +55,7 @@
             />
           </div>
           <div class="col-md-3 mb-3">
+            <label *ngIf="isEdit" for="ticker_symbol" class="mb-2">Current Price</label>
             <input
               type="number"
               class="form-control"
@@ -69,6 +72,7 @@
           </div>
           
           <div class="col-md-3 mb-3">
+            <label *ngIf="isEdit" for="ticker_symbol" class="mb-2">Market Capital</label>
             <input
               type="number"
               class="form-control"
@@ -81,6 +85,7 @@
           <div class="row pb-4 d-flex justify-content-center">
 
           <div class="col-md-3 mb-3">
+            <label *ngIf="isEdit" for="ticker_symbol" class="mb-2">Base Price</label>
             <input
               type="number"
               class="form-control"
@@ -105,6 +110,7 @@
             </div>
           </div>
           <div class="col-md-3 mb-3">
+            <label *ngIf="isEdit" for="ticker_symbol" class="mb-2">Return X</label>
             <input
               type="number"
               class="form-control"
@@ -129,6 +135,7 @@
             </div>
           </div>
           <div class="col-md-3 mb-3">
+            <label *ngIf="isEdit" for="ticker_symbol" class="mb-2">Available Coins </label>
             <input
               type="number"
               class="form-control"
@@ -155,6 +162,7 @@
             </div>
           </div>
           <div class="col-md-3 mb-3">
+            <label *ngIf="isEdit" for="ticker_symbol" class="mb-2">Final Sale Price</label>
             <input
               type="number"
               class="form-control final_sale_price"
