@@ -142,24 +142,31 @@ export class SetTargetComponent implements OnInit {
           if (selectedCoin.short_name) {
             this._traderService.getCurrentPriceByTicker(selectedCoin.short_name).subscribe({
               next: (res: any) => {
-                if (res?.data?.currentPrice) {
+                const currentPrice = res?.data?.currentPrice;
+          
+                // Check if currentPrice exists and is a valid number
+                if (currentPrice && !isNaN(currentPrice)) {
                   this.fetchCurrentPriceError = false; // Successfully fetched price
                   this.isCurrentPriceReadonly = true; // Make field readonly
-                  this.form.controls['currant_price'].patchValue(res.data.currentPrice);
+                  this.form.controls['currant_price'].patchValue(currentPrice);
                 } else {
-                  this.fetchCurrentPriceError = true; // Unable to fetch price
+                  this.fetchCurrentPriceError = true; // Price is invalid or not found
                   this.isCurrentPriceReadonly = false; // Allow typing
                   this.form.controls['currant_price'].setErrors({ required: true });
                 }
               },
               error: (err) => {
-                console.error('API Error:', err); // Log the error for debugging
-                this.fetchCurrentPriceError = true; // Internal server error
+                // Log the error for debugging purposes
+                console.error('API Error:', err);
+          
+                // Handle API failure
+                this.fetchCurrentPriceError = true; // Mark fetch as failed
                 this.isCurrentPriceReadonly = false; // Allow typing
                 this.form.controls['currant_price'].setErrors({ required: true });
               },
             });
           }
+          
         },
         error: (err) => {
           console.error('Get Coin By ID Error:', err); // Log error if needed
