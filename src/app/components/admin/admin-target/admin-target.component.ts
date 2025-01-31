@@ -86,30 +86,34 @@ export class AdminTargetComponent implements OnInit {
               this.allSetTargetList = res.data;
       
               // Fetch the current price list once and then map the prices
-          this.getAllCurrentPriceList(() => {
-            this.allSetTargetList.forEach((item: any) => {
-              const tickerSymbol = item.ticker;
-
-              // Find the matching ticker in the current price list
-              if (tickerSymbol) {
-                const matchedItem = this.allCurrentPriceList?.find(
-                  (priceItem: any) => priceItem.ticker === tickerSymbol
-                );
-
-                // If matchedItem is found, set currentPrice
-                if (matchedItem) {
-                  item.currentPrice = matchedItem.current_price;
-                  item.currentPriceColor = '';
-                } else {
-                  item.currentPrice = item.currant_price;
-                  item.currentPriceColor = 'red';
-
-                }
-              } else {
-                item.currentPrice = '--'; // Default value if no ticker
-              }
-            });
-          });
+              this.getAllCurrentPriceList(() => {
+                this.allSetTargetList.forEach((item: any) => {
+                  const tickerSymbol = item.ticker;
+          
+              
+                  // Find the matching ticker in the current price list
+                  if (tickerSymbol) {
+                    const matchedItem = this.allCurrentPriceList?.find(
+                      (priceItem: any) => priceItem.ticker === tickerSymbol
+                    );
+              
+                    // If matchedItem is found, set currentPrice and fdv_ratio
+                    if (matchedItem) {
+                      item.currentPrice = matchedItem.current_price;
+                      item.fdvRatio = matchedItem.fdv_ratio; // Set fdv_ratio from matchedItem
+                      item.currentPriceColor = '';
+                    } else {
+                      item.currentPrice = item.currant_price;
+                      item.fdvRatio = item.fdv_ratio; // Default value if no fdv_ratio found
+                      item.currentPriceColor = 'red';
+                    }
+                  } else {
+                    item.currentPrice = '--'; // Default value if no ticker
+                    item.fdvRatio = '--'; // Default value for fdv_ratio if no ticker
+                  }
+                });
+              });
+              
           this.total = res.pagination.total;
             } else {
               this.allSetTargetList = [];
@@ -151,7 +155,7 @@ export class AdminTargetComponent implements OnInit {
               // this._toastrService.success(res.message);
            
             } else {
-              this._toastrService.warning(res.message);
+              this._toastrService.error(res.message);
             }
           },
         });

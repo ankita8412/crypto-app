@@ -44,9 +44,12 @@
                 <th scope="col">Coins</th>
                 <th scope="col">Base Price</th>
                 <th scope="col">Current Price</th>
-                <th scope="col">Return X</th>
-                <th scope="col">Final Sale Price</th>
-                <th scope="col">Available Coins</th>
+                  <th scope="col">Return X</th>
+              <th scope="col">Current Return X</th>
+              <th scope="col">Final Sale Price</th>
+              <th scope="col">Purchase Coins</th>
+              <th scope="col">Time Frame</th>
+              <th scope="col">FDV</th>
                 <th *ngFor="let i of [1, 2, 3, 4, 5]" scope="col">Sale Target {{ i }} Coins</th>
                 <th *ngFor="let i of [1, 2, 3, 4, 5]" scope="col">Sale Target {{ i }}</th>
               </tr>
@@ -59,8 +62,11 @@
                 <!-- <td>{{ item.currant_price || "--" }}</td> -->
                 <td>{{ item.currentPrice || "--" }}</td>
                 <td>{{ item.return_x || "--" }}</td>
+                <td>{{item.current_return_x || "--" }}</td>
                 <td>{{ item.final_sale_price || "--"}}</td>
                 <td>{{ item.available_coins || "--" }}</td>
+                <td>{{item.timeframe || "--" }}</td>
+                <td>{{ item.fdvRatio !== null && item.fdvRatio !== undefined ? (item.fdvRatio | number:'1.6-6') : item.fdvRatio === 0 ? '0.0' : '--' }}</td>
                 <td *ngFor="let footer of item.footer">{{footer.sale_target_coin || "--"}}</td>
                 <td *ngFor="let footer of item.footer">{{footer.sale_target || "--"}} <br>
                   <small class="status-btn reached-text"> {{footer.target_status}}</small><br>
