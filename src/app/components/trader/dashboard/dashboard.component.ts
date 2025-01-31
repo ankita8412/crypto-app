@@ -85,15 +85,27 @@ export class DashboardComponent implements OnInit{
              this.getAllCurrentPriceList(() => {
               this.allReachedSetTargetList.forEach((item: any) => {
                 const tickerSymbol = item.ticker;
-    
+        
+            
                 // Find the matching ticker in the current price list
                 if (tickerSymbol) {
                   const matchedItem = this.allCurrentPriceList?.find(
                     (priceItem: any) => priceItem.ticker === tickerSymbol
                   );
-                  item.currentPrice = matchedItem ? matchedItem.current_price : '--'; // Set current price or default value
+            
+                  // If matchedItem is found, set currentPrice and fdv_ratio
+                  if (matchedItem) {
+                    item.currentPrice = matchedItem.current_price;
+                    item.fdvRatio = matchedItem.fdv_ratio; // Set fdv_ratio from matchedItem
+                    item.currentPriceColor = '';
+                  } else {
+                    item.currentPrice = item.currant_price;
+                    item.fdvRatio = item.fdv_ratio; // Default value if no fdv_ratio found
+                    item.currentPriceColor = 'red';
+                  }
                 } else {
                   item.currentPrice = '--'; // Default value if no ticker
+                  item.fdvRatio = '--'; // Default value for fdv_ratio if no ticker
                 }
               });
             });

@@ -5,12 +5,12 @@
       <form [formGroup]="form">
         <div class="row pb-4 d-flex justify-content-center ">
           <div class="col-md-3 px-2" >
-            <label *ngIf="isEdit" for="ticker_symbol" class="mb-2">Ticker</label>
+            <label  for="ticker_symbol" class="mb-2">Ticker </label>
             <mat-select
               #singleSelect
               placeholder="Select Ticker *"
               formControlName="ticker"
-              class="form-control"
+              class="form-control theme-input "
               (selectionChange)="onCoinChange($event)"
               [ngClass]="{
                 'is-invalid':
@@ -44,7 +44,7 @@
             </div>
           </div>
           <div class="col-md-3 mb-3 ">
-            <label *ngIf="isEdit" for="ticker_symbol" class="mb-2">Coin Name</label>
+            <label  for="ticker_symbol" class="mb-2">Coin Name</label>
             <input
               type="text"
               class="form-control coin"
@@ -55,7 +55,7 @@
             />
           </div>
           <div class="col-md-3 mb-3">
-            <label *ngIf="isEdit" for="ticker_symbol" class="mb-2">Current Price</label>
+            <label  for="ticker_symbol" class="mb-2">Current Price</label>
             <input
               type="number"
               class="form-control"
@@ -71,8 +71,10 @@
             </div>
           </div>
           
+          
+          
           <div class="col-md-3 mb-3">
-            <label *ngIf="isEdit" for="ticker_symbol" class="mb-2">Market Capital</label>
+            <label  for="ticker_symbol" class="mb-2">Market Capital </label>
             <input
               type="number"
               class="form-control"
@@ -85,7 +87,7 @@
           <div class="row pb-4 d-flex justify-content-center">
 
           <div class="col-md-3 mb-3">
-            <label *ngIf="isEdit" for="ticker_symbol" class="mb-2">Base Price</label>
+            <label  for="ticker_symbol" class="mb-2">Base Price </label>
             <input
               type="number"
               class="form-control"
@@ -110,7 +112,7 @@
             </div>
           </div>
           <div class="col-md-3 mb-3">
-            <label *ngIf="isEdit" for="ticker_symbol" class="mb-2">Return X</label>
+            <label  for="ticker_symbol" class="mb-2">Return X</label>
             <input
               type="number"
               class="form-control"
@@ -135,12 +137,12 @@
             </div>
           </div>
           <div class="col-md-3 mb-3">
-            <label *ngIf="isEdit" for="ticker_symbol" class="mb-2">Available Coins </label>
+            <label  for="ticker_symbol" class="mb-2">Purchased Coins</label>
             <input
               type="number"
               class="form-control"
               id="available_coins"
-              placeholder="Available Coins *"
+              placeholder="Purchased Coins *"
               formControlName="available_coins"
               [ngClass]="{
                 'is-invalid':
@@ -162,7 +164,7 @@
             </div>
           </div>
           <div class="col-md-3 mb-3">
-            <label *ngIf="isEdit" for="ticker_symbol" class="mb-2">Final Sale Price</label>
+            <label  for="ticker_symbol" class="mb-2">Final Sale Price</label>
             <input
               type="number"
               class="form-control final_sale_price"
@@ -173,7 +175,74 @@
             />
           </div>
         </div>
+         <div class="row pb-4 justify-content-center">
+        <div class="col-md-3 mb-3 ">
+          <label  for="ticker_symbol" class="mb-2">Current Value</label>
+          <input
+            type="text"
+            class="form-control coin"
+            id="ticker_symbol"
+            formControlName="current_value"
+            placeholder="Current Value"
+            [readonly]="true"
+          />
+        </div>
+        <div class="col-md-3 mb-3 ">
+          <label for="ticker_symbol" class="mb-2">Current Return X</label>
+          <input
+            type="text"
+            class="form-control coin"
+            id="ticker_symbol"
+            formControlName="current_return_x"
+            placeholder="Current Return X"
+            [readonly]="true"
+          />
+        </div>
+        <div class="col-md-3 mb-3 ">
+          <label  for="ticker_symbol" class="mb-2">Time Frame</label>
+          <input
+            type="text"
+            class="form-control "
+            id="ticker_symbol"
+            formControlName="timeframe"
+            placeholder="Time Frame"
+            [ngClass]="{
+              'is-invalid':
+                control['timeframe'].invalid &&
+                (control['timeframe'].dirty ||
+                  control['timeframe'].touched)
+            }"
+          />
+          <div
+          class="text-danger"
+          *ngIf="
+            control['timeframe'].invalid &&
+            (control['timeframe'].dirty ||
+              control['timeframe'].touched)
+          "
+        >
+          <small>Time Frame Required.</small>
+        </div>
+        </div>
+        <div class="col-md-3 mb-3">
+          <label for="ticker_symbol" class="mb-2">FDV</label>
+          <input
+            type="text"
+            class="form-control"
+            id="ticker_symbol"
+            formControlName="fdv_ratio"
+            placeholder="FDV"
+            [readonly]="isFDVReadonly"
+            (input)="onFDVInputChange()"
+          />
+          <!-- Error message when unable to fetch FDV -->
+          <div *ngIf="fetchFDVError" class="text-danger">
+            <small class="current-price-validation">Unable to fetch FDV. Please enter FDV manually.</small>
+          </div>
+        </div>
+        </div>
         <div class="row pb-4 justify-content-center" formArrayName="setTargetFooter">
+          <label  for="ticker_symbol" class="mb-2">% Sale Target </label>
           <mat-form-field 
             *ngFor="let item of setTargetFooterArray.controls; let i = index"
             class="col-md-2 target-input mb-3"
@@ -181,7 +250,7 @@
             <mat-label>% Sale Target {{ i + 1 }}</mat-label>
             <input matInput
               type="number"
-              class="form-control"
+              class="form-control "
               formControlName="sale_target_value"
               [id]="item.get('sale_target_percent')?.value" 
               placeholder="0"
@@ -194,6 +263,7 @@
             </mat-error>
           </mat-form-field>
         </div>
+      
         <div *ngIf="percentageError" class="text-danger">
           The total percentage of all inputs must be exactly 100%.
         </div>

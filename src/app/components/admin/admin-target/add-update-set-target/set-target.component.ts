@@ -20,6 +20,8 @@ export class SetTargetComponent implements OnInit {
   percentageError: boolean = false;
   fetchCurrentPriceError = false;
   isCurrentPriceReadonly = true;
+  fetchFDVError = false;
+  isFDVReadonly = true;
   private searchKeyChanged: Subject<string> = new Subject<string>();
   constructor(
     private _traderService: TraderService,
@@ -28,7 +30,7 @@ export class SetTargetComponent implements OnInit {
     private url: ActivatedRoute,
     private router: Router,
     private location: Location,
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     this.createForm();
@@ -44,7 +46,7 @@ export class SetTargetComponent implements OnInit {
   }
   createForm() {
     this.form = this.fb.group({
-      ticker: [null,Validators.required],
+      ticker: [null, Validators.required],
       coin: [null, Validators.required],
       base_price: [null, Validators.required],
       currant_price: [null, Validators.required],
@@ -52,8 +54,13 @@ export class SetTargetComponent implements OnInit {
       return_x: [null, Validators.required],
       available_coins: [null, Validators.required],
       final_sale_price: [null, Validators.required],
+      current_value: [null, Validators.required],
+      current_return_x: [null, Validators.required],
+      timeframe: [null, Validators.required],
+      fdv_ratio: [null, Validators.required],
       setTargetFooter: this.fb.array(this.createTargetInputs(5), this.totalPercentageValidator()),
     });
+    this.handlePriceChange();
   }
   get control() {
     return this.form.controls;
@@ -122,43 +129,57 @@ export class SetTargetComponent implements OnInit {
   }
   onCoinChange(event: any) {
     const selectedCoinName = event.value;
-  
+
     // Reset current price and error states
     this.form.controls['currant_price'].reset();
     this.fetchCurrentPriceError = false;
     this.isCurrentPriceReadonly = true;
-  
+
     const selectedCoin = this.allCoinList.find(
       (item) => item.short_name === selectedCoinName
     );
-  
+
     if (selectedCoin) {
       this.form.controls['coin'].patchValue(selectedCoin.coin_name.split(' (')[0]);
-  
+
       this._traderService.getCoinById(selectedCoin.coin_id).subscribe({
         next: () => {
           this.form.controls['ticker'].patchValue(selectedCoin.short_name);
-  
+
           if (selectedCoin.short_name) {
             this._traderService.getCurrentPriceByTicker(selectedCoin.short_name).subscribe({
               next: (res: any) => {
                 const currentPrice = res?.data?.currentPrice;
-          
-                // Check if currentPrice exists and is a valid number
-                if (currentPrice && !isNaN(currentPrice)) {
-                  this.fetchCurrentPriceError = false; // Successfully fetched price
-                  this.isCurrentPriceReadonly = true; // Make field readonly
+                const FDV = res?.data?.FDV
+                // Check if both currentPrice and FDV exist and are valid numbers
+                if ((currentPrice && !isNaN(currentPrice)) && (FDV && !isNaN(FDV))) {
+                  
+                  this.fetchCurrentPriceError = false;
+                  this.isCurrentPriceReadonly = true;
                   this.form.controls['currant_price'].patchValue(currentPrice);
+
+                  this.fetchFDVError = false;
+                  this.isFDVReadonly = true;
+                  this.form.controls['fdv_ratio'].patchValue(Number(FDV).toFixed(6)); 
                 } else {
-                  this.fetchCurrentPriceError = true; // Price is invalid or not found
-                  this.isCurrentPriceReadonly = false; // Allow typing
-                  this.form.controls['currant_price'].setErrors({ required: true });
+                  if (!currentPrice || isNaN(currentPrice)) {
+                    this.fetchCurrentPriceError = true; // Price is invalid or not found
+                    this.isCurrentPriceReadonly = false;
+                    this.form.controls['currant_price'].setErrors({ required: true });
+                  }
+
+                  if (!FDV || isNaN(FDV)) {
+                    this.fetchFDVError = true; // FDV is invalid or not found
+                    this.isFDVReadonly = false;
+                    this.form.controls['fdv_ratio'].setErrors({ required: true });
+                  }
                 }
+
               },
               error: (err) => {
                 // Log the error for debugging purposes
                 console.error('API Error:', err);
-          
+
                 // Handle API failure
                 this.fetchCurrentPriceError = true; // Mark fetch as failed
                 this.isCurrentPriceReadonly = false; // Allow typing
@@ -166,7 +187,7 @@ export class SetTargetComponent implements OnInit {
               },
             });
           }
-          
+
         },
         error: (err) => {
           console.error('Get Coin By ID Error:', err); // Log error if needed
@@ -174,7 +195,7 @@ export class SetTargetComponent implements OnInit {
       });
     }
   }
-  
+
   onInputChange() {
     // Allow typing without toggling readonly state
     if (this.fetchCurrentPriceError) {
@@ -182,6 +203,15 @@ export class SetTargetComponent implements OnInit {
     }
     if (!this.form.controls['currant_price'].value) {
       this.fetchCurrentPriceError = true;
+    }
+  }
+  onFDVInputChange() {
+    // Allow typing without toggling readonly state
+    if (this.fetchFDVError) {
+      this.fetchFDVError = false;
+    }
+    if (!this.form.controls['fdv_ratio'].value) {
+      this.fetchFDVError = true;
     }
   }
   //Filter coin array
@@ -194,11 +224,43 @@ export class SetTargetComponent implements OnInit {
     const finalSalePrice = basePrice * returnX;
     this.form.get('final_sale_price')?.setValue(finalSalePrice);
   }
+
+  handlePriceChange() {
+    this.form.get('currant_price')?.valueChanges.subscribe(() => {
+      this.updateCalculatedFields();
+    });
+
+    this.form.get('base_price')?.valueChanges.subscribe(() => {
+      this.updateCalculatedFields();
+    });
+    this.form.get('available_coins')?.valueChanges.subscribe(() => {
+      this.updateCalculatedFields();
+    });
+  }
+
+  updateCalculatedFields() {
+    const basePrice = this.form.get('base_price')?.value;
+    const currantPrice = this.form.get('currant_price')?.value;
+    const availableCoins = this.form.get('available_coins')?.value;
+
+    // Calculate current_return_x
+    if (basePrice && currantPrice) {
+      const currentReturnX = currantPrice / basePrice;
+      this.form.get('current_return_x')?.patchValue(currentReturnX.toFixed(2), { emitEvent: false });
+    }
+
+    // Calculate current_value
+    if (currantPrice && availableCoins) {
+      const currentValue = currantPrice * availableCoins;
+      this.form.get('current_value')?.patchValue(currentValue.toFixed(2), { emitEvent: false });
+    }
+  }
+
   addSetTarget() {
-    // console.log('from ',this.form.value);
-    
     if (this.form.valid) {
       this._traderService.addSetTarget(this.form.getRawValue()).subscribe({
+
+
         next: (res: any) => {
           if (res.status == 201 || res.status == 200) {
             this._toastrService.success(res.message);
@@ -223,10 +285,10 @@ export class SetTargetComponent implements OnInit {
       this.form.markAllAsTouched();
       this._toastrService.warning('Fill required fields');
     }
-    // this.validateExactPercentage();
-    // if (this.percentageError) {
-    //   return; 
-    // }
+    this.validateExactPercentage();
+    if (this.percentageError) {
+      return;
+    }
   }
   updateSetTarget() {
     let data = this.form.getRawValue();
@@ -279,6 +341,8 @@ export class SetTargetComponent implements OnInit {
           targetData.final_sale_price
         );
         this.control['return_x'].patchValue(targetData.return_x);
+        this.control['timeframe'].patchValue(targetData.timeframe)
+        this.control['fdv_ratio'].patchValue(targetData.fdv_ratio);
         this.patchFooterData(targetData.footer);
       },
     });
@@ -290,22 +354,23 @@ export class SetTargetComponent implements OnInit {
     footerData.forEach((item) => {
       footerArray.push(
         this.fb.group({
-          sale_target_value: [item.sale_target_value  ,[Validators.min(0), Validators.max(100)]],
+          sale_target_value: [item.sale_target_value, [Validators.min(0), Validators.max(100)]],
           sale_target_percent: [item.sale_target_percent],
           sale_target: [item.sale_target],
           target_status: [item.target_status],
           complition_status: [item.complition_status],
-          set_footer_id : [item.set_footer_id]
+          set_footer_id: [item.set_footer_id],
+
         })
       );
     });
   }
   extractTickerSymbol(coin: string): string {
     const match = /\(([^)]+)\)/.exec(coin);
-    return match ? match[1] : coin; 
+    return match ? match[1] : coin;
   }
-    // cancel route location service
-    goToback() {
-      this.location.back();
-    }
+  // cancel route location service
+  goToback() {
+    this.location.back();
+  }
 }
