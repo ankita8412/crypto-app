@@ -21,6 +21,7 @@
     <div class="card m-0 p-2 mt-2">
       <div class="card-header d-flex justify-content-between p-3"> 
         <strong>Set Target List</strong>
+        <label for="">Total Current Value :  <strong> {{(totalCurrentValue | number:'1.2-2') || 0}}</strong></label>
     </div>
     <div class="card-body">
       <div class="col-md-12">
@@ -29,8 +30,10 @@
             <thead class="table-secondary" >
               <tr >
                 <th scope="col">Sr.No</th>
-                <th>Delete</th>
-                <th scope="col">Edit</th>
+                <th><i class="fa-solid fa-trash cursor-pointer delete-icon" ></i></th>
+                <th>
+                  <img src="assets/dashboard/Pencil.svg" alt="Pencil Image" class="cursor-pointer edit-pencile">
+                </th>
                 <th scope="col">Coins</th>
                 <th scope="col">Base Price</th>
                 <th scope="col">Current Price</th>

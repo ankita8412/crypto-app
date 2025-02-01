@@ -31,6 +31,7 @@ export class AdminDashboardComponent implements OnInit{
   allCoinList: Array<any> = [];
   tickerSymbol: any;
   currant_price: any;
+  totalCurrentValue :any
   isLoading: boolean = false;
   constructor(
     private _adminService: AdminService,
@@ -98,9 +99,10 @@ export class AdminDashboardComponent implements OnInit{
                     const matchedItem = this.allCurrentPriceList?.find(
                       (priceItem: any) => priceItem.ticker === tickerSymbol
                     );
-              
+                     
                     // If matchedItem is found, set currentPrice and fdv_ratio
                     if (matchedItem) {
+                      this.totalCurrentValue = matchedItem.totalCurrentValue
                       item.currentPrice = matchedItem.current_price;
                       item.fdvRatio = matchedItem.fdv_ratio; // Set fdv_ratio from matchedItem
                       item.currentValue = matchedItem.current_value;
@@ -114,6 +116,7 @@ export class AdminDashboardComponent implements OnInit{
                       item.currentPriceColor = 'red';
                     }
                   } else {
+                    this.totalCurrentValue = '--';
                     item.currentPrice = '--'; // Default value if no ticker
                     item.fdvRatio = '--'; // Default value for fdv_ratio if no ticker
                     item.currentValue = '--'; // Default value for current_value if no ticker

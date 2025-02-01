@@ -29,6 +29,7 @@ export class AdminTargetComponent implements OnInit {
       coin: any;
       complition_id: any;
       untitled_id: any;
+      totalCurrentValue :any
       // isLoading: boolean = false;
       searchControl: FormControl = new FormControl('');
       constructor(
@@ -99,6 +100,7 @@ export class AdminTargetComponent implements OnInit {
               
                     // If matchedItem is found, set currentPrice and fdv_ratio
                     if (matchedItem) {
+                      this.totalCurrentValue = matchedItem.totalCurrentValue
                       item.currentPrice = matchedItem.current_price;
                       item.fdvRatio = matchedItem.fdv_ratio; // Set fdv_ratio from matchedItem
                       item.currentValue = matchedItem.current_value;
@@ -112,11 +114,12 @@ export class AdminTargetComponent implements OnInit {
                       item.currentPriceColor = 'red';
                     }
                   } else {
+                    this.totalCurrentValue = '--';
                     item.currentPrice = '--'; // Default value if no ticker
                     item.fdvRatio = '--'; // Default value for fdv_ratio if no ticker
                     item.currentValue = '--'; // Default value for current_value if no ticker
                     item.current_returnX = '--'; // Default value for current_return_x if no ticker
-                  }   
+                  } 
                 });
               });
               
