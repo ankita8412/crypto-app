@@ -46,6 +46,7 @@
                 <th scope="col">Current Price</th>
                   <th scope="col">Return X</th>
               <th scope="col">Current Return X</th>
+              <th scope="col">Current Value</th>
               <th scope="col">Final Sale Price</th>
               <th scope="col">Purchase Coins</th>
               <th scope="col">Time Frame</th>
@@ -62,7 +63,8 @@
                 <!-- <td>{{ item.currant_price || "--" }}</td> -->
                 <td>{{ item.currentPrice || "--" }}</td>
                 <td>{{ item.return_x || "--" }}</td>
-                <td>{{item.current_return_x || "--" }}</td>
+                <td>{{ item.current_returnX !== null && item.current_returnX !== undefined ? (item.current_returnX | number:'1.2-2') : item.current_returnX === 0 ? '0.00' : '--' }}</td>
+                <td>{{ item.currentValue !== null && item.currentValue !== undefined ? (item.currentValue | number:'1.2-2') : '--' }}</td>
                 <td>{{ item.final_sale_price || "--"}}</td>
                 <td>{{ item.available_coins || "--" }}</td>
                 <td>{{item.timeframe || "--" }}</td>

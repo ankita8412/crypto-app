@@ -97,15 +97,21 @@ export class DashboardComponent implements OnInit{
                   if (matchedItem) {
                     item.currentPrice = matchedItem.current_price;
                     item.fdvRatio = matchedItem.fdv_ratio; // Set fdv_ratio from matchedItem
+                    item.currentValue = matchedItem.current_value;
+                    item.current_returnX = matchedItem.current_return_x; // Set current_returnX from matchedItem
                     item.currentPriceColor = '';
                   } else {
                     item.currentPrice = item.currant_price;
                     item.fdvRatio = item.fdv_ratio; // Default value if no fdv_ratio found
+                    item.currentValue = item.current_value;
+                    item.current_returnX = item.current_return_x; // Default value if no current_return_x found
                     item.currentPriceColor = 'red';
                   }
                 } else {
                   item.currentPrice = '--'; // Default value if no ticker
                   item.fdvRatio = '--'; // Default value for fdv_ratio if no ticker
+                  item.currentValue = '--'; // Default value for current_value if no ticker
+                  item.current_returnX = '--'; // Default value for current_return_x if no ticker
                 }
               });
             });
