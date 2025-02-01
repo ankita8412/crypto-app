@@ -29,6 +29,7 @@ export class TargetComponent implements OnInit {
   complition_id: any;
   untitled_id: any;
   // isLoading: boolean = false;
+  totalCurrentValue :any
   searchControl: FormControl = new FormControl('');
   constructor(
     private _traderService: TraderService,
@@ -96,6 +97,7 @@ export class TargetComponent implements OnInit {
           
                 // If matchedItem is found, set currentPrice and fdv_ratio
                 if (matchedItem) {
+                  this.totalCurrentValue = matchedItem.totalCurrentValue
                   item.currentPrice = matchedItem.current_price;
                   item.fdvRatio = matchedItem.fdv_ratio; // Set fdv_ratio from matchedItem
                   item.currentValue = matchedItem.current_value;
@@ -109,6 +111,7 @@ export class TargetComponent implements OnInit {
                   item.currentPriceColor = 'red';
                 }
               } else {
+                this.totalCurrentValue = '--';
                 item.currentPrice = '--'; // Default value if no ticker
                 item.fdvRatio = '--'; // Default value for fdv_ratio if no ticker
                 item.currentValue = '--'; // Default value for current_value if no ticker
