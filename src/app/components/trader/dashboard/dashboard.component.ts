@@ -96,7 +96,7 @@ export class DashboardComponent implements OnInit{
             
                   // If matchedItem is found, set currentPrice and fdv_ratio
                   if (matchedItem) {
-                    this.totalCurrentValue = matchedItem.totalCurrentValue
+                    this.totalCurrentValue =  this.totalCurrentValue
                     item.currentPrice = matchedItem.current_price;
                     item.fdvRatio = matchedItem.fdv_ratio; // Set fdv_ratio from matchedItem
                     item.currentValue = matchedItem.current_value;
@@ -168,9 +168,11 @@ export class DashboardComponent implements OnInit{
         next: (res: any) => {
           if (res.status === 201 || res.status === 200) {
             this.allCurrentPriceList = res.data;
+            this.totalCurrentValue = res.totalCurrentValue
             callback(); 
           } else {
             this.allCurrentPriceList = [];
+            this.totalCurrentValue = 0
             callback();
           }
         }
