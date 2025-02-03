@@ -141,24 +141,25 @@ export class SetTargetComponent implements OnInit {
 
   onCoinChange(event: any) {
     const selectedCoinName = event.value;
-  
+
     // Reset current price and error states
     this.form.controls['currant_price'].reset();
+    this.form.controls['market_cap'].reset();
     this.fetchCurrentPriceError = false;
     this.isCurrentPriceReadonly = true;
-    
-  
+    this.fetchMarketCapError = false;
+    this.isMarketCapReadonly = true;
     const selectedCoin = this.allCoinList.find(
       (item) => item.short_name === selectedCoinName
     );
-  
+
     if (selectedCoin) {
       this.form.controls['coin'].patchValue(selectedCoin.coin_name.split(' (')[0]);
-  
+
       this._traderService.getCoinById(selectedCoin.coin_id).subscribe({
         next: () => {
           this.form.controls['ticker'].patchValue(selectedCoin.short_name);
-  
+
           if (selectedCoin.short_name) {
             this._traderService.getCurrentPriceByTicker(selectedCoin.short_name).subscribe({
               next: (res: any) => {
@@ -167,46 +168,35 @@ export class SetTargetComponent implements OnInit {
                 const MarketCap = res?.data?.mktcap;
 
                 // Check if currentPrice, FDV, and MarketCap are valid numbers
-                if (
-                  (currentPrice && !isNaN(currentPrice)) &&
-         
-                  (MarketCap && !isNaN(MarketCap))
-                ) {
+                // Handle currentPrice logic
+                if (currentPrice && !isNaN(currentPrice)) {
                   this.fetchCurrentPriceError = false;
                   this.isCurrentPriceReadonly = true;
                   this.form.controls['currant_price'].patchValue(currentPrice);
-                
-                  // this.fetchFDVError = false;
-                  // this.isFDVReadonly = true;
-                  // this.form.controls['fdv_ratio'].patchValue(Number(FDV).toFixed(6)); 
-                
+                } else {
+                  this.fetchCurrentPriceError = true;
+                  this.isCurrentPriceReadonly = false;
+                  this.form.controls['currant_price'].setErrors({ required: true });
+                }
+
+                // Handle MarketCap logic
+                if (MarketCap && !isNaN(MarketCap)) {
                   this.fetchMarketCapError = false;
                   this.isMarketCapReadonly = true;
                   this.form.controls['market_cap'].patchValue(Number(MarketCap).toFixed(2));
                 } else {
-                  if (!currentPrice || isNaN(currentPrice)) {
-                    this.fetchCurrentPriceError = true;
-                    this.isCurrentPriceReadonly = false;
-                    this.form.controls['currant_price'].setErrors({ required: true });
-                  }
-                
-                  // if (!FDV || isNaN(FDV)) {
-                  //   this.fetchFDVError = true;
-                  //   this.isFDVReadonly = false;
-                  //   this.form.controls['fdv_ratio'].setErrors({ required: true });
-                  // }
-                
-                  if (!MarketCap || isNaN(MarketCap)) {
-                    this.fetchMarketCapError = true;
-                    this.isMarketCapReadonly = false;
-                    this.form.controls['market_cap'].setErrors({ required: true });
-                  }
+                  this.fetchMarketCapError = true;
+                  this.isMarketCapReadonly = false;
+                  this.form.controls['market_cap'].setErrors({ required: true });
                 }
+
+
+
               },
               error: (err) => {
                 // Log the error for debugging purposes
                 console.error('API Error:', err);
-          
+
                 // Handle API failure
                 this.fetchCurrentPriceError = true; // Mark fetch as failed
                 this.isCurrentPriceReadonly = false; // Allow typing
@@ -214,7 +204,7 @@ export class SetTargetComponent implements OnInit {
               },
             });
           }
-          
+
         },
         error: (err) => {
           console.error('Get Coin By ID Error:', err); // Log error if needed
