@@ -163,22 +163,22 @@ export class SetTargetComponent implements OnInit {
             this._traderService.getCurrentPriceByTicker(selectedCoin.short_name).subscribe({
               next: (res: any) => {
                 const currentPrice = res?.data?.currentPrice;
-                const FDV = res?.data?.FDV
+                // const FDV = res?.data?.FDV
                 const MarketCap = res?.data?.mktcap;
 
                 // Check if currentPrice, FDV, and MarketCap are valid numbers
                 if (
                   (currentPrice && !isNaN(currentPrice)) &&
-                  (FDV && !isNaN(FDV)) &&
+         
                   (MarketCap && !isNaN(MarketCap))
                 ) {
                   this.fetchCurrentPriceError = false;
                   this.isCurrentPriceReadonly = true;
                   this.form.controls['currant_price'].patchValue(currentPrice);
                 
-                  this.fetchFDVError = false;
-                  this.isFDVReadonly = true;
-                  this.form.controls['fdv_ratio'].patchValue(Number(FDV).toFixed(6)); 
+                  // this.fetchFDVError = false;
+                  // this.isFDVReadonly = true;
+                  // this.form.controls['fdv_ratio'].patchValue(Number(FDV).toFixed(6)); 
                 
                   this.fetchMarketCapError = false;
                   this.isMarketCapReadonly = true;
@@ -190,11 +190,11 @@ export class SetTargetComponent implements OnInit {
                     this.form.controls['currant_price'].setErrors({ required: true });
                   }
                 
-                  if (!FDV || isNaN(FDV)) {
-                    this.fetchFDVError = true;
-                    this.isFDVReadonly = false;
-                    this.form.controls['fdv_ratio'].setErrors({ required: true });
-                  }
+                  // if (!FDV || isNaN(FDV)) {
+                  //   this.fetchFDVError = true;
+                  //   this.isFDVReadonly = false;
+                  //   this.form.controls['fdv_ratio'].setErrors({ required: true });
+                  // }
                 
                   if (!MarketCap || isNaN(MarketCap)) {
                     this.fetchMarketCapError = true;
@@ -232,15 +232,15 @@ export class SetTargetComponent implements OnInit {
       this.fetchCurrentPriceError = true;
     }
   }
-  onFDVInputChange() {
-    // Allow typing without toggling readonly state
-    if (this.fetchFDVError) {
-      this.fetchFDVError = false;
-    }
-    if (!this.form.controls['fdv_ratio'].value) {
-      this.fetchFDVError = true;
-    }
-  }
+  // onFDVInputChange() {
+  //   // Allow typing without toggling readonly state
+  //   if (this.fetchFDVError) {
+  //     this.fetchFDVError = false;
+  //   }
+  //   if (!this.form.controls['fdv_ratio'].value) {
+  //     this.fetchFDVError = true;
+  //   }
+  // }
   onMarketCapInputChange() {
     // Allow typing without toggling readonly state for MarketCap
     if (this.fetchMarketCapError) {
