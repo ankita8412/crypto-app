@@ -30,6 +30,8 @@ export class SetTargetComponent implements OnInit {
   isCurrentPriceReadonly = true;
   fetchFDVError = false;
   isFDVReadonly = true;
+  fetchMarketCapError = false;
+  isMarketCapReadonly = true;
   private searchKeyChanged: Subject<string> = new Subject<string>();
   constructor(
     private _traderService: TraderService,
@@ -144,6 +146,7 @@ export class SetTargetComponent implements OnInit {
     this.form.controls['currant_price'].reset();
     this.fetchCurrentPriceError = false;
     this.isCurrentPriceReadonly = true;
+    
   
     const selectedCoin = this.allCoinList.find(
       (item) => item.short_name === selectedCoinName
@@ -161,27 +164,42 @@ export class SetTargetComponent implements OnInit {
               next: (res: any) => {
                 const currentPrice = res?.data?.currentPrice;
                 const FDV = res?.data?.FDV
-                // Check if both currentPrice and FDV exist and are valid numbers
-                if ((currentPrice && !isNaN(currentPrice)) && (FDV && !isNaN(FDV))) {
-                  
+                const MarketCap = res?.data?.mktcap;
+
+                // Check if currentPrice, FDV, and MarketCap are valid numbers
+                if (
+                  (currentPrice && !isNaN(currentPrice)) &&
+                  (FDV && !isNaN(FDV)) &&
+                  (MarketCap && !isNaN(MarketCap))
+                ) {
                   this.fetchCurrentPriceError = false;
                   this.isCurrentPriceReadonly = true;
                   this.form.controls['currant_price'].patchValue(currentPrice);
-
+                
                   this.fetchFDVError = false;
                   this.isFDVReadonly = true;
                   this.form.controls['fdv_ratio'].patchValue(Number(FDV).toFixed(6)); 
+                
+                  this.fetchMarketCapError = false;
+                  this.isMarketCapReadonly = true;
+                  this.form.controls['market_cap'].patchValue(Number(MarketCap).toFixed(2));
                 } else {
                   if (!currentPrice || isNaN(currentPrice)) {
-                    this.fetchCurrentPriceError = true; // Price is invalid or not found
+                    this.fetchCurrentPriceError = true;
                     this.isCurrentPriceReadonly = false;
                     this.form.controls['currant_price'].setErrors({ required: true });
                   }
-
+                
                   if (!FDV || isNaN(FDV)) {
-                    this.fetchFDVError = true; // FDV is invalid or not found
+                    this.fetchFDVError = true;
                     this.isFDVReadonly = false;
                     this.form.controls['fdv_ratio'].setErrors({ required: true });
+                  }
+                
+                  if (!MarketCap || isNaN(MarketCap)) {
+                    this.fetchMarketCapError = true;
+                    this.isMarketCapReadonly = false;
+                    this.form.controls['market_cap'].setErrors({ required: true });
                   }
                 }
               },
@@ -223,7 +241,15 @@ export class SetTargetComponent implements OnInit {
       this.fetchFDVError = true;
     }
   }
- 
+  onMarketCapInputChange() {
+    // Allow typing without toggling readonly state for MarketCap
+    if (this.fetchMarketCapError) {
+      this.fetchMarketCapError = false;
+    }
+    if (!this.form.controls['market_cap'].value) {
+      this.fetchMarketCapError = true;
+    }
+  }
   //Filter coin array
   filterCoinList() {
     this.searchKeyChanged.next(this.searchKey.trim());
