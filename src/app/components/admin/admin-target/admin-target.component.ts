@@ -62,7 +62,7 @@ export class AdminTargetComponent implements OnInit {
             this.updateTargetCompitionStatus();
             this.getAllSetTargetList();
           }
-        }, 15000);
+        }, 17000);
       
       }
       
