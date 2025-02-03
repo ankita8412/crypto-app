@@ -275,8 +275,8 @@ export class TargetComponent implements OnInit {
     }
     this._traderService.deleteRecordById(id, status).subscribe({
       next: (res: any) => {
+        this._toastrService.clear();
         this._toastrService.success(res.message);
-        // this._toastrService.clear();
         this.getAllSetTargetList();
       },
       error: (error: any) => {
