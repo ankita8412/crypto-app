@@ -32,6 +32,7 @@ export class SetTargetComponent implements OnInit {
   isFDVReadonly = true;
   fetchMarketCapError = false;
   isMarketCapReadonly = true;
+  isLoading = true;
   private searchKeyChanged: Subject<string> = new Subject<string>();
   constructor(
     private _traderService: TraderService,
@@ -48,6 +49,8 @@ export class SetTargetComponent implements OnInit {
     if (this.sale_target_id) {
       this.getSetTargetById(this.sale_target_id);
       this.isEdit = true;
+      this.isCurrentPriceReadonly = false;
+      this.isMarketCapReadonly = false;
     }
     this.getAllCoinList();
     this.searchKeyChanged.pipe(debounceTime(100)).subscribe((key) => {
@@ -161,19 +164,22 @@ export class SetTargetComponent implements OnInit {
           this.form.controls['ticker'].patchValue(selectedCoin.short_name);
 
           if (selectedCoin.short_name) {
+            this.isLoading = false;
             this._traderService.getCurrentPriceByTicker(selectedCoin.short_name).subscribe({
               next: (res: any) => {
                 const currentPrice = res?.data?.currentPrice;
                 // const FDV = res?.data?.FDV
                 const MarketCap = res?.data?.mktcap;
-
+              
                 // Check if currentPrice, FDV, and MarketCap are valid numbers
                 // Handle currentPrice logic
                 if (currentPrice && !isNaN(currentPrice)) {
+                  this.isLoading = true;
                   this.fetchCurrentPriceError = false;
                   this.isCurrentPriceReadonly = true;
                   this.form.controls['currant_price'].patchValue(currentPrice);
                 } else {
+                  this.isLoading = true;
                   this.fetchCurrentPriceError = true;
                   this.isCurrentPriceReadonly = false;
                   this.form.controls['currant_price'].setErrors({ required: true });
@@ -181,10 +187,12 @@ export class SetTargetComponent implements OnInit {
 
                 // Handle MarketCap logic
                 if (MarketCap && !isNaN(MarketCap)) {
+                  this.isLoading = true;
                   this.fetchMarketCapError = false;
                   this.isMarketCapReadonly = true;
                   this.form.controls['market_cap'].patchValue(Number(MarketCap).toFixed(2));
                 } else {
+                  this.isLoading = true;
                   this.fetchMarketCapError = true;
                   this.isMarketCapReadonly = false;
                   this.form.controls['market_cap'].setErrors({ required: true });
@@ -362,7 +370,7 @@ export class SetTargetComponent implements OnInit {
         this.control['ticker'].patchValue(targetData.ticker)
         this.control['coin'].patchValue(targetData.coin);
         this.control['base_price'].patchValue(targetData.base_price);
-        this.control['base_price'].disable();
+        this.control['base_price'].patchValue(targetData.base_price)
         this.control['currant_price'].patchValue(targetData.currant_price);
         this.control['market_cap'].patchValue(targetData.market_cap);
         this.control['available_coins'].patchValue(targetData.available_coins);
