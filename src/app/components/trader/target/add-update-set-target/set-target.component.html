@@ -283,23 +283,28 @@
           <small class="current-price-validation"> Time Frame Required.</small>
         </div>
         </div>
-        <!-- <div class="col-md-3 mb-3">
-          <label for="ticker_symbol" class="mb-2">FDV</label>
+        <div class="col-md-3 mb-3">
+          <label for="fdv_ratio" class="mb-2">FDV</label>
           <input
-            type="text"
+            type="number"
             class="form-control"
-            id="ticker_symbol"
-            formControlName="fdv_ratio"
+            id="fdv_ratio"
             placeholder="FDV"
+            formControlName="fdv_ratio"
             [readonly]="isFDVReadonly"
             (input)="onFDVInputChange()"
+            [ngClass]="{
+              'is-invalid': control['fdv_ratio'].invalid &&
+              (control['fdv_ratio'].dirty || control['fdv_ratio'].touched)
+            }"
           />
-         
           <div *ngIf="fetchFDVError" class="text-danger">
-            <small class="current-price-validation">Unable to fetch FDV. Please enter FDV manually.</small>
+            <small class="current-price-validation">
+              Unable to fetch FDV. Please enter FDV manually.
+            </small>
           </div>
-        </div> -->
-        <div class="col-md-3 mb-3">
+        </div>
+        <!-- <div class="col-md-3 mb-3">
           <label for="ticker_symbol" class="mb-2">FDV</label>
           <input
             type="text"
@@ -314,7 +319,7 @@
                   control['fdv_ratio'].touched)
             }"
           />
-          <!-- Error message when unable to fetch FDV -->
+          
           <div   *ngIf="
           control['fdv_ratio'].invalid &&
           (control['fdv_ratio'].dirty ||
@@ -322,7 +327,7 @@
         " class="text-danger">
             <small class="current-price-validation">Please enter FDV manually.</small>
           </div>
-        </div>
+        </div> -->
         </div>
         <div class="row pb-4 justify-content-center" formArrayName="setTargetFooter">
           <label  for="ticker_symbol" class="mb-2">% Sale Target </label>

@@ -36,11 +36,12 @@
                 <th scope="col">Coins</th>
                 <th scope="col">Base Price</th>
                 <th scope="col">Current Price</th>
+                <th scope="col">Market Cap</th>
                 <th scope="col">Return X</th>
               <th scope="col">Current Return X</th>
               <th scope="col">Current Value</th>
               <th scope="col">Final Sale Price</th>
-              <th scope="col">Purchased Coins</th>
+              <th scope="col">Total Coins</th>
               <th scope="col">Time Frame</th>
               <th scope="col">FDV</th>
                 <th *ngFor="let i of [1, 2, 3, 4, 5]" scope="col">Sale Target {{ i }} Coins</th>
@@ -60,13 +61,14 @@
                 <td [ngStyle]="{'color': item.currentPriceColor}">
                   {{ item.currentPrice || '--' }}
                 </td>
+                <td>{{ item.marketCap !== null && item.marketCap !== undefined ? (item.marketCap | number:'1.2-2') : item.marketCap === 0 ? '0.00' : '--' }}</td>
                 <td>{{ item.return_x || "--" }}</td>
                 <td>{{ item.current_returnX !== null && item.current_returnX !== undefined ? (item.current_returnX | number:'1.2-2') : item.current_returnX === 0 ? '0.00' : '--' }}</td>
                 <td>{{ item.currentValue !== null && item.currentValue !== undefined ? (item.currentValue | number:'1.2-2') : '--' }}</td>
                 <td>{{ item.final_sale_price || "--"}}</td>
                 <td>{{ item.available_coins || "--" }}</td>
                 <td>{{item.timeframe || "--" }}</td>
-                <td>{{ item.fdv_ratio !== null && item.fdv_ratio !== undefined ? (item.fdv_ratio) : item.fdv_ratio === 0 ? '0.0' : '--' }}</td>
+                <td>{{ item.fdvRatio !== null && item.fdvRatio !== undefined ? (item.fdvRatio) : item.fdvRatio === 0 ? '0.0' : '--' }}</td>
                 <td *ngFor="let footer of item.footer">{{footer.sale_target_coin || "--"}}</td>
                 <td *ngFor="let footer of item.footer">{{footer.sale_target || "--"}} <br>
                   <small class="status-btn reached-text"> {{footer.target_status}}</small><br>
