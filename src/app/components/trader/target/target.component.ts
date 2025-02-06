@@ -94,20 +94,22 @@ export class TargetComponent implements OnInit {
                 const matchedItem = this.allCurrentPriceList?.find(
                   (priceItem: any) => priceItem.ticker === tickerSymbol
                 );
-          
-                // If matchedItem is found, set currentPrice and fdv_ratio
+              
+                // If matchedItem is found, set currentPrice, fdv_ratio, and market_cap
                 if (matchedItem) {
-                  this.totalCurrentValue =  this.totalCurrentValue
+                  this.totalCurrentValue = this.totalCurrentValue;
                   item.currentPrice = matchedItem.current_price;
                   item.fdvRatio = matchedItem.fdv_ratio; // Set fdv_ratio from matchedItem
                   item.currentValue = matchedItem.current_value;
                   item.current_returnX = matchedItem.current_return_x; // Set current_returnX from matchedItem
+                  item.marketCap = matchedItem.market_cap; // Set market_cap from matchedItem
                   item.currentPriceColor = '';
                 } else {
                   item.currentPrice = item.currant_price;
                   item.fdvRatio = item.fdv_ratio; // Default value if no fdv_ratio found
                   item.currentValue = item.current_value;
                   item.current_returnX = item.current_return_x; // Default value if no current_return_x found
+                  item.marketCap = item.market_cap; // Default value for market_cap
                   item.currentPriceColor = 'red';
                 }
               } else {
@@ -116,7 +118,9 @@ export class TargetComponent implements OnInit {
                 item.fdvRatio = '--'; // Default value for fdv_ratio if no ticker
                 item.currentValue = '--'; // Default value for current_value if no ticker
                 item.current_returnX = '--'; // Default value for current_return_x if no ticker
+                item.marketCap = '--'; // Default value for market_cap if no ticker
               }
+              
             });
           });
           this.total = res.pagination.total;

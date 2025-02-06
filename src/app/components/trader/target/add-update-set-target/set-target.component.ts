@@ -41,7 +41,7 @@ export class SetTargetComponent implements OnInit {
     private url: ActivatedRoute,
     private router: Router,
     private location: Location,
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     this.createForm();
@@ -51,6 +51,7 @@ export class SetTargetComponent implements OnInit {
       this.isEdit = true;
       this.isCurrentPriceReadonly = false;
       this.isMarketCapReadonly = false;
+      this.isFDVReadonly = false
     }
     this.getAllCoinList();
     this.searchKeyChanged.pipe(debounceTime(100)).subscribe((key) => {
@@ -59,7 +60,7 @@ export class SetTargetComponent implements OnInit {
   }
   createForm() {
     this.form = this.fb.group({
-      ticker: [null,Validators.required],
+      ticker: [null, Validators.required],
       coin: [null, Validators.required],
       base_price: [null, Validators.required],
       currant_price: [null, Validators.required],
@@ -67,10 +68,10 @@ export class SetTargetComponent implements OnInit {
       return_x: [null, Validators.required],
       available_coins: [null, Validators.required],
       final_sale_price: [null, Validators.required],
-      current_value : [ null , Validators.required ],
-      current_return_x :[null, Validators.required],
-      timeframe : [null, Validators.required],
-      fdv_ratio : [null, Validators.required],
+      current_value: [null, Validators.required],
+      current_return_x: [null, Validators.required],
+      timeframe: [null, Validators.required],
+      fdv_ratio: [null, Validators.required],
       setTargetFooter: this.fb.array(this.createTargetInputs(5), this.totalPercentageValidator()),
     });
     this.handlePriceChange();
@@ -162,15 +163,14 @@ export class SetTargetComponent implements OnInit {
       this._traderService.getCoinById(selectedCoin.coin_id).subscribe({
         next: () => {
           this.form.controls['ticker'].patchValue(selectedCoin.short_name);
-
           if (selectedCoin.short_name) {
             this.isLoading = false;
             this._traderService.getCurrentPriceByTicker(selectedCoin.short_name).subscribe({
               next: (res: any) => {
                 const currentPrice = res?.data?.currentPrice;
-                // const FDV = res?.data?.FDV
+                const FDV = res?.data?.FDV
                 const MarketCap = res?.data?.mktcap;
-              
+
                 // Check if currentPrice, FDV, and MarketCap are valid numbers
                 // Handle currentPrice logic
                 if (currentPrice && !isNaN(currentPrice)) {
@@ -186,6 +186,18 @@ export class SetTargetComponent implements OnInit {
                 }
 
                 // Handle MarketCap logic
+                if (FDV && !isNaN(FDV)) {
+                  this.isLoading = true;
+                  this.fetchFDVError = false;
+                  this.isFDVReadonly = true;
+                  this.form.controls['fdv_ratio'].patchValue(Number(FDV).toFixed(4));
+                } else {
+                  this.isLoading = true;
+                  this.fetchFDVError = true;
+                  this.isFDVReadonly = false;
+                  this.form.controls['fdv_ratio'].setErrors({ required: true });
+                }
+                // Handle MarketCap logic
                 if (MarketCap && !isNaN(MarketCap)) {
                   this.isLoading = true;
                   this.fetchMarketCapError = false;
@@ -198,8 +210,6 @@ export class SetTargetComponent implements OnInit {
                   this.form.controls['market_cap'].setErrors({ required: true });
                 }
 
-
-
               },
               error: (err) => {
                 // Log the error for debugging purposes
@@ -209,6 +219,14 @@ export class SetTargetComponent implements OnInit {
                 this.fetchCurrentPriceError = true; // Mark fetch as failed
                 this.isCurrentPriceReadonly = false; // Allow typing
                 this.form.controls['currant_price'].setErrors({ required: true });
+
+                this.fetchMarketCapError = true;
+                this.isMarketCapReadonly = false;
+                this.form.controls['market_cap'].setErrors({ required: true });
+
+                this.fetchFDVError = true;
+                this.isFDVReadonly = false;
+                this.form.controls['fdv_ratio'].setErrors({ required: true });
               },
             });
           }
@@ -220,7 +238,7 @@ export class SetTargetComponent implements OnInit {
       });
     }
   }
-  
+
   onInputChange() {
     // Allow typing without toggling readonly state
     if (this.fetchCurrentPriceError) {
@@ -230,15 +248,15 @@ export class SetTargetComponent implements OnInit {
       this.fetchCurrentPriceError = true;
     }
   }
-  // onFDVInputChange() {
-  //   // Allow typing without toggling readonly state
-  //   if (this.fetchFDVError) {
-  //     this.fetchFDVError = false;
-  //   }
-  //   if (!this.form.controls['fdv_ratio'].value) {
-  //     this.fetchFDVError = true;
-  //   }
-  // }
+  onFDVInputChange() {
+    // Allow typing without toggling readonly state
+    if (this.fetchFDVError) {
+      this.fetchFDVError = false;
+    }
+    if (!this.form.controls['fdv_ratio'].value) {
+      this.fetchFDVError = true;
+    }
+  }
   onMarketCapInputChange() {
     // Allow typing without toggling readonly state for MarketCap
     if (this.fetchMarketCapError) {
@@ -253,7 +271,7 @@ export class SetTargetComponent implements OnInit {
     this.searchKeyChanged.next(this.searchKey.trim());
   }
 
-  
+
   calculateFinalSalePrice(): void {
     const basePrice = this.form.get('base_price')?.value || 0;
     const returnX = this.form.get('return_x')?.value || 0;
@@ -264,7 +282,7 @@ export class SetTargetComponent implements OnInit {
     this.form.get('currant_price')?.valueChanges.subscribe(() => {
       this.updateCalculatedFields();
     });
-  
+
     this.form.get('base_price')?.valueChanges.subscribe(() => {
       this.updateCalculatedFields();
     });
@@ -272,18 +290,18 @@ export class SetTargetComponent implements OnInit {
       this.updateCalculatedFields();
     });
   }
-  
+
   updateCalculatedFields() {
     const basePrice = this.form.get('base_price')?.value;
     const currantPrice = this.form.get('currant_price')?.value;
     const availableCoins = this.form.get('available_coins')?.value;
-  
+
     // Calculate current_return_x
     if (basePrice && currantPrice) {
       const currentReturnX = currantPrice / basePrice;
       this.form.get('current_return_x')?.patchValue(currentReturnX.toFixed(2), { emitEvent: false });
     }
-  
+
     // Calculate current_value
     if (currantPrice && availableCoins) {
       const currentValue = currantPrice * availableCoins;
@@ -292,7 +310,7 @@ export class SetTargetComponent implements OnInit {
   }
   addSetTarget() {
     // console.log('from',this.form.value);
-    
+
     if (this.form.valid) {
       this._traderService.addSetTarget(this.form.getRawValue()).subscribe({
         next: (res: any) => {
@@ -321,7 +339,7 @@ export class SetTargetComponent implements OnInit {
     }
     this.validateExactPercentage();
     if (this.percentageError) {
-      return; 
+      return;
     }
   }
 
@@ -330,8 +348,8 @@ export class SetTargetComponent implements OnInit {
     if (this.form.valid) {
       this._traderService.editSetTarget(this.sale_target_id, data).subscribe({
         next: (res: any) => {
-         
-          
+
+
           if (res.status == 200) {
             this._toastrService.success(res.message);
             // this.router.navigate([
@@ -391,7 +409,7 @@ export class SetTargetComponent implements OnInit {
       footerArray.push(
         this.fb.group({
           sale_target_value: [
-            item.sale_target_value ,
+            item.sale_target_value,
             [Validators.min(0), Validators.max(100)],
           ],
           sale_target_percent: [item.sale_target_percent],
@@ -408,9 +426,9 @@ export class SetTargetComponent implements OnInit {
     return match ? match[1] : coin;
   }
 
-    // cancel route location service
-    goToback() {
-      this.location.back();
-    }
+  // cancel route location service
+  goToback() {
+    this.location.back();
+  }
 }
 

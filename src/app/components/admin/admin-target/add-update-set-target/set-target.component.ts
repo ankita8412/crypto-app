@@ -43,6 +43,7 @@ export class SetTargetComponent implements OnInit {
       this.isEdit = true;
       this.isCurrentPriceReadonly = false;
       this.isMarketCapReadonly = false;
+      this.isFDVReadonly = false
     }
     this.getAllCoinList();
     this.searchKeyChanged.pipe(debounceTime(100)).subscribe((key) => {
@@ -138,6 +139,9 @@ export class SetTargetComponent implements OnInit {
     // Reset current price and error states
     this.form.controls['currant_price'].reset();
     this.form.controls['market_cap'].reset();
+    this.form.controls['fdv_ratio'].reset();
+    this.fetchFDVError = false;
+    this.isFDVReadonly = true;
     this.fetchCurrentPriceError = false;
     this.isCurrentPriceReadonly = true;
     this.fetchMarketCapError = false;
@@ -158,7 +162,7 @@ export class SetTargetComponent implements OnInit {
             this._traderService.getCurrentPriceByTicker(selectedCoin.short_name).subscribe({
               next: (res: any) => {
                 const currentPrice = res?.data?.currentPrice;
-                // const FDV = res?.data?.FDV
+                const FDV = res?.data?.FDV
                 const MarketCap = res?.data?.mktcap;
 
                 // Check if currentPrice, FDV, and MarketCap are valid numbers
@@ -176,6 +180,18 @@ export class SetTargetComponent implements OnInit {
                 }
 
                 // Handle MarketCap logic
+                if (FDV && !isNaN(FDV)) {
+                  this.isLoading = true;
+                  this.fetchFDVError = false;
+                  this.isFDVReadonly = true;
+                  this.form.controls['fdv_ratio'].patchValue(Number(FDV).toFixed(4));
+                } else {
+                  this.isLoading = true;
+                  this.fetchFDVError = true;
+                  this.isFDVReadonly = false;
+                  this.form.controls['fdv_ratio'].setErrors({ required: true });
+                }
+                // Handle MarketCap logic
                 if (MarketCap && !isNaN(MarketCap)) {
                   this.isLoading = true;
                   this.fetchMarketCapError = false;
@@ -188,8 +204,6 @@ export class SetTargetComponent implements OnInit {
                   this.form.controls['market_cap'].setErrors({ required: true });
                 }
 
-
-
               },
               error: (err) => {
                 // Log the error for debugging purposes
@@ -199,6 +213,14 @@ export class SetTargetComponent implements OnInit {
                 this.fetchCurrentPriceError = true; // Mark fetch as failed
                 this.isCurrentPriceReadonly = false; // Allow typing
                 this.form.controls['currant_price'].setErrors({ required: true });
+
+                this.fetchMarketCapError = true;
+                this.isMarketCapReadonly = false;
+                this.form.controls['market_cap'].setErrors({ required: true });
+
+                this.fetchFDVError = true;
+                this.isFDVReadonly = false;
+                this.form.controls['fdv_ratio'].setErrors({ required: true });
               },
             });
           }
