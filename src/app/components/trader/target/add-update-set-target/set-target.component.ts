@@ -107,13 +107,24 @@ export class SetTargetComponent implements OnInit {
         const value = parseInt(control.get('sale_target_value')?.value, 10) || 0;
         return sum + value;
       }, 0);
-      return total === 100 ? null : { totalNot100: true };
+      return total > 100 ? { totalExceeds100: true } : null;
     };
   }
   // Validate and prevent submission
   validateExactPercentage(): void {
     this.form.updateValueAndValidity();
-    this.percentageError = this.form.hasError('totalNot100', 'setTargetFooter');
+    const total = this.setTargetFooterArray.controls.reduce((sum, control) => {
+      return sum + (parseInt(control.get('sale_target_value')?.value, 10) || 0);
+    }, 0);
+  
+    // Automatically reset if total exceeds 100
+    if (total > 100) {
+      this._toastrService.clear();
+      this._toastrService.warning('Total percentage cannot exceed 100%.');
+      this.percentageError = true;
+    } else {
+      this.percentageError = false;
+    }
     // if (this.percentageError) {
     //   this._toastrService.warning('The total percentage of all inputs must be exactly 100%.');
     //   this._toastrService.clear();
@@ -309,8 +320,6 @@ export class SetTargetComponent implements OnInit {
     }
   }
   addSetTarget() {
-    // console.log('from',this.form.value);
-
     if (this.form.valid) {
       this._traderService.addSetTarget(this.form.getRawValue()).subscribe({
         next: (res: any) => {
