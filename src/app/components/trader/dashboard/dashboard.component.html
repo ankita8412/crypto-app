@@ -47,8 +47,8 @@
               <th scope="col">Total Coins</th>
               <th scope="col">Time Frame</th>
               <th scope="col">FDV</th>
-              <th *ngFor="let i of [1, 2, 3, 4, 5]" scope="col">Sale Target {{ i }} Coins</th>
               <th *ngFor="let i of [1, 2, 3, 4, 5]" scope="col">Sale Target {{ i }}</th>
+              <th *ngFor="let i of [1, 2, 3, 4, 5]" scope="col">Sale Target {{ i }} Coins</th>
             </tr>
           </thead>
           <tbody>
@@ -57,8 +57,8 @@
               <td>{{ (item.coin.split(' (')[0]) || "--" }}</td>
               <td>{{ item.base_price || "--" }}</td>
               <!-- <td>{{ item.currant_price || "--" }}</td> -->
-              <td>{{ item.currentPrice || "--" }}</td>
               <td>{{ item.marketCap !== null && item.marketCap !== undefined ? (item.marketCap | number:'1.2-2') : item.marketCap === 0 ? '0.00' : '--' }}</td>
+              <td>{{ item.currentPrice || "--" }}</td>
               <td>{{ item.return_x || "--" }}</td>
               <td>{{ item.current_returnX !== null && item.current_returnX !== undefined ? (item.current_returnX | number:'1.2-2') : item.current_returnX === 0 ? '0.00' : '--' }}</td>
               <td>{{ item.currentValue !== null && item.currentValue !== undefined ? (item.currentValue | number:'1.2-2') : '--' }}</td>
@@ -66,7 +66,6 @@
               <td>{{ item.available_coins || "--" }}</td>
               <td>{{item.timeframe || "--" }}</td>
               <td>{{ item.fdvRatio !== null && item.fdvRatio !== undefined ? (item.fdvRatio ) : item.fdvRatio === 0 ? '0.0' : '--' }}</td>
-              <td *ngFor="let footer of item.footer">{{footer.sale_target_coin || "--"}}</td>
               <td *ngFor="let footer of item.footer">{{footer.sale_target || "--"}} <br>
                 <small class="status-btn reached-text"> {{footer.target_status}}</small><br>
                 <small class="status-btn2 reached-text"  
@@ -77,6 +76,8 @@
                 (click)="footer.complition_id === 3 && submit(item, footer, item.currentPrice)">
                  {{(footer.complition_status | titlecase) || "--"}}</small>
               </td>
+              <td *ngFor="let footer of item.footer">{{footer.sale_target_coin || "--"}}</td>
+          
             </tr>
             <tr class="fw-bold text-center" *ngIf="allReachedSetTargetList.length === 0">
               <td colspan="20" class="text-danger no-data">No Data Available</td>

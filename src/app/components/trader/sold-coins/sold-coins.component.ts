@@ -16,6 +16,7 @@ export class SoldCoinsComponent implements OnInit{
   searchKey: any = '';
   searchControl: FormControl = new FormControl('');
   allSoldSetTargetList: Array<any> = [];
+  totalCurrentValue:any;
   constructor(private _adminService: AdminService) {}
   ngOnInit(): void {
     this.getAllSoldSetTargetList();
@@ -27,6 +28,7 @@ export class SoldCoinsComponent implements OnInit{
       next: (res: any) => {
         if (res.data.length > 0) {
           this.allSoldSetTargetList = res.data;
+          this.totalCurrentValue = res.totalSum;
           this.total = res.pagination.total;
         } else {
           this.allSoldSetTargetList = [];
