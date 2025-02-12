@@ -64,6 +64,7 @@ export class SetTargetComponent implements OnInit {
       coin: [null, Validators.required],
       base_price: [null, Validators.required],
       currant_price: [null, Validators.required],
+      exchange : [null,Validators.required],
       market_cap: ['', Validators.required],
       return_x: [null, Validators.required],
       available_coins: [null, Validators.required],
@@ -396,6 +397,7 @@ export class SetTargetComponent implements OnInit {
         this.searchKeyChanged.next(targetData.ticker);
         this.control['ticker'].patchValue(targetData.ticker)
         this.control['coin'].patchValue(targetData.coin);
+        this.control['exchange'].patchValue(targetData.exchange);
         this.control['base_price'].patchValue(targetData.base_price);
         this.control['base_price'].patchValue(targetData.base_price)
         this.control['currant_price'].patchValue(targetData.currant_price);

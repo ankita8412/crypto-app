@@ -21,6 +21,25 @@ export class AuthService {
   });
 }
 
+
+
+//Change password
+changePassword(data: any): Observable<any> {
+  return this.http.put(this.url + 'api/admin/change-password', data);
+}
+
+//to check user and email id is exist
+checkUserEmail( user_name:any, email_id:any):Observable<any>{
+  let params = {
+    user_name:user_name,
+    email_id:email_id
+  }
+  if ( user_name === '' || user_name === 'null' ) delete params.user_name;
+  if ( email_id === '' || email_id === 'null' ) delete params.email_id;
+  return this.http.get(this.url+'api/gambler/check-data',{
+    params:params
+  })
+}
 public isAuthenticated(): boolean {
   return this.getToken() !== null;
 }

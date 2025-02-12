@@ -6,6 +6,7 @@ import { CoinsComponent } from './coins/coins.component';
 import { TargetComponent } from './target/target.component';
 import { SetTargetComponent } from './target/add-update-set-target/set-target.component';
 import { SoldCoinsComponent } from './sold-coins/sold-coins.component';
+import { ChangePasswordComponent } from './change-password/change-password.component';
 
 const routes: Routes = [
   { path: '', redirectTo: 'trader', pathMatch: 'full' },
@@ -52,6 +53,13 @@ const routes: Routes = [
   {
     path: "sold-coins",
     component:SoldCoinsComponent,
+    pathMatch: "full",
+    outlet: "trader_Menu",
+    canActivate: [AuthGuard]
+  },
+  {
+    path: "change-password",
+    component:ChangePasswordComponent,
     pathMatch: "full",
     outlet: "trader_Menu",
     canActivate: [AuthGuard]

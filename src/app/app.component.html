@@ -32,8 +32,23 @@
             </div>
         </div>
         <div class="col-md-3 align-self-center d-flex justify-content-end">
-            <!-- <small>Profile</small> -->
-            <img src="assets/dashboard/Profile.svg" alt="placeholder" class="img-fluid placeholder-img ms-3">
+              <!-- Profile Image Dropdown -->
+              <li class="custom-menu custom-nav-item user-center dropdown pb-0">
+              <a class="dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+                  <img src="assets/dashboard/Profile.svg" alt="placeholder" class="img-fluid placeholder-img ms-3">
+                </a>
+                <ul class="dropdown-menu">
+                  <li class="p-2 text-center">
+                    <strong>{{username }}</strong> <br>
+                    <small class="text-muted">{{usertype}}</small>
+                  </li>
+                  <li><hr class="dropdown-divider"></li>
+                  <li >
+                    <a class="dropdown-item cursor-pointer " (click)="openDialog()">Change Password</a>
+                  </li>
+                </ul>
+              </li>
+              
             <!-- <img src="assets/dashboard/setting.svg" alt="setting" class="img-fluid ms-3 profile-img"> -->
             <img src="assets/dashboard/logout.svg" alt="logout" class="img-fluid ms-2 me-5 profile-img logout-img" (click)="logout()">
         </div>
@@ -81,8 +96,22 @@
             </div>
         </div>
         <div class="col-md-3 align-self-center d-flex justify-content-end ">
-            <!-- <small>Profile</small> -->
-            <img src="assets/dashboard/Profile.svg" alt="placeholder" class="img-fluid placeholder-img ms-3">
+                 <!-- Profile Image Dropdown -->
+                 <li class="custom-menu custom-nav-item user-center dropdown pb-0">
+                    <a class="dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+                        <img src="assets/dashboard/Profile.svg" alt="placeholder" class="img-fluid placeholder-img ms-3">
+                      </a>
+                      <ul class="dropdown-menu">
+                        <li class="p-2 text-center">
+                          <strong>{{username }}</strong> <br>
+                          <small class="text-muted">{{usertype}}</small>
+                        </li>
+                        <li><hr class="dropdown-divider"></li>
+                        <li >
+                          <a class="dropdown-item cursor-pointer " (click)="openDialog()">Change Password</a>
+                        </li>
+                      </ul>
+                    </li>
             <!-- <img src="assets/dashboard/setting.svg" alt="setting" class="img-fluid ms-3 profile-img"> -->
             <img src="assets/dashboard/logout.svg" alt="logout" class="img-fluid ms-2 me-5 profile-img logout-img" (click)="logout()">
         </div>
