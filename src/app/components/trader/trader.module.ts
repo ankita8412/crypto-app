@@ -7,6 +7,7 @@ import { TargetComponent } from './target/target.component';
 import { SetTargetComponent } from './target/add-update-set-target/set-target.component';
 import { SharedModule } from 'src/app/shared/shared.module';
 import { SoldCoinsComponent } from './sold-coins/sold-coins.component';
+import { ChangePasswordComponent } from './change-password/change-password.component';
 
 
 @NgModule({
@@ -15,7 +16,8 @@ import { SoldCoinsComponent } from './sold-coins/sold-coins.component';
     DashboardComponent,
     TargetComponent,
     SetTargetComponent,
-    SoldCoinsComponent
+    SoldCoinsComponent,
+    ChangePasswordComponent
   ],
   imports: [
     CommonModule,

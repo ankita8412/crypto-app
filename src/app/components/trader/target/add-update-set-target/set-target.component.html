@@ -7,8 +7,8 @@
     <small class="text-center fw-bold fs-5 mb-4">{{ isEdit ? " Edit" : "Add " }} Set Target</small>
     <div class="card col-md-10 p-5">
       <form [formGroup]="form">
-        <div class="row pb-4 d-flex justify-content-center ">
-          <div class="col-md-3 px-2" >
+        <div class="row pb-4 d-flex ">
+          <div class="col-md-2 px-2" >
             <label  for="ticker_symbol" class="mb-2">Ticker </label>
             <mat-select
               #singleSelect
@@ -47,7 +47,7 @@
               <small class="current-price-validation">Ticker Required.</small>
             </div>
           </div>
-          <div class="col-md-3 mb-3 ">
+          <div class="col-md-2 mb-3 ">
             <label  for="ticker_symbol" class="mb-2">Coin Name</label>
             <input
               type="text"
@@ -61,6 +61,22 @@
                   control['coin'].invalid &&
                   (control['coin'].dirty ||
                     control['coin'].touched)
+              }"
+            />
+          </div>
+          <div class="col-md-2 mb-3 ">
+            <label  for="ticker_symbol" class="mb-2">Exchange</label>
+            <input
+              type="text"
+              class="form-control "
+              id="ticker_symbol"
+              formControlName="exchange"
+              placeholder="Exchange"
+              [ngClass]="{
+                'is-invalid':
+                  control['exchange'].invalid &&
+                  (control['exchange'].dirty ||
+                    control['exchange'].touched)
               }"
             />
           </div>

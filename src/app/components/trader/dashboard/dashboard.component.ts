@@ -246,6 +246,24 @@ export class DashboardComponent implements OnInit{
       this.perPage = event.pageSize;
       this.getAllReachedSetTargetList();
     }
-  
+    downloadDashboardReport(){
+      this._traderService.downloadDashboardReport().subscribe({
+        next: (blob: Blob) => {
+          const url = window.URL.createObjectURL(blob);
+          const link = document.createElement('a');
+          link.href = url;
+          link.download = 'Sale-Target-Report.xlsx';  // Set a proper filename
+          link.click();
+          window.URL.revokeObjectURL(url);
+        },
+        error: (err: any) => {
+          if (err.error.status == 401 || err.error.status == 422) {
+            this._toastrService.warning(err.error.message);
+          } else {
+            this._toastrService.warning('No Data Found');
+          }
+        }
+      })
+    }
   }
   

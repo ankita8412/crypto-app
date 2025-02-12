@@ -3,6 +3,8 @@ import { FormControl } from '@angular/forms';
 import { debounceTime } from 'rxjs';
 import { AdminService } from '../../admin/admin.service';
 import { PageEvent } from '@angular/material/paginator';
+import { ToastrService } from 'ngx-toastr';
+import { TraderService } from '../trader.service';
 
 @Component({
   selector: 'app-sold-coins',
@@ -17,7 +19,7 @@ export class SoldCoinsComponent implements OnInit{
   searchControl: FormControl = new FormControl('');
   allSoldSetTargetList: Array<any> = [];
   totalCurrentValue:any;
-  constructor(private _adminService: AdminService) {}
+  constructor(private _adminService: AdminService,private _traderService: TraderService,private _toastrService:ToastrService) {}
   ngOnInit(): void {
     this.getAllSoldSetTargetList();
     this.searchControl.valueChanges.pipe(debounceTime(550))
@@ -45,6 +47,25 @@ export class SoldCoinsComponent implements OnInit{
       this.page = event.pageIndex + 1;
       this.perPage = event.pageSize;
       this.getAllSoldSetTargetList();
+    }
+    downloadSoldReport(){
+      this._traderService.downloadSoldReport().subscribe({
+        next: (blob: Blob) => {
+          const url = window.URL.createObjectURL(blob);
+          const link = document.createElement('a');
+          link.href = url;
+          link.download = 'Sold-Coin-Report.xlsx';  // Set a proper filename
+          link.click();
+          window.URL.revokeObjectURL(url);
+        },
+        error: (err: any) => {
+          if (err.error.status == 401 || err.error.status == 422) {
+            this._toastrService.warning(err.error.message);
+          } else {
+            this._toastrService.warning('No Data Found');
+          }
+        }
+      })
     }
 }
 

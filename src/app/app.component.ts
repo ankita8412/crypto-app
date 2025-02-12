@@ -2,6 +2,9 @@ import { AfterContentChecked, Component, OnInit } from '@angular/core';
 import { SharedService } from './shared/shared.service';
 import { Router } from '@angular/router';
 import Swal from 'sweetalert2';
+import { ForgotPasswordComponent } from './components/auth/login/forgot-password/forgot-password.component';
+import { MatDialog } from '@angular/material/dialog';
+import { ChangePasswordComponent } from './components/trader/change-password/change-password.component';
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
@@ -13,9 +16,12 @@ export class AppComponent implements OnInit,AfterContentChecked{
   isLoading = false;
   isLoading1 = false;
   isTrader = false;
+username:any;
+usertype:any;
   isAdminDashboard = false;
 
-  constructor(private _sharedService: SharedService,private router: Router,){}
+
+  constructor(private _sharedService: SharedService,private router: Router,private dialog: MatDialog,){}
   
   ngOnInit() {
     this._sharedService.isLoading$.subscribe({
@@ -53,7 +59,10 @@ export class AppComponent implements OnInit,AfterContentChecked{
     }
     let userData: any = localStorage.getItem('data');
     if (JSON.parse(userData)) {
-      this.data = JSON.parse(userData);
+      this.data = JSON.parse(userData);   
+       this.username = this.data.user_name
+       this.usertype = this.data.user_type
+         
     }
   }
 
@@ -74,6 +83,22 @@ export class AppComponent implements OnInit,AfterContentChecked{
         }
       });
     }
+
+    openDialog() {
+      const dialogRef = this.dialog.open(ChangePasswordComponent, {
+        width: '400px', // Adjust width as needed
+        maxWidth: '90vw', // Keeps it responsive
+        disableClose: false, // Prevents closing on outside click
+        panelClass: 'custom-dialog-center', // Custom class for centering
+      });
+    
+      dialogRef.afterClosed().subscribe((message: any) => {
+     
+      });
+    }
+    
+    
+ 
   logoutUser() {
     localStorage.clear()
     window.location.href = '#/auth'; 

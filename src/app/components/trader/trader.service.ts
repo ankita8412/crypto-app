@@ -68,6 +68,16 @@ export class TraderService {
       responseType: 'blob',
     })
   }
+  downloadDashboardReport():Observable<any>{
+    return this.http.get(this.baseUrl + 'api/sale-target-header/download-dashboard',{
+      responseType: 'blob',
+    })
+  }
+  downloadSoldReport():Observable<any>{
+    return this.http.get(this.baseUrl + 'api/sale-target-header/download-sold-coin',{
+      responseType: 'blob',
+    })
+  }
   deleteRecordById(id:any,status:any):Observable<any>{
       let params = new HttpParams().set('status', status);
       return this.http.delete(this.baseUrl + 'api/sale-target-header/' + id,{

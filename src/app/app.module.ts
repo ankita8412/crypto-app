@@ -9,6 +9,7 @@ import { provideToastr, ToastrModule } from 'ngx-toastr';
 import { AuthGuard } from './shared/auth-guard.service';
 import { AuthInterceptorService } from './shared/auth-interceptor.service';
 import { SharedModule } from './shared/shared.module';
+import { MatDialogModule } from '@angular/material/dialog';
 
 @NgModule({
   declarations: [
@@ -19,6 +20,7 @@ import { SharedModule } from './shared/shared.module';
     AppRoutingModule,
     BrowserAnimationsModule,
     HttpClientModule,
+    MatDialogModule,
     ToastrModule.forRoot({
       timeOut: 5000,
       positionClass: 'toast-top-right',
