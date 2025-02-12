@@ -72,6 +72,7 @@
               id="ticker_symbol"
               formControlName="exchange"
               placeholder="Exchange"
+              (input)="checkExchangeConi()"
               [ngClass]="{
                 'is-invalid':
                   control['exchange'].invalid &&
@@ -79,6 +80,10 @@
                     control['exchange'].touched)
               }"
             />
+                <!-- Error message when unable to fetch price -->
+                <div *ngIf="form.controls['exchange'].hasError('invalidExchange')" class="text-danger">
+                  <small class="current-price-validation">Coin And Exchange already exist</small>
+                </div>
           </div>
           <div class="col-md-3 mb-3">
             <label  for="ticker_symbol" class="mb-2">Current Price</label>
