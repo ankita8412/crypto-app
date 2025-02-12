@@ -38,10 +38,17 @@
                   <img src="assets/dashboard/Profile.svg" alt="placeholder" class="img-fluid placeholder-img ms-3">
                 </a>
                 <ul class="dropdown-menu">
-                  <li class="p-2 text-center">
-                    <strong>{{username }}</strong> <br>
-                    <small class="text-muted">{{usertype}}</small>
-                  </li>
+                    <li class="p-2 text-center">
+                        <strong>
+                          <i class="fa fas fa-user-circle me-1"></i> <!-- Font Awesome User Icon -->
+                          {{ username | titlecase }}
+                        </strong> 
+                        <br>
+                        <small class="text-muted me-2">
+                          <i class="fa fas fa-circle me-2"></i> <!-- Font Awesome Circle Icon -->
+                          {{ usertype | titlecase }}
+                        </small>
+                      </li>
                   <li><hr class="dropdown-divider"></li>
                   <li >
                     <a class="dropdown-item cursor-pointer " (click)="openDialog()">Change Password</a>
@@ -103,9 +110,16 @@
                       </a>
                       <ul class="dropdown-menu">
                         <li class="p-2 text-center">
-                          <strong>{{username }}</strong> <br>
-                          <small class="text-muted">{{usertype}}</small>
-                        </li>
+                            <strong>
+                              <i class="fa fas fa-user-circle me-1"></i> <!-- Font Awesome User Icon -->
+                              {{ username | titlecase }}
+                            </strong> 
+                            <br>
+                            <small class="text-muted me-2">
+                              <i class="fa fas fa-circle me-2"></i> <!-- Font Awesome Circle Icon -->
+                              {{ usertype | titlecase }}
+                            </small>
+                          </li>
                         <li><hr class="dropdown-divider"></li>
                         <li >
                           <a class="dropdown-item cursor-pointer " (click)="openDialog()">Change Password</a>

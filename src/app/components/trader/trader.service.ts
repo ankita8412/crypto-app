@@ -106,4 +106,8 @@ export class TraderService {
     addupdateCurrentPrice(data:any): Observable<any>{
       return this.http.post(this.baseUrl + 'api/current-price/add-update' ,'')
     }
+      // add set target 
+  CheckExchangeCoin(data:any): Observable<any>{
+    return this.http.post(this.baseUrl + 'api/sale-target-header/coin-exchange' ,data)
+  }
 }

@@ -49,6 +49,11 @@ export class SetTargetComponent implements OnInit {
     this.searchKeyChanged.pipe(debounceTime(100)).subscribe((key) => {
       this.getAllCoinList(key);
     });
+    this.form.get('exchange')?.valueChanges.subscribe((value) => {
+      if (value && this.form.get('exchange')?.valid) {
+        this.checkExchangeConi();
+      }
+    });
   }
   createForm() {
     this.form = this.fb.group({
@@ -430,5 +435,35 @@ export class SetTargetComponent implements OnInit {
   // cancel route location service
   goToback() {
     this.location.back();
+  }
+  checkExchangeConi() {
+    const data = {
+      coin: this.form.value.coin,
+      exchange: this.form.value.exchange
+    };
+  
+    // Check if ticker and exchange have values before proceeding
+    if (data.coin && data.exchange) {
+      this._traderService.CheckExchangeCoin(data).subscribe({
+        next: (res: any) => {
+          if (res.status === 200 || res.status === 201) {
+            this._toastrService.clear();
+            this._toastrService.success(res.message);
+            this.form.controls['exchange'].setErrors(null); // Clear error if valid
+          } else {
+            this._toastrService.clear();
+            this._toastrService.warning(res.message);
+            this.form.controls['exchange'].setErrors({ invalidExchange: true }); // Set error
+          }
+        },
+        error: (err: any) => {
+          this._toastrService.warning(err.error.message);
+          this.form.controls['exchange'].setErrors({ invalidExchange: true }); // Set error
+        }
+      });
+    } else {
+      this.form.markAllAsTouched();
+      this._toastrService.warning('Fill required fields');
+    }
   }
 }
