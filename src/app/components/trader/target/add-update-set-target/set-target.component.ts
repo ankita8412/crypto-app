@@ -458,9 +458,10 @@ export class SetTargetComponent implements OnInit {
   checkExchangeConi() {
     const data = {
       coin: this.form.value.coin,
-      exchange: this.form.value.exchange
+      exchange: this.form.value.exchange,
+      sale_target_id: this.isEdit ? this.sale_target_id : null
     };
-  
+    
     // Check if ticker and exchange have values before proceeding
     if (data.coin && data.exchange) {
       this._traderService.CheckExchangeCoin(data).subscribe({
