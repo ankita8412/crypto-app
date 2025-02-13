@@ -33,6 +33,7 @@ export class SetTargetComponent implements OnInit {
   fetchMarketCapError = false;
   isMarketCapReadonly = true;
   isLoading = true;
+  isUpdating = false;
   private searchKeyChanged: Subject<string> = new Subject<string>();
   constructor(
     private _traderService: TraderService,
@@ -57,11 +58,15 @@ export class SetTargetComponent implements OnInit {
     this.searchKeyChanged.pipe(debounceTime(100)).subscribe((key) => {
       this.getAllCoinList(key);
     });
-    this.form.get('exchange')?.valueChanges.subscribe((value) => {
-      if (value && this.form.get('exchange')?.valid) {
-        this.checkExchangeConi();
+    this.form.controls['exchange'].valueChanges
+    .pipe(debounceTime(600)) // 500ms delay rakhega
+    .subscribe(value => {
+      if (this.isUpdating) return;
+      if (value) {
+        this.checkExchangeConi(); // Jab user typing stop karega tab call hoga
       }
     });
+
   }
   createForm() {
     this.form = this.fb.group({
@@ -395,6 +400,7 @@ export class SetTargetComponent implements OnInit {
   }
 
   getSetTargetById(id: any) {
+    this.isUpdating = true; 
     this._traderService.getSetTargetById(id).subscribe({
       next: (res: any) => {
         const targetData = res.data;
@@ -415,6 +421,9 @@ export class SetTargetComponent implements OnInit {
         this.control['timeframe'].patchValue(targetData.timeframe)
         this.control['fdv_ratio'].patchValue(targetData.fdv_ratio);
         this.patchFooterData(targetData.footer);
+        setTimeout(() => {
+          this.isUpdating = false; // Enable validation again after update
+        }, 600);
       },
     });
   }
@@ -458,12 +467,11 @@ export class SetTargetComponent implements OnInit {
         next: (res: any) => {
           if (res.status === 200 || res.status === 201) {
             this._toastrService.clear();
-            this._toastrService.success(res.message);
-            this.form.controls['exchange'].setErrors(null); // Clear error if valid
+            this.form.controls['exchange'].setErrors(null);
           } else {
             this._toastrService.clear();
             this._toastrService.warning(res.message);
-            this.form.controls['exchange'].setErrors({ invalidExchange: true }); // Set error
+            this.form.controls['exchange'].setErrors({ invalidExchange: true }); 
           }
         },
         error: (err: any) => {
