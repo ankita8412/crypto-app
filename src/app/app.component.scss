@@ -5,6 +5,7 @@
     border-radius: 10px;
     padding: 10px 0px 10px 0px;
     cursor: pointer;
+ 
 }
 .placeholder-img{
     height: 60px;
@@ -22,6 +23,7 @@
     height: 40px;
     width: 50px;
 }
+
 .dropdown-toggle{
     cursor: pointer;
 }
@@ -44,6 +46,30 @@
     word-break: break-word;
     cursor: initial;
 }
+.dropdown-toggle::after {
+    transition: transform 0.3s ease-in-out; /* Smooth rotation */
+}
+
+.dropdown-toggle[aria-expanded="true"]::after {
+    transform: rotate(180deg); /* Rotate when dropdown is open */
+}
+.dropdown-toggle::after {
+    font-size: 20px; /* Increase icon size */
+    color: black !important; /* Make icon black */
+    width: 20px;  /* Adjust width */
+    display: inline-block;
+}
+::ng-deep .dropdown-toggle::after {
+    display: inline-block;
+    margin-left: .255em;
+    vertical-align: .255em;
+    content: "";
+    border-top: 0.5em solid !important;
+    border-right: 0.5em solid transparent !important;
+    border-bottom: 0;
+    border-left: .5em solid transparent !important;
+}
+
 .custom-menu{
     list-style: none;
     display: flex;

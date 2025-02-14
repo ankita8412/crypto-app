@@ -31,14 +31,15 @@
                 </div> -->
             </div>
         </div>
-        <div class="col-md-3 align-self-center d-flex justify-content-end">
+        <div class="col-md-3 align-self-center d-flex justify-content-center ">
               <!-- Profile Image Dropdown -->
               <li class="custom-menu custom-nav-item user-center dropdown pb-0">
-              <a class="dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
-                  <img src="assets/dashboard/Profile.svg" alt="placeholder" class="img-fluid placeholder-img ms-3">
-                </a>
-                <ul class="dropdown-menu">
-                    <li class="p-2 text-center">
+                <a class="dropdown-toggle  d-flex align-items-center" data-bs-toggle="dropdown" aria-expanded="false">
+                    <img src="assets/dashboard/Profile.svg" alt="placeholder" class="img-fluid placeholder-img ms-3 profile-img">
+                  </a>
+                  
+                <ul class="dropdown-menu  p-0">
+                    <li class="p-2 ">
                         <strong>
                           <i class="fa fas fa-user-circle me-1"></i> <!-- Font Awesome User Icon -->
                           {{ username | titlecase }}
@@ -49,15 +50,17 @@
                           {{ usertype | titlecase }}
                         </small>
                       </li>
-                  <li><hr class="dropdown-divider"></li>
-                  <li >
-                    <a class="dropdown-item cursor-pointer " (click)="openDialog()">Change Password</a>
+                  <li><hr class="dropdown-divider my-0"></li>
+                  <li>
+                    <small class="dropdown-item cursor-pointer ps-2" (click)="openDialog()">
+                      <i class="fa fas fa-key me-2"></i> Change Password
+                    </small>
                   </li>
                 </ul>
               </li>
               
             <!-- <img src="assets/dashboard/setting.svg" alt="setting" class="img-fluid ms-3 profile-img"> -->
-            <img src="assets/dashboard/logout.svg" alt="logout" class="img-fluid ms-2 me-5 profile-img logout-img" (click)="logout()">
+            <img src="assets/dashboard/logout.svg" alt="logout" class="img-fluid ms-2 me-2 logout-img" (click)="logout()">
         </div>
     </div>
     <div class="row m-0 p-0">
@@ -102,14 +105,14 @@
                 </div>
             </div>
         </div>
-        <div class="col-md-3 align-self-center d-flex justify-content-end ">
+        <div class="col-md-3 align-self-center d-flex justify-content-center ">
                  <!-- Profile Image Dropdown -->
                  <li class="custom-menu custom-nav-item user-center dropdown pb-0">
                     <a class="dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
                         <img src="assets/dashboard/Profile.svg" alt="placeholder" class="img-fluid placeholder-img ms-3">
                       </a>
                       <ul class="dropdown-menu">
-                        <li class="p-2 text-center">
+                        <li class="p-2 ">
                             <strong>
                               <i class="fa fas fa-user-circle me-1"></i> <!-- Font Awesome User Icon -->
                               {{ username | titlecase }}
@@ -121,13 +124,15 @@
                             </small>
                           </li>
                         <li><hr class="dropdown-divider"></li>
-                        <li >
-                          <a class="dropdown-item cursor-pointer " (click)="openDialog()">Change Password</a>
-                        </li>
+                        <li>
+                            <small class="dropdown-item cursor-pointer " (click)="openDialog()">
+                              <i class="fa fas fa-key me-2"></i> Change Password
+                            </small>
+                          </li>
                       </ul>
                     </li>
             <!-- <img src="assets/dashboard/setting.svg" alt="setting" class="img-fluid ms-3 profile-img"> -->
-            <img src="assets/dashboard/logout.svg" alt="logout" class="img-fluid ms-2 me-5 profile-img logout-img" (click)="logout()">
+            <img src="assets/dashboard/logout.svg" alt="logout" class="img-fluid ms-2  profile-img logout-img" (click)="logout()">
         </div>
     </div>
     <div class="row m-0 p-0">
