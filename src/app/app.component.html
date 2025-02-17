@@ -32,6 +32,19 @@
             </div>
         </div>
         <div class="col-md-3 align-self-center d-flex justify-content-center ">
+            <!-- User Info Card -->
+<div class="user-info-card p-2 border rounded dashboard-menu-user">
+    <strong>
+      <i class="fa fas fa-user-circle me-1"></i> <!-- Font Awesome User Icon -->
+      {{ username | titlecase }}
+    </strong>
+    <br>
+    <small class="text-muted me-2">
+      <i class="fa fas fa-circle me-2"></i> <!-- Font Awesome Circle Icon -->
+      {{ usertype | titlecase }}
+    </small>
+  </div>
+  
               <!-- Profile Image Dropdown -->
               <li class="custom-menu custom-nav-item user-center dropdown pb-0">
                 <a class="dropdown-toggle  d-flex align-items-center" data-bs-toggle="dropdown" aria-expanded="false">
@@ -41,12 +54,12 @@
                 <ul class="dropdown-menu  p-0">
                     <li class="p-2 ">
                         <strong>
-                          <i class="fa fas fa-user-circle me-1"></i> <!-- Font Awesome User Icon -->
+                          <i class="fa fas fa-user-circle me-1"></i>
                           {{ username | titlecase }}
                         </strong> 
                         <br>
                         <small class="text-muted me-2">
-                          <i class="fa fas fa-circle me-2"></i> <!-- Font Awesome Circle Icon -->
+                          <i class="fa fas fa-circle me-2"></i> 
                           {{ usertype | titlecase }}
                         </small>
                       </li>
@@ -105,7 +118,20 @@
                 </div>
             </div>
         </div>
+        
         <div class="col-md-3 align-self-center d-flex justify-content-center ">
+                   <!-- User Info Card -->
+<div class="user-info-card p-2 border rounded dashboard-menu-user">
+    <strong>
+      <i class="fa fas fa-user-circle me-1"></i> <!-- Font Awesome User Icon -->
+      {{ username | titlecase }}
+    </strong>
+    <br>
+    <small class="text-muted me-2">
+      <i class="fa fas fa-circle me-2"></i> <!-- Font Awesome Circle Icon -->
+      {{ usertype | titlecase }}
+    </small>
+  </div>
                  <!-- Profile Image Dropdown -->
                  <li class="custom-menu custom-nav-item user-center dropdown pb-0">
                     <a class="dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">

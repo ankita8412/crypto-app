@@ -127,6 +127,11 @@ export class AdminDashboardComponent implements OnInit{
                   }
                   
                 });
+                                          // Sort the list by marketCap in descending order
+          this.allReachedSetTargetList.sort((a, b) => {
+            if (a.marketCap === '--' || b.marketCap === '--') return 0;
+            return b.marketCap - a.marketCap; // Sorting in descending order
+          });
               });
         }
         else{
@@ -278,5 +283,8 @@ export class AdminDashboardComponent implements OnInit{
         }
       }
     })
+  }
+  refreshPage() {
+    window.location.reload();
   }
 }

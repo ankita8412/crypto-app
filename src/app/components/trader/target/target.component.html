@@ -13,9 +13,10 @@
         #searchInput
           (input)="getSearchInput(searchInput.value)"/>
     </div>
-    <div class="col-md-3 mt-4">
+    <div class="col-md-4 mt-4 d-flex justify-content-center align-items-center ">
       <button class="btn btn-success download-btn" (click)="downloadReport()">Download</button>
-      <button class="btn add-btn ms-2" [routerLink]="[ '/trader', { outlets: { trader_Menu: 'add-set-target' } } ]" >Add</button>
+      <button class="btn add-btn mx-2" [routerLink]="[ '/trader', { outlets: { trader_Menu: 'add-set-target' } } ]" >Add</button>
+      <button class="btn  refresh-btn" (click)="refreshPage()">Refresh</button>
     </div>
     <small class="list-header"></small>
     <div class="card m-0 p-2 mt-2">
@@ -35,18 +36,19 @@
                   <img src="assets/dashboard/Pencil.svg" alt="Pencil Image" class="cursor-pointer edit-pencile">
                 </th>
                 <th scope="col">Coins</th>
+                <th scope="col">Exchange</th>
                 <th scope="col">Base Price</th>
                 <th scope="col">Current Price</th>
                 <th scope="col">Market Cap</th>
-                <th scope="col">Return X</th>
+                <th scope="col">Target Return X</th>
                 <th scope="col">Current Return X</th>
                 <th scope="col">Current Value</th>
                 <th scope="col">Final Sale Price</th>
                 <th scope="col">Total Coins</th>
-                <th scope="col">Time Frame</th>
+                <th scope="col">Major Unlock Date</th>
                 <th scope="col">FDV</th>
-                <th *ngFor="let i of [1, 2, 3, 4, 5]" scope="col">Sale Target  <br>{{ i }}</th>
-                <th *ngFor="let i of [1, 2, 3, 4, 5]" scope="col">Sale Target {{ i }} Coins</th>
+                <th *ngFor="let i of [1, 2, 3, 4, 5]" scope="col">Sale Price  <br>{{ i }}</th>
+                <th *ngFor="let i of [1, 2, 3, 4, 5]" scope="col">Sale Price {{ i }} Coins</th>
               </tr>
             </thead>
             <tbody>
@@ -57,19 +59,20 @@
                   <img src="assets/dashboard/Pencil.svg" alt="Pencil Image" class="cursor-pointer edit-pencile" [routerLink]="[ '/trader', { outlets: { trader_Menu: [ 'edit-set-target', item.sale_target_id ] } } ]">
                 </td>
                 <td>{{ (item.coin.split(' (')[0]) || "--" }}</td>
+                <td>{{item.exchange || "--" }}</td>
                 <td>{{ item.base_price || "--" }}</td>
                 <!-- <td>{{ item.currant_price || "--" }}</td> -->
-                <td [ngStyle]="{'color': item.currentPriceColor}">
-                  {{ item.currentPrice || '--' }}
+                <td [ngStyle]="{'color': item.update_current_price ? item.currentPriceColor : ''}">
+                  {{ item.update_current_price || item.current_price || '--' }}
                 </td>
-                <td>{{ item.marketCap !== null && item.marketCap !== undefined ? (item.marketCap | number:'1.2-2') : item.marketCap === 0 ? '0.00' : '--' }}</td>
+                <td>{{ item.market_cap !== null && item.market_cap !== undefined ? (item.market_cap | number:'1.2-2') : item.market_cap === 0 ? '0.00' : '--' }}</td>
                 <td>{{ item.return_x || "--" }}</td>
-                <td>{{ item.current_returnX !== null && item.current_returnX !== undefined ? (item.current_returnX | number:'1.2-2') : item.current_returnX === 0 ? '0.00' : '--' }}</td>
-                <td>{{ item.currentValue !== null && item.currentValue !== undefined ? (item.currentValue | number:'1.2-2') : '--' }}</td>
+                <td>{{ item.current_return_x !== null && item.current_return_x !== undefined ? (item.current_return_x | number:'1.2-2') : item.current_return_x === 0 ? '0.00' : '--' }}</td>
+                <td>{{ item.current_value !== null && item.current_value !== undefined ? (item.current_value | number:'1.2-2') : '--' }}</td>
                 <td>{{ item.final_sale_price || "--"}}</td>
                 <td>{{ item.available_coins || "--" }}</td>
                 <td>{{item.timeframe || "--" }}</td>
-                <td>{{ item.fdvRatio !== null && item.fdvRatio !== undefined ? (item.fdvRatio) : item.fdvRatio === 0 ? '0.0' : '--' }}</td>
+                <td>{{ item.fdv_ratio !== null && item.fdv_ratio !== undefined ? (item.fdv_ratio) : item.fdv_ratio === 0 ? '0.0' : '--' }}</td>
                 <td *ngFor="let footer of item.footer">{{footer.sale_target || "--"}} <br>
                   <small class="status-btn reached-text"> {{footer.target_status}}</small><br>
                   <small class="status-btn2 reached-text"  

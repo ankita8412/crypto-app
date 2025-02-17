@@ -10,8 +10,9 @@
         #searchInput (input)="getSearchInput(searchInput.value)"
       />
     </div>
-    <div class="col-md-1 mt-5 me-5 ">
-      <button class="btn btn-success download-btn" (click)="downloadSoldReport()">Download</button>
+    <div class="col-md-2 mt-5 me-5 d-flex">
+      <button class="btn btn-success download-btn me-2" (click)="downloadSoldReport()">Download</button>
+      <button class="btn  refresh-btn" (click)="refreshPage()">Refresh</button>
     </div>
     <div class="row m-0 p-0">
       <div class="card p-2 mt-2">

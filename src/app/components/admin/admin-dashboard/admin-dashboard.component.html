@@ -28,8 +28,9 @@
           (input)="getSearchInput(searchInput.value)"
         />
       </div>
-      <div class="col-md-1 mt-4 me-5 ">
-        <button class="btn btn-success download-btn" (click)="downloadDashboardReport()">Download</button>
+      <div class="col-md-3 mt-4 me-5 d-flex justify-content-center align-items-center ">
+        <button class="btn btn-success download-btn me-2" (click)="downloadDashboardReport()">Download</button>
+        <button class="btn  refresh-btn" (click)="refreshPage()">Refresh</button>
       </div>
     </div>
     <div class="m-2">
@@ -46,24 +47,26 @@
               <tr>
                 <th scope="col">Sr.No</th>
                 <th scope="col">Coins</th>
+                <th scope="col">Exchange</th>
                 <th scope="col">Base Price</th>
                 <th scope="col">Current Price</th>
                 <th scope="col">Market Cap</th>
-                  <th scope="col">Return X</th>
+                  <th scope="col">Target Return X</th>
               <th scope="col">Current Return X</th>
               <th scope="col">Current Value</th>
               <th scope="col">Final Sale Price</th>
               <th scope="col">Total Coins</th>
-              <th scope="col">Time Frame</th>
+              <th scope="col">Major Unlock Date</th>
               <th scope="col">FDV</th>
-                <th *ngFor="let i of [1, 2, 3, 4, 5]" scope="col">Sale Target {{ i }}</th>
-                <th *ngFor="let i of [1, 2, 3, 4, 5]" scope="col">Sale Target {{ i }} Coins</th>
+                <th *ngFor="let i of [1, 2, 3, 4, 5]" scope="col">Sale Price {{ i }}</th>
+                <th *ngFor="let i of [1, 2, 3, 4, 5]" scope="col">Sale Price {{ i }} Coins</th>
               </tr>
             </thead>
             <tbody>
               <tr *ngFor="let item of allReachedSetTargetList ; let i= index">
                 <td>{{ i + 1 }}</td>
                 <td>{{ (item.coin.split(' (')[0]) || "--" }}</td>
+                <td>{{item.exchange || "--" }}</td>
                 <td>{{ item.base_price || "--" }}</td>
                 <!-- <td>{{ item.currant_price || "--" }}</td> -->
                 <td>{{ item.currentPrice || "--" }}</td>
