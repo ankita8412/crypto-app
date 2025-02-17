@@ -286,13 +286,13 @@
           </div>
           </div>
           <div class="col-md-3 mb-3 ">
-            <label  for="ticker_symbol" class="mb-2">Time Frame</label>
+            <label  for="ticker_symbol" class="mb-2">Major Unlock Date</label>
             <input
               type="text"
               class="form-control "
               id="ticker_symbol"
               formControlName="timeframe"
-              placeholder="Time Frame"
+              placeholder="Major Unlock Date"
               [ngClass]="{
                 'is-invalid':
                   control['timeframe'].invalid &&
@@ -308,7 +308,7 @@
                 control['timeframe'].touched)
             "
           >
-            <small class="current-price-validation">Time Frame Required.</small>
+            <small class="current-price-validation">Major Unlock Date Required.</small>
           </div>
           </div>
           <div class="col-md-3 mb-3">
@@ -358,12 +358,12 @@
           </div> -->
           </div>
           <div class="row pb-4 justify-content-center" formArrayName="setTargetFooter">
-            <label  for="ticker_symbol" class="mb-2">% Sale Target </label>
+            <label  for="ticker_symbol" class="mb-2">% Sale Price </label>
             <mat-form-field 
               *ngFor="let item of setTargetFooterArray.controls; let i = index"
               class="col-md-2 target-input mb-3"
               [formGroupName]="i">
-              <mat-label>% Sale Target {{ i + 1 }}</mat-label>
+              <mat-label>% Sale Price {{ i + 1 }}</mat-label>
               <input matInput
                 type="number"
                 class="form-control "

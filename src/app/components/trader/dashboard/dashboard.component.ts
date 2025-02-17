@@ -121,6 +121,11 @@ export class DashboardComponent implements OnInit{
                 }
                 
               });
+                       // Sort the list by marketCap in descending order
+          this.allReachedSetTargetList.sort((a, b) => {
+            if (a.marketCap === '--' || b.marketCap === '--') return 0;
+            return b.marketCap - a.marketCap; // Sorting in descending order
+          });
             });
             this.total = res.pagination.total;
           }
@@ -264,6 +269,9 @@ export class DashboardComponent implements OnInit{
           }
         }
       })
+    }
+    refreshPage() {
+      window.location.reload();
     }
   }
   

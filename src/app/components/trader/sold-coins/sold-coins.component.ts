@@ -67,5 +67,8 @@ export class SoldCoinsComponent implements OnInit{
         }
       })
     }
+    refreshPage() {
+      window.location.reload();
+    }
 }
 

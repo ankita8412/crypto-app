@@ -68,6 +68,9 @@ page = 1;
           }
         })
       }
+      refreshPage() {
+        window.location.reload();
+      }
 }
 
 
