@@ -8,6 +8,21 @@
     padding: 15px 10px !important;
     width: 100%;
   }
+::ng-deep div:where(.swal2-container) div:where(.swal2-html-container) {
+    z-index: 1;
+    justify-content: center;
+    margin: 0;
+    padding: 0px !important; 
+    overflow: hidden !important; 
+    color: inherit;
+    font-size: 1.125em;
+    font-weight: normal;
+    line-height: normal;
+    text-align: center;
+    word-wrap: break-word;
+    word-break: break-word;
+    cursor: initial;
+}
 :host ::ng-deep .mdc-text-field--focused:not(.mdc-text-field--disabled) .mdc-floating-label {
     color: #9f9f9f;
 }
@@ -32,6 +47,8 @@
 .coin ,.final_sale_price{
     cursor: not-allowed;
 }
+
+
 ::ng-deep .mat-select-search-input{
     box-sizing: border-box;
     width: 100%;

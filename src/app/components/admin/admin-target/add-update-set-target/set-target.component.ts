@@ -5,6 +5,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { TraderService } from 'src/app/components/trader/trader.service';
 import { debounceTime, Subject } from 'rxjs';
 import { Location } from '@angular/common';
+import Swal from 'sweetalert2';
 @Component({
   selector: 'app-set-target',
   templateUrl: './set-target.component.html',
@@ -73,6 +74,7 @@ export class SetTargetComponent implements OnInit {
       current_value: [null, Validators.required],
       current_return_x: [null, Validators.required],
       timeframe: [null, Validators.required],
+      narrative: [null, Validators.required],
       fdv_ratio: [null, Validators.required],
       setTargetFooter: this.fb.array(this.createTargetInputs(5), this.totalPercentageValidator()),
     });
@@ -323,31 +325,40 @@ export class SetTargetComponent implements OnInit {
   }
 
   addSetTarget() {
-    if (this.form.valid) {
-      this._traderService.addSetTarget(this.form.getRawValue()).subscribe({
-
-
-        next: (res: any) => {
-          if (res.status == 201 || res.status == 200) {
-            this._toastrService.success(res.message);
-            // this.router.navigate([
-            //   '/admin',
-            //   { outlets: { admin_Menu: 'admin-target' } },
-            // ]);
-            this.goToback();
-          } else {
-            this._toastrService.warning(res.message);
-          }
-        },
-        error: (err: any) => {
-          if (err.error.status == 422) {
-            this._toastrService.warning(err.error.message);
-          } else {
-            this._toastrService.error('Internal Server Error');
-          }
-        },
-      });
-    } else {
+     if (this.form.valid) {
+          Swal.fire({
+                text: 'Do you want to Save ?',
+                icon: 'question',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Yes',
+                customClass: {
+                  popup: 'small-swal' // Add a custom class
+                }
+              }).then((result) => {
+            if (result.isConfirmed) {
+              this._traderService.addSetTarget(this.form.getRawValue()).subscribe({
+                next: (res: any) => {
+                  if (res.status == 201 || res.status == 200) {
+                    this._toastrService.success(res.message);
+                    // this.router.navigate(['/trader', { outlets: { trader_Menu: 'target' } }]);
+                    this.goToback();
+                  } else {
+                    this._toastrService.warning(res.message);
+                  }
+                },
+                error: (err: any) => {
+                  if (err.error.status == 422) {
+                    this._toastrService.warning(err.error.message);
+                  } else {
+                    this._toastrService.error('Internal Server Error');
+                  }
+                }
+              });
+            }
+          });
+        }  else {
       this.form.markAllAsTouched();
       this._toastrService.warning('Fill required fields');
     }
@@ -358,29 +369,44 @@ export class SetTargetComponent implements OnInit {
   }
   updateSetTarget() {
     let data = this.form.getRawValue();
-    if (this.form.valid) {
-      this._traderService.editSetTarget(this.sale_target_id, data).subscribe({
-        next: (res: any) => {
-          if (res.status == 200) {
-            this._toastrService.success(res.message);
-            // this.router.navigate([
-            //   '/admin',
-            //   { outlets: { admin_Menu: 'admin-target' } },
-            // ]);
-            this.goToback();
-          } else {
-            this._toastrService.warning(res.message);
+  if (this.form.valid) {
+        Swal.fire({
+          text: 'Do you want to Save ?',
+          icon: 'question',
+          showCancelButton: true,
+          confirmButtonColor: '#3085d6',
+          cancelButtonColor: '#d33',
+          confirmButtonText: 'Yes',
+          customClass: {
+            popup: 'small-swal' // Add a custom class
           }
-        },
-        error: (err: any) => {
-          if (err.error.status == 401 || err.error.status == 422) {
-            this._toastrService.warning(err.error.message);
-          } else {
-            this._toastrService.error('Internal Server Error');
-          }
-        },
-      });
-    } else {
+        }).then((result) => {
+      if (result.isConfirmed) {
+       this._traderService.editSetTarget(this.sale_target_id, data).subscribe({
+          next: (res: any) => {
+            if (res.status == 200) {
+              this._toastrService.success(res.message);
+              // this.router.navigate([
+              //   '/trader',
+              //   { outlets: { trader_Menu: 'target' } },
+              // ]);
+              this.goToback();
+            } else {
+              this._toastrService.warning(res.message);
+            }
+          },
+          error: (err: any) => {
+            if (err.error.status == 401 || err.error.status == 422) {
+              this._toastrService.warning(err.error.message);
+            } else {
+              this._toastrService.error('Internal Server Error');
+            }
+          },
+        });
+      }
+    });
+      
+      }else {
       this.form.markAllAsTouched();
       this._toastrService.warning('Fill required fields');
     }
@@ -409,7 +435,8 @@ export class SetTargetComponent implements OnInit {
           targetData.final_sale_price
         );
         this.control['return_x'].patchValue(targetData.return_x);
-        this.control['timeframe'].patchValue(targetData.timeframe)
+        this.control['timeframe'].patchValue(targetData.timeframe);
+        this.control['narrative'].patchValue(targetData.narrative);
         this.control['fdv_ratio'].patchValue(targetData.fdv_ratio);
         this.patchFooterData(targetData.footer);
         setTimeout(() => {

@@ -96,6 +96,7 @@ body {
   border-radius: 20px;
   font-size: 12px;
 }
+
 .refresh-btn{
   background-color: #363062;
   color: #fff;
@@ -294,6 +295,21 @@ td {
 .lds-spinner div:nth-child(12) {
   transform: rotate(330deg);
   animation-delay: 0s;
+}
+::ng-deep div:where(.swal2-container) div:where(.swal2-html-container) {
+  z-index: 1;
+  justify-content: center;
+  margin: 0;
+  padding: 0px !important; 
+  overflow: hidden !important; 
+  color: inherit;
+  font-size: 1.125em;
+  font-weight: normal;
+  line-height: normal;
+  text-align: center;
+  word-wrap: break-word;
+  word-break: break-word;
+  cursor: initial;
 }
 @keyframes lds-spinner {
   0% {
