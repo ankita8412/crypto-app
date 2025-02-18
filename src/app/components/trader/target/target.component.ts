@@ -284,23 +284,34 @@ export class TargetComponent implements OnInit {
   }
   //delete record
   deleteRecord(event: any, id: any) {
-    let status = 0;
-    if (event.checked) {
-      status = 1;
-    }
-    this._traderService.deleteRecordById(id, status).subscribe({
-      next: (res: any) => {
-        this._toastrService.clear();
-        this._toastrService.success(res.message);
-        this.getAllSetTargetList();
-      },
-      error: (error: any) => {
-        if (error.status == 422) {
-          this._toastrService.warning(error.message);
-        }
-      },
+    let status = event.checked ? 1 : 0;
+  
+   Swal.fire({
+               text: 'Do you want to Delete ?',
+               icon: 'question',
+               showCancelButton: true,
+               confirmButtonColor: '#3085d6',
+               cancelButtonColor: '#d33',
+               confirmButtonText: 'Yes',
+               customClass: {
+                 popup: 'small-swal' // Add a custom class
+               }
+             }).then(({ isConfirmed }) => {
+      if (isConfirmed) {
+        this._traderService.deleteRecordById(id, status).subscribe({
+          next: ({ message }: any) => {
+            this._toastrService.clear();
+            this._toastrService.success(message);
+            this.getAllSetTargetList();
+          },
+          error: ({ status, message }: any) => {
+            if (status === 422) this._toastrService.warning(message);
+          }
+        });
+      }
     });
   }
+  
   onPageChange(event: PageEvent): void {
     this.page = event.pageIndex + 1;
     this.perPage = event.pageSize;

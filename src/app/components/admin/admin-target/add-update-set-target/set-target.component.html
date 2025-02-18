@@ -378,12 +378,41 @@
                 Enter 2 digits only
               </mat-error>
             </mat-form-field>
+            
           </div>
-        
           <div *ngIf="percentageError" class="text-danger">
           <!-- The total percentage of all inputs must be exactly 100%. -->
           Enter valid percentage between 0 and 100%.
           </div>
+          <div class="row">
+            <div class="col-md-3 mb-3 ">
+              <label  for="ticker_symbol" class="mb-2">Narrative</label>
+              <input
+                type="text"
+                class="form-control "
+                id="ticker_symbol"
+                formControlName="narrative"
+                placeholder="Narrative"
+                [ngClass]="{
+                  'is-invalid':
+                    control['narrative'].invalid &&
+                    (control['narrative'].dirty ||
+                      control['narrative'].touched)
+                }"
+              />
+              <div
+              class="text-danger"
+              *ngIf="
+                control['narrative'].invalid &&
+                (control['narrative'].dirty ||
+                  control['narrative'].touched)
+              "
+            >
+              <small class="current-price-validation">Narrative Required.</small>
+            </div>
+            </div>
+          </div>
+        
           <div class="d-flex justify-content-center mt-3">
             <div class="col-md-2">
               <button class="btn cancel-btn" (click)="goToback()">

@@ -58,6 +58,7 @@
               <th scope="col">Total Coins</th>
               <th scope="col">Major Unlock Date</th>
               <th scope="col">FDV</th>
+              <th scope="col">Narrative</th>
                 <th *ngFor="let i of [1, 2, 3, 4, 5]" scope="col">Sale Price {{ i }}</th>
                 <th *ngFor="let i of [1, 2, 3, 4, 5]" scope="col">Sale Price {{ i }} Coins</th>
               </tr>
@@ -78,6 +79,7 @@
                 <td>{{ item.available_coins || "--" }}</td>
                 <td>{{item.timeframe || "--" }}</td>
                 <td>{{ item.fdvRatio !== null && item.fdvRatio !== undefined ? (item.fdvRatio ) : item.fdvRatio === 0 ? '0.0' : '--' }}</td>
+                <td>{{item.narrative || "--" }}</td>
                 <td *ngFor="let footer of item.footer">{{footer.sale_target || "--"}} <br>
                   <small class="status-btn reached-text"> {{footer.target_status}}</small><br>
                   <small class="status-btn2 reached-text"  

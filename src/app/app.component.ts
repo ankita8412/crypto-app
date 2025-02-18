@@ -68,7 +68,7 @@ usertype:any;
 
   logout() {
       Swal.fire({
-        text: 'Do you want to logout ?',
+        text: 'Do you want to Logout ?',
         icon: 'question',
         showCancelButton: true,
         confirmButtonColor: '#3085d6',

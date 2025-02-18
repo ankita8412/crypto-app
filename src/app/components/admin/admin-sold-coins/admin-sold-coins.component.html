@@ -29,10 +29,12 @@
                     <th scope="col">Sr.No</th>
                     <th scope="col">Date</th>
                     <th scope="col">Coin</th>
+                    <th scope="col">Total Coins</th>
                     <th scope="col">Base Price</th>
                     <th scope="col">Sold Price</th>
                     <th scope="col">Sold Coins</th>
                     <th scope="col">Total</th>
+                    <th scope="col">Available Coins</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -40,10 +42,12 @@
                     <td>{{ i + 1 }}</td>
                     <td>{{ (item.created_at | date:'dd-MM-yyyy') }}</td>
                     <td>{{ item.coin.split(" (")[0] }}</td>
+                    <td>{{(item.total_coins) || "--" }}</td>
                     <td>{{ (item.base_price ) || "--" }}</td>
                     <td>{{ (item.sold_current_price) || "--" }}</td>
                     <td>{{ (item.sale_target_coin) || "--" }}</td>
                     <td>{{(item.total | number: '1.2-2')|| "--"}}</td>
+                    <td>{{(item.available_coins | number: '1.2-2') || "--" }}</td>
                   </tr>
                   <tr
                     class="fw-bold text-center"
