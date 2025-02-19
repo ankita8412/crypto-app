@@ -371,7 +371,7 @@ export class SetTargetComponent implements OnInit {
     let data = this.form.getRawValue();
   if (this.form.valid) {
         Swal.fire({
-          text: 'Do you want to Save ?',
+          text: 'Do you want to Update ?',
           icon: 'question',
           showCancelButton: true,
           confirmButtonColor: '#3085d6',
