@@ -243,6 +243,7 @@ export class TargetComponent implements OnInit {
       set_footer_id: footer.set_footer_id,
       coin: item.coin,
       base_price: item.base_price,
+      total_coins : item.total_available_coins,
     };
     this._traderService.updateSellToSoldStatus(body).subscribe({
       next: (res: any) => {
