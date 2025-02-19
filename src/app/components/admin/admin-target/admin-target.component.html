@@ -44,6 +44,7 @@
               <th scope="col">Current Value</th>
               <th scope="col">Final Sale Price</th>
               <th scope="col">Total Coins</th>
+              <th scope="col">Available Coins</th>
               <th scope="col">Major Unlock Date</th>
               <th scope="col">FDV</th>
               <th scope="col">Narrative</th>
@@ -71,6 +72,7 @@
                 <td>{{ item.current_value !== null && item.current_value !== undefined ? (item.current_value | number:'1.2-2') : '--' }}</td>
                 <td>{{ item.final_sale_price || "--"}}</td>
                 <td>{{ item.available_coins || "--" }}</td>
+                <td>{{item.total_available_coins || "0" }}</td>
                 <td>{{item.timeframe || "--" }}</td>
                 <td>{{ item.fdv_ratio !== null && item.fdv_ratio !== undefined ? (item.fdv_ratio) : item.fdv_ratio === 0 ? '0.0' : '--' }}</td>
                 <td>{{item.narrative || "--" }}</td>

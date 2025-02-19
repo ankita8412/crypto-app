@@ -51,6 +51,7 @@
               <th scope="col">Current Value</th>
               <th scope="col">Final Sale Price</th>
               <th scope="col">Total Coins</th>
+              <th scope="col">Available Coins</th>
               <th scope="col">Major Unlock Date</th>
               <th scope="col">FDV</th>
               <th scope="col">Narrative</th>
@@ -65,15 +66,18 @@
               <td>{{item.exchange || "--" }}</td>
               <td>{{ item.base_price || "--" }}</td>
               <!-- <td>{{ item.currant_price || "--" }}</td> -->
-              <td>{{ item.currentPrice || "--" }}</td>
-              <td>{{ item.marketCap !== null && item.marketCap !== undefined ? (item.marketCap | number:'1.2-2') : item.marketCap === 0 ? '0.00' : '--' }}</td>
+              <td [ngStyle]="{'color': item.update_current_price ? '' : 'red'}">
+                {{ item.update_current_price || item.currant_price || '--' }}
+              </td>
+              <td>{{ item.market_cap !== null && item.market_cap !== undefined ? (item.market_cap | number:'1.2-2') : item.market_cap === 0 ? '0.00' : '--' }}</td>
               <td>{{ item.return_x || "--" }}</td>
-              <td>{{ item.current_returnX !== null && item.current_returnX !== undefined ? (item.current_returnX | number:'1.2-2') : item.current_returnX === 0 ? '0.00' : '--' }}</td>
-              <td>{{ item.currentValue !== null && item.currentValue !== undefined ? (item.currentValue | number:'1.2-2') : '--' }}</td>
+              <td>{{ item.current_return_x !== null && item.current_return_x !== undefined ? (item.current_return_x | number:'1.2-2') : item.current_return_x === 0 ? '0.00' : '--' }}</td>
+              <td>{{ item.current_value !== null && item.current_value !== undefined ? (item.current_value | number:'1.2-2') : '--' }}</td>
               <td>{{ item.final_sale_price || "--"}}</td>
               <td>{{ item.available_coins || "--" }}</td>
+              <td>{{item.total_available_coins || "0" }}</td>
               <td>{{item.timeframe || "--" }}</td>
-              <td>{{ item.fdvRatio !== null && item.fdvRatio !== undefined ? (item.fdvRatio ) : item.fdvRatio === 0 ? '0.0' : '--' }}</td>
+              <td>{{ item.fdv_ratio !== null && item.fdv_ratio !== undefined ? (item.fdv_ratio ) : item.fdv_ratio === 0 ? '0.0' : '--' }}</td>
               <td>{{item.narrative || "--" }}</td>
               <td *ngFor="let footer of item.footer">{{footer.sale_target || "--"}} <br>
                 <small class="status-btn reached-text"> {{footer.target_status}}</small><br>
@@ -82,7 +86,7 @@
                   'background-color': footer.complition_id === 3 ? 'green' : (footer.complition_id === 4 ? 'red' : '#ececec'),
                   'color': footer.complition_id === 3 || footer.complition_id === 4 ? 'white' : 'inherit'
                 }" 
-                (click)="footer.complition_id === 3 && submit(item, footer, item.currentPrice)">
+             (click)="footer.complition_id === 3 && submit(item, footer, item.update_current_price ? item.update_current_price : item.currant_price)">
                  {{(footer.complition_status | titlecase) || "--"}}</small>
               </td>
               <td *ngFor="let footer of item.footer">{{footer.sale_target_coin || "--"}}</td>
