@@ -132,12 +132,13 @@ export class SetTargetComponent implements OnInit {
   
     if (total <= 0 || total > 100) {
       this._toastrService.clear();
-      this._toastrService.warning('Total percentage must be greater than 0 and less than 100.');
+      this._toastrService.warning('Total percentage must be greater than 0 and exactly 100.');
       this.percentageError = true;
     } else {
       this.percentageError = false;
     }
   }
+  
   
 
   submit() {
