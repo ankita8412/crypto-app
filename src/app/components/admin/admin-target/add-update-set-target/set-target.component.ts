@@ -115,23 +115,21 @@ export class SetTargetComponent implements OnInit {
   }
   // Validate and prevent submission
   validateExactPercentage(): void {
-    // this.form.updateValueAndValidity();
-    // this.percentageError = this.form.hasError('totalNot100', 'setTargetFooter');
     this.form.updateValueAndValidity();
+  
     const total = this.setTargetFooterArray.controls.reduce((sum, control) => {
       return sum + (parseInt(control.get('sale_target_value')?.value, 10) || 0);
     }, 0);
   
-    // Automatically reset if total exceeds 100
-    if (total > 100) {
+    if (total <= 0 || total >= 100) {
       this._toastrService.clear();
-      this._toastrService.warning('Total percentage cannot exceed 100%.');
+      this._toastrService.warning('Total percentage must be greater than 0 and less than 100.');
       this.percentageError = true;
     } else {
       this.percentageError = false;
     }
- 
   }
+  
 
 
   submit() {
