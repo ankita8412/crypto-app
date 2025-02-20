@@ -188,6 +188,7 @@
                 id="available_coins"
                 placeholder="Purchased Coins*"
                 formControlName="available_coins"
+                (input)="onInputChangePurchasedCion($event)"
                 [ngClass]="{
                   'is-invalid':
                     control['available_coins'].invalid &&
