@@ -74,8 +74,8 @@
               <td>{{ item.current_return_x !== null && item.current_return_x !== undefined ? (item.current_return_x | number:'1.2-2') : item.current_return_x === 0 ? '0.00' : '--' }}</td>
               <td>{{ item.current_value !== null && item.current_value !== undefined ? (item.current_value | number:'1.2-2') : '--' }}</td>
               <td>{{ item.final_sale_price || "--"}}</td>
-              <td>{{ item.available_coins || "0" }}</td>
-              <td>{{item.total_available_coins || "0" }}</td>
+              <td>{{ (item.available_coins | number:'1.0-4') || "0" }}</td>
+              <td>{{ (item.total_available_coins | number:'1.0-4') || "0" }}</td>
               <td>{{item.timeframe || "--" }}</td>
               <td>{{ item.fdv_ratio !== null && item.fdv_ratio !== undefined ? (item.fdv_ratio ) : item.fdv_ratio === 0 ? '0.0' : '--' }}</td>
               <td>{{item.narrative || "--" }}</td>

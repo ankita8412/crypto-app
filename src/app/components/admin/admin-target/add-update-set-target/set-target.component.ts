@@ -121,7 +121,7 @@ export class SetTargetComponent implements OnInit {
       return sum + (parseInt(control.get('sale_target_value')?.value, 10) || 0);
     }, 0);
   
-    if (total <= 0 || total >= 100) {
+    if (total <= 0 || total > 100) {
       this._toastrService.clear();
       this._toastrService.warning('Total percentage must be greater than 0 and less than 100.');
       this.percentageError = true;
@@ -506,5 +506,16 @@ export class SetTargetComponent implements OnInit {
       this.form.markAllAsTouched();
       this._toastrService.warning('Fill required fields');
     }
+  }
+  onInputChangePurchasedCion(event: Event) {
+    const inputElement = event.target as HTMLInputElement;
+    let value = inputElement.value;
+  
+    if (!value.trim()) {
+      this.form.controls["available_coins"].setValue(null);
+      return;
+    }
+    value = value.replace(/(\.0+|(?<=\.\d)0+)$/, "");
+    this.form.controls["available_coins"].setValue(value, { emitEvent: false });
   }
 }
