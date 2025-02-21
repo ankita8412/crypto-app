@@ -226,9 +226,7 @@ export class SetTargetComponent implements OnInit {
 
               },
               error: (err) => {
-                // Log the error for debugging purposes
-                console.error('API Error:', err);
-
+           
                 // Handle API failure
                 this.fetchCurrentPriceError = true; // Mark fetch as failed
                 this.isCurrentPriceReadonly = false; // Allow typing
@@ -245,9 +243,6 @@ export class SetTargetComponent implements OnInit {
             });
           }
 
-        },
-        error: (err) => {
-          console.error('Get Coin By ID Error:', err); // Log error if needed
         },
       });
     }
@@ -320,14 +315,13 @@ export class SetTargetComponent implements OnInit {
         this.form.get('current_return_x')?.patchValue(currentReturnX.toFixed(2), { emitEvent: false });
       }
       
-  
-      // Calculate current_value
-      if (currantPrice !== null && currantPrice !== undefined && availableCoins !== null && availableCoins !== undefined) {
-     
-      
-        const currentValue = currantPrice * availableCoins;
-        this.form.get('current_value')?.patchValue(currentValue.toFixed(2), { emitEvent: false });
-      }
+       // Calculate current_value
+    if (currantPrice !== null && currantPrice !== undefined && !isNaN(availableCoins)) {
+      const currentValue = availableCoins > 0 ? currantPrice * availableCoins : 0;
+      this.form.get('current_value')?.patchValue(currentValue.toFixed(2), { emitEvent: false });
+    } else {
+      this.form.get('current_value')?.patchValue(null, { emitEvent: false }); 
+    }
   }
 
   addSetTarget() {
@@ -515,7 +509,17 @@ export class SetTargetComponent implements OnInit {
       this.form.controls["available_coins"].setValue(null);
       return;
     }
+
+    const regex = /^\d{0,10}(\.\d{0,4})?$/;
+  
+    if (!regex.test(value)) {
+      value = value.slice(0, -1); 
+    }
+  
     value = value.replace(/(\.0+|(?<=\.\d)0+)$/, "");
+  
     this.form.controls["available_coins"].setValue(value, { emitEvent: false });
+  
+    this.updateCalculatedFields(); 
   }
 }
