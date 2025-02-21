@@ -540,11 +540,12 @@ export class SetTargetComponent implements OnInit {
     if (value && value.includes(".")) {
       const [integerPart, decimalPart] = value.split(".");
   
-      // If decimal part is all zeros, remove the decimal completely
+      // Agar decimal part sirf zero hai to decimal hata do
       if (/^0+$/.test(decimalPart)) {
         value = integerPart;
       } else {
-        value = integerPart + "." + decimalPart.replace(/0+$/, ""); // Remove trailing zeros but keep meaningful decimals
+        // Meaningful decimal places wale numbers ko as-it-is rakho
+        value = integerPart + "." + decimalPart; 
       }
     }
   
