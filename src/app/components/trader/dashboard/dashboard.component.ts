@@ -84,8 +84,8 @@ export class DashboardComponent implements OnInit{
             this.allReachedSetTargetList = res.data
         // Sort the list by marketCap in descending order
           this.allReachedSetTargetList.sort((a, b) => {
-            if (a.marketCap === '--' || b.marketCap === '--') return 0;
-            return b.marketCap - a.marketCap; // Sorting in descending order
+            if (a.market_cap === '--' || b.market_cap === '--') return 0;
+            return b.market_cap - a.market_cap; // Sorting in descending order
           });
              
             this.total = res.pagination.total;

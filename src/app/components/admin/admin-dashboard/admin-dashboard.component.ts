@@ -81,22 +81,22 @@ export class AdminDashboardComponent implements OnInit {
     this.getAllReachedSetTargetList();
   }
 
-  getAllReachedSetTargetList() {
-    this._adminService.getAllReachedSetTargetList(this.searchKey, this.page, this.perPage).subscribe({
-      next: (res: any) => {
-        if (res.data.length > 0) {
+  getAllReachedSetTargetList(){
+    this._adminService.getAllReachedSetTargetList(this.searchKey,this.page,this.perPage).subscribe({
+      next:(res:any) => {
+        if (res.data.length > 0){
           this.allReachedSetTargetList = res.data
-          // Sort the list by marketCap in descending order
-          this.allReachedSetTargetList.sort((a, b) => {
-            if (a.marketCap === '--' || b.marketCap === '--') return 0;
-            return b.marketCap - a.marketCap; // Sorting in descending order
-          });
+      // Sort the list by marketCap in descending order
+        this.allReachedSetTargetList.sort((a, b) => {
+          if (a.market_cap === '--' || b.market_cap === '--') return 0;
+          return b.market_cap - a.market_cap; // Sorting in descending order
+        });
+           
           this.total = res.pagination.total;
-
         }
-        else {
+        else{
           this.allReachedSetTargetList = [];
-          this.total = 0;
+          this.total = 0 ;
         }
       }
     })
