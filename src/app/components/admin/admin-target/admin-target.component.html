@@ -71,8 +71,23 @@
                 <td>{{ item.current_return_x !== null && item.current_return_x !== undefined ? (item.current_return_x | number:'1.2-2') : item.current_return_x === 0 ? '0.00' : '--' }}</td>
                 <td>{{ item.current_value !== null && item.current_value !== undefined ? (item.current_value | number:'1.2-2') : '--' }}</td>
                 <td>{{ item.final_sale_price || "--"}}</td>
-                <td>{{ (item.available_coins | number:'1.0-4') || "0" }}</td>
-                <td>{{ (item.total_available_coins | number:'1.0-4') || "0" }}</td>
+                <td>
+                  <ng-container *ngIf="shouldShowAsInteger(item.available_coins); else decimalFormat">
+                    {{ item.available_coins | number:'1.0-0' }}
+                  </ng-container>
+                  <ng-template #decimalFormat>
+                    {{ item.available_coins | number:'1.4-4' }}
+                  </ng-template>
+                </td>
+                
+                <td>
+                  <ng-container *ngIf="shouldShowAsInteger(item.total_available_coins); else totalDecimalFormat">
+                    {{ item.total_available_coins | number:'1.0-0' }}
+                  </ng-container>
+                  <ng-template #totalDecimalFormat>
+                    {{ item.total_available_coins | number:'1.4-4' }}
+                  </ng-template>
+                </td>
                 <td>{{item.timeframe || "--" }}</td>
                 <td>{{ item.fdv_ratio !== null && item.fdv_ratio !== undefined ? (item.fdv_ratio) : item.fdv_ratio === 0 ? '0.0' : '--' }}</td>
                 <td>{{item.narrative || "--" }}</td>
@@ -87,7 +102,9 @@
 >
                    {{(footer.complition_status | titlecase) || "--"}}</small>
                 </td>
-                <td *ngFor="let footer of item.footer">{{footer.sale_target_coin || "--"}}</td>
+                <td *ngFor="let footer of item.footer">
+                  {{ formatAvailableCoins(footer.sale_target_coin) }}
+                </td>
               
               </tr>
               <tr class="fw-bold text-center" *ngIf="allSetTargetList.length === 0">

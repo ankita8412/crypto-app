@@ -42,12 +42,17 @@
                   <td>{{ i + 1 }}</td>
                   <td>{{ (item.created_at | date:'dd-MM-yyyy') }}</td>
                   <td>{{ item.coin.split(" (")[0] }}</td>
-                  <td>{{(item.total_coins | number:'1.0-4') || "0" }}</td>
+                  <td>
+                    {{ formatAvailableCoins(item.total_coins) || "0" }}
+                  </td>
                   <td>{{ (item.base_price ) || "--" }}</td>
                   <td>{{ (item.sold_current_price) || "--" }}</td>
-                  <td>{{ (item.sale_target_coin) || "--" }}</td>
+                  <td>{{ formatAvailableCoins(item.sale_target_coin) || "--" }}</td>
                   <td>{{(item.total | number: '1.2-2')|| "--"}}</td>
-                  <td>{{ (item.available_coins | number:'1.0-4') || "0" }}</td>
+                  <td>
+                    {{ formatAvailableCoins(item.available_coins) || "0" }}
+                  </td>
+                  
                 </tr>
                 <tr
                   class="fw-bold text-center"

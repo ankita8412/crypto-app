@@ -70,5 +70,17 @@ export class SoldCoinsComponent implements OnInit{
     refreshPage() {
       window.location.reload();
     }
+    formatAvailableCoins(value: number): string {
+      if (value == null) return "0"; // Agar value null ya undefined ho to "0" show kare
+    
+      // Agar value integer hai ya decimal part sirf zero hai to sirf integer dikhaye
+      if (Number(value) % 1 === 0 || /^(\d+)\.0+$/.test(value.toString())) {
+        return Number(value).toFixed(0); // Poora integer rakhe (e.g., "10" instead of "10.0000")
+      }
+    
+      return Number(value).toFixed(4); // Otherwise, 4 decimal places tak dikhaye
+    }
+    
+    
 }
 
