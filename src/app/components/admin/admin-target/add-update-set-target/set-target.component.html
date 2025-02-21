@@ -183,19 +183,19 @@
             <div class="col-md-3 mb-3">
               <label  for="ticker_symbol" class="mb-2">Purchased Coins</label>
               <input
-                type="text"
-                class="form-control"
-                id="available_coins"
-                placeholder="Purchased Coins*"
-                formControlName="available_coins"
-                (input)="onInputChangePurchasedCion($event)"
-                [ngClass]="{
-                  'is-invalid':
-                    control['available_coins'].invalid &&
-                    (control['available_coins'].dirty ||
-                      control['available_coins'].touched)
-                }"
-              />
+              type="text"
+              class="form-control"
+              id="available_coins"
+              placeholder="Purchased Coins *"
+              formControlName="available_coins"
+              (input)="onInputChangePurchasedCion($event)"
+              (blur)="onBlurPurchasedCoins()"
+              [ngClass]="{
+                'is-invalid': control['available_coins'].invalid &&
+                (control['available_coins'].dirty || control['available_coins'].touched)
+              }"
+            />
+            
 
               <!-- <span class="required-symbol">*</span> -->
               <div

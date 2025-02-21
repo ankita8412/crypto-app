@@ -523,19 +523,31 @@ export class SetTargetComponent implements OnInit {
       return;
     }
   
-    // Allow only numbers with up to 10 digits before decimal and 4 after decimal
+    // Allow only valid decimal numbers (up to 10 digits before decimal and 4 after)
     const regex = /^\d{0,10}(\.\d{0,4})?$/;
-  
     if (!regex.test(value)) {
-      value = value.slice(0, -1); // Remove the last invalid character
+      return; // Stop further processing if invalid
     }
   
-    // Remove unnecessary trailing zeros after decimal (e.g., "12.3400" -> "12.34")
-    value = value.replace(/(\.0+|(?<=\.\d)0+)$/, "");
+    // Don't remove trailing zeros while typing (to allow '10.0520' input)
+    this.form.controls["available_coins"].setValue(value, { emitEvent: false });
+  }
+  
+  // Remove trailing `.0000` only when the field loses focus
+  onBlurPurchasedCoins() {
+    let value = this.form.controls["available_coins"].value;
+  
+    if (value && value.includes(".")) {
+      const [integerPart, decimalPart] = value.split(".");
+      
+      if (/^0+$/.test(decimalPart)) {
+        value = integerPart; // Remove the decimal part completely
+      } else {
+        value = integerPart + "." + decimalPart.replace(/0+$/, ""); // Remove unnecessary trailing zeros
+      }
+    }
   
     this.form.controls["available_coins"].setValue(value, { emitEvent: false });
-  
-    this.updateCalculatedFields(); 
   }
   
   
