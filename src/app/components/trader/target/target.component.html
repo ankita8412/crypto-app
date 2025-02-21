@@ -16,7 +16,11 @@
     <div class="col-md-4 mt-4 d-flex justify-content-center align-items-center ">
       <button class="btn btn-success download-btn" (click)="downloadReport()">Download</button>
       <button class="btn add-btn mx-2" [routerLink]="[ '/trader', { outlets: { trader_Menu: 'add-set-target' } } ]" >Add</button>
-      <button class="btn  refresh-btn" (click)="refreshPage()">Refresh</button>
+      <!-- <button class="btn  refresh-btn" (click)="refreshPage()">Refresh</button> -->
+      <button class="btn btn-dark refresh-btn" (click)="refreshPage()">
+        <i class="fa fas fa-sync"></i> Refresh
+      </button>
+    
     </div>
     <small class="list-header"></small>
     <div class="card m-0 p-2 mt-2">
