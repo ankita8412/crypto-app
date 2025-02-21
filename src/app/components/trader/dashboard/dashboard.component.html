@@ -25,7 +25,10 @@
  
     <div class="col-md-2 mt-5 me-5 d-flex">
       <button class="btn btn-success download-btn me-2"  (click)="downloadDashboardReport()">Download</button>
-      <button class="btn  refresh-btn" (click)="refreshPage()">Refresh</button>
+      <!-- <button class="btn  refresh-btn" (click)="refreshPage()">Refresh</button> -->
+      <button class="btn btn-dark refresh-btn" (click)="refreshPage()">
+        <i class="fa fas fa-sync"></i> Refresh
+      </button>
     </div>
   </div>
   <div class="m-2">
