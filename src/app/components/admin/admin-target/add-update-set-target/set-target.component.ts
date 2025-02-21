@@ -520,20 +520,23 @@ export class SetTargetComponent implements OnInit {
     this.form.controls["available_coins"].setValue(value, { emitEvent: false });
   }
   
-  // Remove `.0000` only when the field loses focus, but keep meaningful decimals
   onBlurPurchasedCoins() {
     let value = this.form.controls["available_coins"].value;
   
     if (value && value.includes(".")) {
       const [integerPart, decimalPart] = value.split(".");
   
-      // Agar decimal part sirf zero hai to decimal hata do
+      // If only zeros remain in the decimal part, remove it
       if (/^0+$/.test(decimalPart)) {
         value = integerPart;
       } else {
-        // Meaningful decimal places wale numbers ko as-it-is rakho
-        value = integerPart + "." + decimalPart; 
+        value = integerPart + "." + decimalPart;
       }
+    }
+  
+    // If only zeros remain or the user deletes the integer part, clear the input
+    if (!value || value === "0" || value.match(/^0+(\.0+)?$/)) {
+      value = null;
     }
   
     this.form.controls["available_coins"].setValue(value, { emitEvent: false });
