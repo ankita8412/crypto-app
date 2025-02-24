@@ -233,7 +233,12 @@ export class DashboardComponent implements OnInit{
       })
     }
     refreshPage() {
-      window.location.reload();
+      // window.location.reload();
+      if (this.allReachedSetTargetList.length > 0) {
+        this.addupdateCurrentPrice();
+        this.updateTargetCompitionStatus();
+        this.getAllReachedSetTargetList();
+        }
     }
     shouldShowAsInteger(value: number): boolean {
       return Number(value) % 1 === 0 || /^(\d+)\.0+$/.test(value.toString());

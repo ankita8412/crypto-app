@@ -116,23 +116,7 @@ export class AdminDashboardComponent implements OnInit {
       }
     })
   }
-  // getCurrentPrice(
-  //   tickerSymbol: string,
-  //   callback: (price: number | null) => void
-  // ): void {
-  //   if (!tickerSymbol) {
-  //     callback(null);
-  //     return;
-  //   }
-  //   this._traderService.getCurrentPriceByTicker(tickerSymbol).subscribe({
-  //     next: (res: any) => callback(res.data?.currentPrice || null),
-  //     error: () => callback(null),
-  //   });
-  // }
-  // get current price
-  // UpdateCurrentPriceStatus(): void {
 
-  // }
   updateTargetCompitionStatus() {
     this._traderService.updateTargetCompitionStatus().subscribe({
       next: (res: any) => {
@@ -246,7 +230,13 @@ export class AdminDashboardComponent implements OnInit {
     })
   }
   refreshPage() {
-    window.location.reload();
+    if (this.allReachedSetTargetList.length > 0) {
+       // window.location.reload();
+    this.addupdateCurrentPrice();
+    this.updateTargetCompitionStatus();
+        this.getAllReachedSetTargetList();
+    }
+   
   }
   shouldShowAsInteger(value: number): boolean {
     return Number(value) % 1 === 0 || /^(\d+)\.0+$/.test(value.toString());

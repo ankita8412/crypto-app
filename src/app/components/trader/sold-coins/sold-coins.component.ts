@@ -68,7 +68,10 @@ export class SoldCoinsComponent implements OnInit{
       })
     }
     refreshPage() {
-      window.location.reload();
+      // window.location.reload();
+      if (this.allSoldSetTargetList.length > 0) {
+        this.getAllSoldSetTargetList();
+      }
     }
     formatAvailableCoins(value: number): string {
       if (value == null) return "0"; // Agar value null ya undefined ho to "0" show kare
