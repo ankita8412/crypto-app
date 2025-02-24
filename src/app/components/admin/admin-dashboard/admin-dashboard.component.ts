@@ -252,13 +252,13 @@ export class AdminDashboardComponent implements OnInit {
     return Number(value) % 1 === 0 || /^(\d+)\.0+$/.test(value.toString());
   }
   formatAvailableCoins(value: number): string {
-    if (value == null) return "0"; // Agar value null ya undefined ho to "0" show kare
+    if (value == null || value === 0) return "0"; // Null, undefined, ya 0 ho to "0" show kare
   
-    // Agar value integer hai ya decimal part sirf zero hai to sirf integer dikhaye
-    if (Number(value) % 1 === 0 || /^(\d+)\.0+$/.test(value.toString())) {
-      return Number(value).toFixed(0); // Poora integer rakhe (e.g., "10" instead of "10.0000")
-    }
-  
-    return Number(value).toFixed(4); // Otherwise, 4 decimal places tak dikhaye
+    const formattedValue = Number(value).toFixed(4); // 4 decimal places tak format kare
+    
+    if (parseFloat(formattedValue) === 0) return "0"; // Agar formatted value "0.0000" hai to "0" dikhaye
+    
+    return formattedValue; // Otherwise, 4 decimal places tak show kare
   }
+  
 }
