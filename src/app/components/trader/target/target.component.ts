@@ -319,7 +319,12 @@ export class TargetComponent implements OnInit {
     this.getAllSetTargetList();
   }
   refreshPage() {
-    window.location.reload();
+    // window.location.reload();
+    if (this.allSetTargetList.length > 0) {
+      this.addupdateCurrentPrice();
+      this.updateTargetCompitionStatus();
+      this.getAllSetTargetList();
+      }
   }
   shouldShowAsInteger(value: number): boolean {
     return Number(value) % 1 === 0 || /^(\d+)\.0+$/.test(value.toString());

@@ -69,7 +69,10 @@ page = 1;
         })
       }
       refreshPage() {
-        window.location.reload();
+        // window.location.reload();
+        if (this.allSoldSetTargetList.length > 0) {
+          this.getAllSoldSetTargetList();
+        }
       }
           shouldShowAsInteger(value: number): boolean {
         return Number(value) % 1 === 0 || /^(\d+)\.0+$/.test(value.toString());
