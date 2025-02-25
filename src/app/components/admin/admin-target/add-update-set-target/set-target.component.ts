@@ -504,43 +504,38 @@ export class SetTargetComponent implements OnInit {
   onInputChangePurchasedCion(event: Event) {
     const inputElement = event.target as HTMLInputElement;
     let value = inputElement.value;
-  
+
     if (!value.trim()) {
-      this.form.controls["available_coins"].setValue(null);
-      return;
+        this.form.controls["available_coins"].setValue(null);
+        return;
     }
-  
-    // Allow only numbers with up to 10 digits before decimal and 4 after decimal
     const regex = /^\d{0,10}(\.\d{0,4})?$/;
     if (!regex.test(value)) {
-      return; // Stop further processing if invalid
+        return; // Stop further processing if invalid
     }
-  
-    // Keep trailing zeros while typing (prevent trimming)
     this.form.controls["available_coins"].setValue(value, { emitEvent: false });
-  }
-  
-  onBlurPurchasedCoins() {
+}
+
+onBlurPurchasedCoins() {
     let value = this.form.controls["available_coins"].value;
-  
+
     if (value && value.includes(".")) {
-      const [integerPart, decimalPart] = value.split(".");
-  
-      // If only zeros remain in the decimal part, remove it
-      if (/^0+$/.test(decimalPart)) {
-        value = integerPart;
-      } else {
-        value = integerPart + "." + decimalPart;
-      }
+        let [integerPart, decimalPart] = value.split(".");
+
+        if (/^0+$/.test(decimalPart)) {
+            value = integerPart;
+        } else {
+      
+            value = `${integerPart}.${decimalPart}`;
+        }
     }
-  
-    // If only zeros remain or the user deletes the integer part, clear the input
+
     if (!value || value === "0" || value.match(/^0+(\.0+)?$/)) {
-      value = null;
+        value = null;
     }
-  
+
     this.form.controls["available_coins"].setValue(value, { emitEvent: false });
-  }
+}
   
   
   
