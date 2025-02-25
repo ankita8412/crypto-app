@@ -238,17 +238,18 @@ export class AdminDashboardComponent implements OnInit {
     }
    
   }
-  shouldShowAsInteger(value: number): boolean {
-    return Number(value) % 1 === 0 || /^(\d+)\.0+$/.test(value.toString());
-  }
-  formatAvailableCoins(value: number): string {
-    if (value == null || value === 0) return "0"; // Null, undefined, ya 0 ho to "0" show kare
-  
-    const formattedValue = Number(value).toFixed(4); // 4 decimal places tak format kare
-    
-    if (parseFloat(formattedValue) === 0) return "0"; // Agar formatted value "0.0000" hai to "0" dikhaye
-    
-    return formattedValue; // Otherwise, 4 decimal places tak show kare
-  }
-  
+
+  formatAvailableCoins(value: any): string {
+    if (value == null || isNaN(Number(value))) return "0";
+    if (Number(value) === 0) return "0";
+    let formattedValue = (Math.floor(Number(value) * 10000) / 10000).toFixed(4);
+    if (formattedValue.endsWith(".0000")) {
+        return formattedValue.slice(0, -5);
+    }
+    if (/\.\d+0+$/.test(formattedValue) && !formattedValue.endsWith(".1000") && !formattedValue.endsWith(".2000") && !formattedValue.endsWith(".3000")) {
+        return formattedValue.replace(/0+$/, "");
+    }
+
+    return formattedValue;
+}
 }

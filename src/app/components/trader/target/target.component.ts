@@ -87,53 +87,6 @@ export class TargetComponent implements OnInit {
               if (a.market_cap === '--' || b.market_cap === '--') return 0;
               return b.market_cap - a.market_cap; // Sorting in descending order
             });
-
-          // Fetch the current price list once and then map the prices
-          // this.getAllCurrentPriceList(() => {
-          //   this.allSetTargetList.forEach((item: any) => {
-          //     const tickerSymbol = item.ticker;
-      
-          
-          //     // Find the matching ticker in the current price list
-          //     if (tickerSymbol) {
-          //       const matchedItem = this.allCurrentPriceList?.find(
-          //         (priceItem: any) => priceItem.ticker === tickerSymbol
-          //       );
-              
-          //       // If matchedItem is found, set currentPrice, fdv_ratio, and market_cap
-          //       if (matchedItem) {
-          //         this.totalCurrentValue = this.totalCurrentValue;
-          //         item.currentPrice = matchedItem.current_price;
-          //         item.fdvRatio = matchedItem.fdv_ratio; // Set fdv_ratio from matchedItem
-          //         item.currentValue = matchedItem.current_value;
-          //         item.current_returnX = matchedItem.current_return_x; // Set current_returnX from matchedItem
-          //         item.marketCap = matchedItem.market_cap; // Set market_cap from matchedItem
-          //         item.currentPriceColor = '';
-          //       } else {
-          //         item.currentPrice = item.currant_price;
-          //         item.fdvRatio = item.fdv_ratio; // Default value if no fdv_ratio found
-          //         item.currentValue = item.current_value;
-          //         item.current_returnX = item.current_return_x; // Default value if no current_return_x found
-          //         item.marketCap = item.market_cap; // Default value for market_cap
-          //         item.currentPriceColor = 'red';
-          //       }
-          //     } else {
-          //       this.totalCurrentValue = '--';
-          //       item.currentPrice = '--'; // Default value if no ticker
-          //       item.fdvRatio = '--'; // Default value for fdv_ratio if no ticker
-          //       item.currentValue = '--'; // Default value for current_value if no ticker
-          //       item.current_returnX = '--'; // Default value for current_return_x if no ticker
-          //       item.marketCap = '--'; // Default value for market_cap if no ticker
-          //     }
-              
-          //   });
-          //      // Sort the list by marketCap in descending order
-          // this.allSetTargetList.sort((a, b) => {
-          //   if (a.marketCap === '--' || b.marketCap === '--') return 0;
-          //   return b.marketCap - a.marketCap; // Sorting in descending order
-          // });
-          // });
-          
           this.total = res.pagination.total;
         } else {
           this.allSetTargetList = [];
@@ -326,19 +279,18 @@ export class TargetComponent implements OnInit {
       this.getAllSetTargetList();
       }
   }
-  shouldShowAsInteger(value: number): boolean {
-    return Number(value) % 1 === 0 || /^(\d+)\.0+$/.test(value.toString());
-  }
-  
-  formatAvailableCoins(value: number): string {
-    if (value == null || value === 0) return "0"; // Null, undefined, ya 0 ho to "0" show kare
-  
-    const formattedValue = Number(value).toFixed(4); // 4 decimal places tak format kare
-    
-    if (parseFloat(formattedValue) === 0) return "0"; // Agar formatted value "0.0000" hai to "0" dikhaye
-    
-    return formattedValue; // Otherwise, 4 decimal places tak show kare
-  }
-  
-  
+  formatAvailableCoins(value: any): string {
+    if (value == null || isNaN(Number(value))) return "0";
+    if (Number(value) === 0) return "0";
+    let formattedValue = (Math.floor(Number(value) * 10000) / 10000).toFixed(4);
+    if (formattedValue.endsWith(".0000")) {
+        return formattedValue.slice(0, -5);
+    }
+    if (/\.\d+0+$/.test(formattedValue) && !formattedValue.endsWith(".1000") && !formattedValue.endsWith(".2000") && !formattedValue.endsWith(".3000")) {
+        return formattedValue.replace(/0+$/, "");
+    }
+
+    return formattedValue;
+}
+
 }
