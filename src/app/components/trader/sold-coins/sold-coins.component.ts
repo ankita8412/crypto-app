@@ -73,15 +73,25 @@ export class SoldCoinsComponent implements OnInit{
         this.getAllSoldSetTargetList();
       }
     }
-    formatAvailableCoins(value: number): string {
-      if (value == null) return "0"; // Agar value null ya undefined ho to "0" show kare
+    formatAvailableCoins(value: any): string {
+      if (value == null || isNaN(Number(value))) return "0";
+      if (Number(value) === 0) return "0";
     
-      // Agar value integer hai ya decimal part sirf zero hai to sirf integer dikhaye
-      if (Number(value) % 1 === 0 || /^(\d+)\.0+$/.test(value.toString())) {
-        return Number(value).toFixed(0); // Poora integer rakhe (e.g., "10" instead of "10.0000")
+      let num = Number(value);
+      
+      // Convert to string and check if it has more than 8 decimal places
+      let numStr = num.toString();
+      if (numStr.includes('.') && numStr.split('.')[1].length > 8) {
+          num = Math.floor(num * 100000000) / 100000000; // Truncate to 8 decimal places
       }
     
-      return Number(value).toFixed(4); // Otherwise, 4 decimal places tak dikhaye
+      let formattedValue = num.toFixed(8).replace(/0+$/, ""); // Remove trailing zeros
+    
+      if (formattedValue.endsWith(".")) {
+          formattedValue = formattedValue.slice(0, -1);
+      }
+    
+      return formattedValue;
     }
     
     

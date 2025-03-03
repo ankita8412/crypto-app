@@ -242,14 +242,21 @@ export class AdminDashboardComponent implements OnInit {
   formatAvailableCoins(value: any): string {
     if (value == null || isNaN(Number(value))) return "0";
     if (Number(value) === 0) return "0";
-    let formattedValue = (Math.floor(Number(value) * 10000) / 10000).toFixed(4);
-    if (formattedValue.endsWith(".0000")) {
-        return formattedValue.slice(0, -5);
+  
+    let num = Number(value);
+    
+    // Convert to string and check if it has more than 8 decimal places
+    let numStr = num.toString();
+    if (numStr.includes('.') && numStr.split('.')[1].length > 8) {
+        num = Math.floor(num * 100000000) / 100000000; // Truncate to 8 decimal places
     }
-    if (/\.\d+0+$/.test(formattedValue) && !formattedValue.endsWith(".1000") && !formattedValue.endsWith(".2000") && !formattedValue.endsWith(".3000")) {
-        return formattedValue.replace(/0+$/, "");
+  
+    let formattedValue = num.toFixed(8).replace(/0+$/, ""); // Remove trailing zeros
+  
+    if (formattedValue.endsWith(".")) {
+        formattedValue = formattedValue.slice(0, -1);
     }
-
+  
     return formattedValue;
-}
+  }
 }
