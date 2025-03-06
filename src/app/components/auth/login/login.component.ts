@@ -4,6 +4,7 @@ import { AuthService } from '../auth.service';
 import { ToastrService } from 'ngx-toastr';
 import { Router } from '@angular/router';
 import { SharedService } from 'src/app/shared/shared.service';
+import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
@@ -14,15 +15,38 @@ export class LoginComponent implements OnInit{
   password: string = '';
   isSubmitted = false;
   passwordVisible: boolean = false;
-
-  constructor(private fb: FormBuilder,private _toastrService: ToastrService,
-    private _authSerivce: AuthService,private router: Router,private _sharedService: SharedService
-  ){}
+  trustLogoUrl: SafeResourceUrl;
+  constructor(private fb: FormBuilder,private _toastrService: ToastrService,private sanitizer: DomSanitizer,    private _authSerivce: AuthService,private router: Router,private _sharedService: SharedService
+  ){ this.trustLogoUrl = this.sanitizer.bypassSecurityTrustResourceUrl(
+    'https://www.positivessl.com/images/seals/positivessl_trust_seal_md_167x42.png'
+  )}
   ngOnInit(): void {
     this.createForm();
     localStorage.clear();
     
   }
+    ngAfterViewInit() {
+      const script = document.createElement('script');
+      script.src = 'https://secure.trust-provider.com/trustlogo/javascript/trustlogo.js';
+      script.type = 'text/javascript';
+      document.body.appendChild(script);
+    }
+  // ngAfterViewInit() {
+  //   const script = document.createElement('script');
+  //   script.src = 'https://secure.trust-provider.com/trustlogo/javascript/trustlogo.js';
+  //   script.type = 'text/javascript';
+  //   script.onload = () => {
+  //     if (typeof (window as any).TrustLogo === 'function') {
+  //       (window as any).TrustLogo(
+  //         'https://www.positivessl.com/images/seals/positivessl_trust_seal_md_167x42.png',
+  //         'POSDV',
+  //         'none'
+  //       );
+  //     }
+  //   };
+  //   document.body.appendChild(script);
+  // }
+  
   createForm() {
     this.form = this.fb.group({
       email_id: ['',[Validators.required, Validators.email]],
@@ -83,3 +107,7 @@ export class LoginComponent implements OnInit{
     this.passwordVisible = !this.passwordVisible;
   }
 }
+function TrustLogo(trustLogoUrl: SafeResourceUrl, arg1: string, arg2: string) {
+  throw new Error('Function not implemented.');
+}
+
