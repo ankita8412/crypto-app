@@ -30,6 +30,7 @@ export class ChangePasswordComponent  implements OnInit{
   createForm() {
     this.form = this.fb.group({
       email_id: ['',[Validators.required, Validators.email]],
+      new_email: ['',[Validators.required, Validators.email]],
       password: ['', Validators.required],
       new_password : ['', Validators.required],
     });
