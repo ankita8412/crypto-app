@@ -21,7 +21,12 @@ const routes: Routes = [
     path: "trader",
     loadChildren: () =>
       import("../app/components/trader/trader.module").then((m) => m.TraderModule),
-  }
+  },
+  {
+    path: "wm",
+    loadChildren: () =>
+      import("../app/components/super-admin/super-admin.module").then((m) => m.SuperAdminModule),
+  },
 ];
 
 @NgModule({

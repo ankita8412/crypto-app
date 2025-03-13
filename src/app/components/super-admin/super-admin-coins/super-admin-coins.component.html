@@ -1,0 +1,72 @@
+
+<div class="loading" *ngIf="!isLoading">
+    <div class="lds-spinner"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>
+  </div>
+  <div class="container-fluid m-0">
+    <div class="row mb-5 justify-content-between">
+      <div class="col-md-5 p-0">
+        <i class="fa-solid fa-magnifying-glass searching-icon"></i>
+        <input
+          type="search"
+          placeholder="Search here"
+          aria-label="Search"
+          class="search-input mb-3"
+          #searchInput (input)="getSearchInput(searchInput.value)"
+        />
+      </div>
+      <div class="row m-0 p-0">
+        <div class="card p-2 mt-2">
+          <div class="card-header d-flex justify-content-between p-3"> 
+            <strong>Top 100 Coins</strong>
+        </div>
+        <div class="card-body">
+          <div class="col-md-12">
+            <div class="table-responsive">
+              <table class="table table-bordered text-center table-hover">
+                <thead class="table-secondary">
+                  <tr>
+                    <th scope="col">#</th>
+                    <th scope="col" class="text-start coin-head">Coin</th>
+                    <th scope="col">Rank</th>
+                    <th scope="col">Price</th>
+                    <th scope="col">1h</th>
+                    <th scope="col">24h</th>
+                    <!-- <th scope="col">24h Volume</th> -->
+                    <th scope="col" >Market Cap</th>
+  
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let item of allCoinList; let i = index">
+                    <td>{{ i + 1 }}</td>
+                    <td class="text-start ps-5"><img [src]="'https://www.cryptocompare.com/' + item.ImageUrl" alt="coin images" class="img-fluid coin-images"><span class="coin-name ms-2">{{ item.FullName.split(" (")[0] }}</span>  <span class="coin-short-name">
+                      {{ item.Name || "--" }}
+                    </span></td>
+                    <td>{{item.Rank || '--'}}</td>
+                    <td>{{ (item.PRICE) || "--" }}</td>
+                    <td>{{ item.oneh !== undefined && item.oneh !== null ? item.oneh + '%' : '--' }}</td>
+                    <td>{{ item.one24h !== undefined && item.one24h !== null ? item.one24h + '%' : '--' }}</td>
+                    <!-- <td></td> -->
+                    <td class="text-end custom-padding pe-4" style="width: 18%;">{{item.MKTCAP || "--"}}</td>
+                  </tr>
+                  <tr
+                    class="fw-bold text-center"
+                    *ngIf="allCoinList.length === 0"
+                  >
+                    <td colspan="10" class="text-danger no-data">No Data Available</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="col-md-12 mt-5">
+              <mat-paginator [length]="total" [pageSize]="perPage" [pageSizeOptions]="[5, 10, 25, 100]"
+              aria-label="Select page" [showFirstLastButtons]="true" (page)="onPageChange($event)">
+              </mat-paginator>
+            </div>
+          </div>
+        </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  

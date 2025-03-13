@@ -77,6 +77,9 @@ export class LoginComponent implements OnInit{
             else if (res.data.user_type_id == 2){
               this.router.navigate(['/trader', { outlets: { trader_Menu: 'dashboard' } }]);
             }
+            else if (res.data.user_type_id == ''){
+              this.router.navigate(['/wm', { outlets: { super_Menu: 'wm-dashboard' } }]);
+            }
             else {
               this.router.navigate(['']);
               this._toastrService.warning('Unauthorized');
