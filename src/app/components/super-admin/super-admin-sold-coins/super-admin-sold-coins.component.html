@@ -1,5 +1,22 @@
 <div class="container-fluid m-0">
-    <div class="row mb-5 justify-content-between">
+    <div class="row mb-5 mt-3 justify-content-between">
+        <div class="col-md-3 align-self-start" [formGroup]="form">
+            <label cLabel for="" class="fw-medium ms-3">Users</label>
+            <div class="chief_complaints">
+                <mat-select #singleSelect placeholder="Select User" formControlName="untitledwm_id"
+                    class="form-control theme-input" (selectionChange)="onUserSelectionChange($event.value)">
+                    <mat-option>
+                        <ngx-mat-select-search [(ngModel)]="searchUsersValue" [ngModelOptions]="{ standalone: true }"
+                            (input)="filterUsers()" placeholderLabel="Search User"
+                            noEntriesFoundLabel="No result available"></ngx-mat-select-search>
+                    </mat-option>
+                    <mat-option value="null">All Users</mat-option>
+                    <mat-option *ngFor="let item of allUsersWmaList" [value]="item.untitled_id">
+                        {{ item?.user_name }}
+                    </mat-option>
+                </mat-select>
+            </div>
+          </div>
       <div class="col-md-5 p-0">
         <i class="fa-solid fa-magnifying-glass searching-icon"></i>
         <input
@@ -10,7 +27,7 @@
           #searchInput (input)="getSearchInput(searchInput.value)"
         />
       </div>
-      <div class="col-md-2 me-5 d-flex align-items-center">
+      <div class="col-md-2  me-5  d-flex align-items-center">
         <button class="btn btn-success download-btn me-2" (click)="downloadSoldReport()">Download</button>
         <!-- <button class="btn  refresh-btn" (click)="refreshPage()">Refresh</button> -->
         <button class="btn btn-dark refresh-btn" (click)="refreshPage()">
@@ -53,8 +70,9 @@
                     <td>{{ formatAvailableCoins(item.sale_target_coin) || "--" }}</td>
                     <td>{{(item.total | number: '1.2-2')|| "--"}}</td>
                     <td>
-                      {{ formatAvailableCoins(item.available_coins)  || "0" }}
+                      {{ formatAvailableCoins(item.available_coins) || "0" }}
                     </td>
+                    
                   </tr>
                   <tr
                     class="fw-bold text-center"

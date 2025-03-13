@@ -2,7 +2,6 @@ import { AfterContentChecked, Component, OnInit } from '@angular/core';
 import { SharedService } from './shared/shared.service';
 import { Router } from '@angular/router';
 import Swal from 'sweetalert2';
-import { ForgotPasswordComponent } from './components/auth/login/forgot-password/forgot-password.component';
 import { MatDialog } from '@angular/material/dialog';
 import { ChangePasswordComponent } from './components/trader/change-password/change-password.component';
 @Component({
@@ -19,6 +18,7 @@ export class AppComponent implements OnInit,AfterContentChecked{
 username:any;
 usertype:any;
   isAdminDashboard = false;
+  isSuperAdminDashboard = false;
 
 
   constructor(private _sharedService: SharedService,private router: Router,private dialog: MatDialog,){}
@@ -49,13 +49,22 @@ usertype:any;
     if (currentRoute == "/" || currentRoute == "/auth" || currentRoute == "/auth/sign-up") {
       this.isAdminDashboard = false;
       this.isTrader = false;
-    }else if (currentRoute?.split('/')[1] == 'admin') {
+      this.isSuperAdminDashboard = false;
+    }
+    else if (currentRoute?.split('/')[1] == 'admin') {
       this.isAdminDashboard = true;
       this.isTrader = false;
+      this.isSuperAdminDashboard = false;
     }
     else if (currentRoute?.split('/')[1] == 'trader') {
       this.isTrader = true;
       this.isAdminDashboard = false;
+      this.isSuperAdminDashboard = false;
+    }
+    else if (currentRoute?.split('/')[1] == 'wm') {
+      this.isSuperAdminDashboard = true;
+      this.isAdminDashboard = false;
+      this.isTrader = false;
     }
     let userData: any = localStorage.getItem('data');
     if (JSON.parse(userData)) {

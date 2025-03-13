@@ -1,18 +1,21 @@
 import { Component, OnInit } from '@angular/core';
-import { AdminService } from '../admin.service';
-import { FormControl } from '@angular/forms';
-import { debounceTime } from 'rxjs';
+import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
+import { AdminService } from '../../admin/admin.service';
 import { TraderService } from '../../trader/trader.service';
-import Swal from 'sweetalert2';
 import { ToastrService } from 'ngx-toastr';
+import { debounceTime } from 'rxjs';
 import { PageEvent } from '@angular/material/paginator';
+import Swal from 'sweetalert2';
+import { SuperAdminService } from '../super-admin.service';
+
 @Component({
-  selector: 'app-admin-dashboard',
-  templateUrl: './admin-dashboard.component.html',
-  styleUrls: ['./admin-dashboard.component.scss']
+  selector: 'app-super-admin-dashboard',
+  templateUrl: './super-admin-dashboard.component.html',
+  styleUrls: ['./super-admin-dashboard.component.scss']
 })
-export class AdminDashboardComponent implements OnInit {
+export class SuperAdminDashboardComponent implements OnInit {
   userCount: Array<any> = [];
+  searchUsersValue = '';
   page = 1;
   perPage = 50;
   total = 0;
@@ -22,6 +25,7 @@ export class AdminDashboardComponent implements OnInit {
   setTargetCount: any;
   allReachedSetTargetList: Array<any> = [];
   allCurrentPriceList: Array<any> = [];
+  allUsersWmaList: Array<any> = [];
   searchControl: FormControl = new FormControl('');
   allSetTargetList: Array<any> = [];
   updateStatus: Array<any> = [];
@@ -33,13 +37,18 @@ export class AdminDashboardComponent implements OnInit {
   currant_price: any;
   totalCurrentValue: any
   isLoading: boolean = false;
+  form!:FormGroup;
+  untitledwm_id : any;
   constructor(
     private _adminService: AdminService,
     private _traderService: TraderService,
-    private _toastrService: ToastrService
+    private _toastrService: ToastrService,
+    private fb:FormBuilder,
+    private _superAdminService : SuperAdminService,
   ) { }
 
   ngOnInit(): void {
+    this.createForm();
     this.getDashboardCount();
     this.getdashboardSaleTargetCount();
     let data: any = localStorage.getItem('data');
@@ -47,6 +56,14 @@ export class AdminDashboardComponent implements OnInit {
     this.getAllReachedSetTargetList();
     this.searchControl.valueChanges.pipe(debounceTime(550))
     this.setIntervalApi();
+    this.getAllUsersListWma();
+
+  }
+
+  createForm(){
+    this.form = this.fb.group({
+      untitledwm_id: [null]
+    });
   }
   setIntervalApi() {
     // Interval for running every 10 seconds
@@ -82,10 +99,10 @@ export class AdminDashboardComponent implements OnInit {
   }
 
   getAllReachedSetTargetList(){
-    this._adminService.getAllReachedSetTargetList(this.searchKey,this.page,this.perPage).subscribe({
+    this._superAdminService.getAllReachedSetTargetList(this.searchKey,this.page,this.perPage,this.untitledwm_id).subscribe({
       next:(res:any) => {
         if (res.data.length > 0){
-          this.allReachedSetTargetList = res.data;
+          this.allReachedSetTargetList = res.data
           this.total = res.pagination.total;
         }
         else{
@@ -140,7 +157,7 @@ export class AdminDashboardComponent implements OnInit {
     });
   }
   addupdateCurrentPrice() {
-    this._traderService.addupdateCurrentPrice('').subscribe({
+    this._superAdminService.addupdateCurrentPrice('').subscribe({
       next: (res: any) => {
         if (res.status == 201 || res.status == 200) {
           // this._toastrService.success(res.message);
@@ -152,53 +169,7 @@ export class AdminDashboardComponent implements OnInit {
 
     });
   }
-  submit(item: any, footer: any, currentPrice: any) {
-    Swal.fire({
-      text: 'Do you want to Sell?',
-      icon: 'question',
-      showCancelButton: true,
-      confirmButtonColor: '#3085d6',
-      cancelButtonColor: '#d33',
-      confirmButtonText: 'Yes',
-      customClass: {
-        popup: 'small-swal', // Add a custom class
-      },
-    }).then((result: any) => {
-      if (result.isConfirmed) {
-        this.updateSellToSoldStatus(item, footer, currentPrice);
-        this.isLoading = true;
-      }
-    });
-  }
 
-  updateSellToSoldStatus(item: any, footer: any, currentPrice: any) {
-    if (!currentPrice || currentPrice === '--') {
-      return;
-    }
-    if (!footer.set_footer_id) {
-      return;
-    }
-    const body = {
-      sale_target_id: item.sale_target_id,
-      complition_id: footer.complition_id,
-      currant_price: currentPrice,
-      set_footer_id: footer.set_footer_id,
-      coin: item.coin,
-      base_price: item.base_price,
-      total_coins: item.total_available_coins,
-    };
-    this._adminService.updateSellToSoldStatus(body).subscribe({
-      next: (res: any) => {
-        if (res) {
-          this.isLoading = false;
-          this.getAllReachedSetTargetList();
-          this._toastrService.success(res.message);
-        } else {
-          this._toastrService.warning(res.message);
-        }
-      }
-    });
-  }
   onPageChange(event: PageEvent): void {
     this.page = event.pageIndex + 1;
     this.perPage = event.pageSize;
@@ -253,4 +224,29 @@ export class AdminDashboardComponent implements OnInit {
   
     return formattedValue;
   }
+  getAllUsersListWma(){
+    this._superAdminService.getAllUsersListWma().subscribe({
+      next: (res: any) => {
+        if (res.status === 201 || res.status === 200) {
+          this.allUsersWmaList = res.data;
+        } else {
+          this.allUsersWmaList = [];
+        }
+      }
+    });
+  }
+    //Filter user array
+    filterUsers() {
+      if (this.searchUsersValue !== "") {
+        this.allUsersWmaList = this.allUsersWmaList.filter((obj) =>
+          obj.service_name.toLowerCase().includes(this.searchUsersValue.toLowerCase())
+        );
+      } else {
+        this.allUsersWmaList = this.allUsersWmaList;
+      }
+    }
+    onUserSelectionChange(selectedUserId: string) {
+      this.untitledwm_id = selectedUserId
+    this.getAllReachedSetTargetList();
+    }
 }

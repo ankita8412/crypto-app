@@ -88,4 +88,5 @@ export class AdminService {
   updateSellToSoldStatus(body:any): Observable<any>{
     return this.http.patch(this.baseUrl + 'api/sale-target-header/sell-to-sold',body)
   }
+  
 }

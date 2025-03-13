@@ -82,12 +82,6 @@ export class DashboardComponent implements OnInit{
         next:(res:any) => {
           if (res.data.length > 0){
             this.allReachedSetTargetList = res.data
-        // Sort the list by marketCap in descending order
-          this.allReachedSetTargetList.sort((a, b) => {
-            if (a.market_cap === '--' || b.market_cap === '--') return 0;
-            return b.market_cap - a.market_cap; // Sorting in descending order
-          });
-             
             this.total = res.pagination.total;
           }
           else{
@@ -104,23 +98,7 @@ export class DashboardComponent implements OnInit{
         }
       })
     }
-    // getCurrentPrice(
-    //   tickerSymbol: string,
-    //   callback: (price: number | null) => void
-    // ): void {
-    //   if (!tickerSymbol) {
-    //     callback(null);
-    //     return;
-    //   }
-    //   this._traderService.getCurrentPriceByTicker(tickerSymbol).subscribe({
-    //     next: (res: any) => callback(res.data?.currentPrice || null),
-    //     error: () => callback(null),
-    //   });
-    // }
-    // get current price
-    // UpdateCurrentPriceStatus(): void {
-   
-    // }
+
     updateTargetCompitionStatus() {
       this._traderService.updateTargetCompitionStatus().subscribe({
         next: (res: any) => {

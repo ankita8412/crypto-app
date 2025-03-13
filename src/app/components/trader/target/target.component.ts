@@ -83,10 +83,6 @@ export class TargetComponent implements OnInit {
         if (res.data.length > 0) {
           this.allSetTargetList = res.data;
           this.totalCurrentValue = res.totalCurrentValue;
-          this.allSetTargetList.sort((a, b) => {
-              if (a.market_cap === '--' || b.market_cap === '--') return 0;
-              return b.market_cap - a.market_cap; // Sorting in descending order
-            });
           this.total = res.pagination.total;
         } else {
           this.allSetTargetList = [];

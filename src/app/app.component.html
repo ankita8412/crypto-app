@@ -1,170 +1,442 @@
-<router-outlet *ngIf="!isAdminDashboard&&!isTrader"></router-outlet>
-<div class="container-fluid m-0 p-0"*ngIf="isTrader&&!isAdminDashboard">
-    <div class="row bg-white m-0 p-0 justify-content-between">
-        <div class="col-md-2 d-flex align-self-center">
-            <a class="navbar-brand">
-                <img src="assets/logo.svg" alt="Logo" class="img-fluid brand-logo ms-3" [routerLink]="['/trader', { outlets: { trader_Menu: 'dashboard' } }]"/>
-            </a>
-            <h2 class="brand-name me-5 fw-bold fs-4">Crypto</h2>
+<router-outlet
+  *ngIf="!isAdminDashboard && !isTrader && !isSuperAdminDashboard"
+></router-outlet>
+<div
+  class="container-fluid m-0 p-0"
+  *ngIf="isTrader && !isAdminDashboard && !isSuperAdminDashboard"
+>
+  <div class="row bg-white m-0 p-0 justify-content-between">
+    <div class="col-md-2 d-flex align-self-center">
+      <a class="navbar-brand">
+        <img
+          src="assets/logo.svg"
+          alt="Logo"
+          class="img-fluid brand-logo ms-3"
+          [routerLink]="['/trader', { outlets: { trader_Menu: 'dashboard' } }]"
+        />
+      </a>
+      <h2 class="brand-name me-5 fw-bold fs-4">Crypto</h2>
+    </div>
+    <div class="col-md-7 d-flex align-self-center">
+      <div class="row justify-content-evenly mt-3 mb-3">
+        <div
+          class="col-md-2 m-2 dashboard-menu text-center"
+          [routerLinkActive]="'is-active'"
+          [routerLink]="['/trader', { outlets: { trader_Menu: 'dashboard' } }]"
+        >
+          <div class="mb-1">
+            <img
+              src="assets/dashboard/dashboard.svg"
+              alt="Dashboard"
+              class="img-fluid"
+            />
+          </div>
+          <small>Dashboard</small>
         </div>
-        <div class="col-md-7 d-flex align-self-center">
-            <div class="row justify-content-evenly mt-3 mb-3">
-                <div class="col-md-2 m-2 dashboard-menu  text-center" [routerLinkActive]="'is-active'" [routerLink]="['/trader', { outlets: { trader_Menu: 'dashboard' } }]">
-                    <div class="mb-1"><img src="assets/dashboard/dashboard.svg" alt="Dashboard" class="img-fluid"></div>
-                    <small>Dashboard</small>   
-                </div>
-                <div class="col-md-2 m-2 dashboard-menu  text-center" [routerLinkActive]="'is-active'" [routerLink]="['/trader', { outlets: { trader_Menu: 'coins' } }]">
-                    <div class="mb-1"><img src="assets/dashboard/coin.svg" alt="Coin" class="img-fluid"></div>
-                    <small>Exchange Coins</small>
-                </div>
-                <div class="col-md-2 m-2 dashboard-menu  text-center" [routerLinkActive]="'is-active'" [routerLink]="['/trader', { outlets: { trader_Menu: 'target' } }]">
-                    <div class="mb-1"><img src="assets/dashboard/target.svg" alt="Target" class="img-fluid"></div>
-                    <small>Portfolio</small>
-                </div>
-                <div class="col-md-2 m-2 dashboard-menu  text-center" [routerLinkActive]="'is-active'" [routerLink]="['/trader', { outlets: { trader_Menu: 'sold-coins' } }]">
-                    <div class="mb-1"><img src="assets/dashboard/coin.svg" alt="Target" class="img-fluid"></div>
-                    <small>Sold Coins</small>
-                </div>
-                <!-- <div class="col-md-2 m-2 dashboard-menu  text-center">
+        <div
+          class="col-md-2 m-2 dashboard-menu text-center"
+          [routerLinkActive]="'is-active'"
+          [routerLink]="['/trader', { outlets: { trader_Menu: 'coins' } }]"
+        >
+          <div class="mb-1">
+            <img src="assets/dashboard/coin.svg" alt="Coin" class="img-fluid" />
+          </div>
+          <small>Exchange Coins</small>
+        </div>
+        <div
+          class="col-md-2 m-2 dashboard-menu text-center"
+          [routerLinkActive]="'is-active'"
+          [routerLink]="['/trader', { outlets: { trader_Menu: 'target' } }]"
+        >
+          <div class="mb-1">
+            <img
+              src="assets/dashboard/target.svg"
+              alt="Target"
+              class="img-fluid"
+            />
+          </div>
+          <small>Portfolio</small>
+        </div>
+        <div
+          class="col-md-2 m-2 dashboard-menu text-center"
+          [routerLinkActive]="'is-active'"
+          [routerLink]="['/trader', { outlets: { trader_Menu: 'sold-coins' } }]"
+        >
+          <div class="mb-1">
+            <img
+              src="assets/dashboard/coin.svg"
+              alt="Target"
+              class="img-fluid"
+            />
+          </div>
+          <small>Sold Coins</small>
+        </div>
+        <!-- <div class="col-md-2 m-2 dashboard-menu  text-center">
                     <div class="mb-1"><img src="../assets/dashboard/report.svg" alt="Report" class="img-fluid"></div>
                     <small>Report</small>
                 </div> -->
-            </div>
-        </div>
-        <div class="col-md-3 align-self-center d-flex justify-content-center ">
-            <!-- User Info Card -->
-<div class="user-info-card p-2 border rounded dashboard-menu-user">
-    <strong>
-      <i class="fa fas fa-user-circle me-1"></i> <!-- Font Awesome User Icon -->
-      {{ username | titlecase }}
-    </strong>
-    <br>
-    <small class="text-muted me-2">
-      <i class="fa fas fa-circle me-2"></i> <!-- Font Awesome Circle Icon -->
-      {{ usertype | titlecase }}
-    </small>
+      </div>
+    </div>
+    <div class="col-md-3 align-self-center d-flex justify-content-center">
+      <!-- User Info Card -->
+      <div
+        class="user-info-card p-2 border rounded dashboard-menu-user text-nowrap"
+      >
+        <strong>
+          <i class="fa fas fa-user-circle me-1"></i>
+          <!-- Font Awesome User Icon -->
+          {{ username | titlecase }}
+        </strong>
+        <br />
+        <small class="text-muted me-2">
+          <i class="fa fas fa-circle me-2"></i>
+          <!-- Font Awesome Circle Icon -->
+          {{ usertype | titlecase }}
+        </small>
+      </div>
+
+      <!-- Profile Image Dropdown -->
+      <li class="custom-menu custom-nav-item user-center dropdown pb-0">
+        <a
+          class="dropdown-toggle d-flex align-items-center"
+          data-bs-toggle="dropdown"
+          aria-expanded="false"
+        >
+          <img
+            src="assets/dashboard/Profile.svg"
+            alt="placeholder"
+            class="img-fluid placeholder-img ms-3 profile-img"
+          />
+        </a>
+
+        <ul class="dropdown-menu p-0">
+          <li class="p-2">
+            <strong>
+              <i class="fa fas fa-user-circle me-1"></i>
+              {{ username | titlecase }}
+            </strong>
+            <br />
+            <small class="text-muted me-2">
+              <i class="fa fas fa-circle me-2"></i>
+              {{ usertype | titlecase }}
+            </small>
+          </li>
+          <li><hr class="dropdown-divider my-0" /></li>
+          <li>
+            <small
+              class="dropdown-item cursor-pointer ps-2"
+              (click)="openDialog()"
+            >
+              <i class="fa fas fa-key me-2"></i> Change Password
+            </small>
+          </li>
+        </ul>
+      </li>
+
+      <!-- <img src="assets/dashboard/setting.svg" alt="setting" class="img-fluid ms-3 profile-img"> -->
+      <img
+        src="assets/dashboard/logout.svg"
+        alt="logout"
+        class="img-fluid ms-2 me-2 logout-img"
+        (click)="logout()"
+      />
+    </div>
   </div>
-  
-              <!-- Profile Image Dropdown -->
-              <li class="custom-menu custom-nav-item user-center dropdown pb-0">
-                <a class="dropdown-toggle  d-flex align-items-center" data-bs-toggle="dropdown" aria-expanded="false">
-                    <img src="assets/dashboard/Profile.svg" alt="placeholder" class="img-fluid placeholder-img ms-3 profile-img">
-                  </a>
-                  
-                <ul class="dropdown-menu  p-0">
-                    <li class="p-2 ">
-                        <strong>
-                          <i class="fa fas fa-user-circle me-1"></i>
-                          {{ username | titlecase }}
-                        </strong> 
-                        <br>
-                        <small class="text-muted me-2">
-                          <i class="fa fas fa-circle me-2"></i> 
-                          {{ usertype | titlecase }}
-                        </small>
-                      </li>
-                  <li><hr class="dropdown-divider my-0"></li>
-                  <li>
-                    <small class="dropdown-item cursor-pointer ps-2" (click)="openDialog()">
-                      <i class="fa fas fa-key me-2"></i> Change Password
-                    </small>
-                  </li>
-                </ul>
-              </li>
-              
-            <!-- <img src="assets/dashboard/setting.svg" alt="setting" class="img-fluid ms-3 profile-img"> -->
-            <img src="assets/dashboard/logout.svg" alt="logout" class="img-fluid ms-2 me-2 logout-img" (click)="logout()">
-        </div>
+  <div class="row m-0 p-0">
+    <div class="col-md-12 container-body">
+      <router-outlet name="trader_Menu"></router-outlet>
     </div>
-    <div class="row m-0 p-0">
-        <div class="col-md-12 container-body">
-            <router-outlet name="trader_Menu"></router-outlet>
-        </div>
-    </div>
+  </div>
 </div>
-<div class="container-fluid m-0 p-0"*ngIf="isAdminDashboard&&!isTrader">
-    <div class="row bg-white m-0 p-0 justify-content-between">
-        <div class="col-md-2 d-flex align-self-center">
-            <a class="navbar-brand" >
-                <img src="assets/logo.svg" alt="Logo" class="img-fluid brand-logo ms-3" [routerLink]="['/admin', { outlets: { admin_Menu: 'admin-dashboard' } }]"/>
-            </a>
-            <h2 class="brand-name me-5 fw-bold fs-4">Crypto</h2>
+<div
+  class="container-fluid m-0 p-0"
+  *ngIf="isAdminDashboard && !isTrader && !isSuperAdminDashboard"
+>
+  <div class="row bg-white m-0 p-0 justify-content-between">
+    <div class="col-md-2 d-flex align-self-center">
+      <a class="navbar-brand">
+        <img
+          src="assets/logo.svg"
+          alt="Logo"
+          class="img-fluid brand-logo ms-3"
+          [routerLink]="[
+            '/admin',
+            { outlets: { admin_Menu: 'admin-dashboard' } }
+          ]"
+        />
+      </a>
+      <h2 class="brand-name me-5 fw-bold fs-4">Crypto</h2>
+    </div>
+    <div class="col-md-7 d-flex align-self-center">
+      <div class="row justify-content-evenly mt-3 mb-3">
+        <div
+          class="col-md-2 m-2 dashboard-menu text-center"
+          [routerLinkActive]="'is-active'"
+          [routerLink]="[
+            '/admin',
+            { outlets: { admin_Menu: 'admin-dashboard' } }
+          ]"
+        >
+          <div class="mb-1">
+            <img
+              src="assets/dashboard/dashboard.svg"
+              alt="Dashboard"
+              class="img-fluid"
+            />
+          </div>
+          <small>Dashboard</small>
         </div>
-        <div class="col-md-7 d-flex align-self-center">
-            <div class="row justify-content-evenly mt-3 mb-3">
-                <div class="col-md-2 m-2 dashboard-menu  text-center" [routerLinkActive]="'is-active'" [routerLink]="['/admin', { outlets: { admin_Menu: 'admin-dashboard' } }]">
-                    <div class="mb-1"><img src="assets/dashboard/dashboard.svg" alt="Dashboard" class="img-fluid"></div>
-                    <small>Dashboard</small>   
-                </div>
-                <!-- <div class="col-md-2 m-2 dashboard-menu  text-center"[routerLink]="['/admin', { outlets: { admin_Menu: 'masters' } }]">
+        <!-- <div class="col-md-2 m-2 dashboard-menu  text-center"[routerLink]="['/admin', { outlets: { admin_Menu: 'masters' } }]">
                     <div class="mb-1"><img src="../assets/dashboard/dashboard.svg" alt="Dashboard" class="img-fluid"></div>
                     <small>Masters</small>   
                 </div> -->
-                <div class="col-md-2 m-2 dashboard-menu  text-center" [routerLinkActive]="'is-active'" [routerLink]="['/admin', { outlets: { admin_Menu: 'users' } }]">
-                    <div class="mb-1"><img src="assets/dashboard/user.svg" alt="Dashboard" class="img-fluid user-img"></div>
-                    <small>Users</small>   
-                </div>
-                <div class="col-md-2 m-2 dashboard-menu  text-center" [routerLinkActive]="'is-active'" [routerLink]="['/admin', { outlets: { admin_Menu: 'admin-coins' } }]">
-                    <div class="mb-1"><img src="assets/dashboard/coin.svg" alt="Coin" class="img-fluid"></div>
-                    <small>Exchange Coins</small>
-                </div>
-                <div class="col-md-2 m-2 dashboard-menu  text-center" [routerLinkActive]="'is-active'"  [routerLink]="['/admin', { outlets: { admin_Menu: 'admin-target' } }]">
-                    <div class="mb-1"><img src="assets/dashboard/target.svg" alt="Target" class="img-fluid"></div>
-                    <small>Portfolio</small>
-                </div>
-                <div class="col-md-2 m-2 dashboard-menu  text-center" [routerLinkActive]="'is-active'"  [routerLink]="['/admin', { outlets: { admin_Menu: 'sold-coins' } }]">
-                    <div class="mb-1"><img src="assets/dashboard/coin.svg" alt="Target" class="img-fluid"></div>
-                    <small>Sold Coins</small>
-                </div>
-            </div>
+        <div
+          class="col-md-2 m-2 dashboard-menu text-center"
+          [routerLinkActive]="'is-active'"
+          [routerLink]="['/admin', { outlets: { admin_Menu: 'users' } }]"
+        >
+          <div class="mb-1">
+            <img
+              src="assets/dashboard/user.svg"
+              alt="Dashboard"
+              class="img-fluid user-img"
+            />
+          </div>
+          <small>Users</small>
         </div>
-        
-        <div class="col-md-3 align-self-center d-flex justify-content-center ">
-                   <!-- User Info Card -->
-<div class="user-info-card p-2 border rounded dashboard-menu-user">
-    <strong>
-      <i class="fa fas fa-user-circle me-1"></i> <!-- Font Awesome User Icon -->
-      {{ username | titlecase }}
-    </strong>
-    <br>
-    <small class="text-muted me-2">
-      <i class="fa fas fa-circle me-2"></i> <!-- Font Awesome Circle Icon -->
-      {{ usertype | titlecase }}
-    </small>
-  </div>
-                 <!-- Profile Image Dropdown -->
-                 <li class="custom-menu custom-nav-item user-center dropdown pb-0">
-                    <a class="dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
-                        <img src="assets/dashboard/Profile.svg" alt="placeholder" class="img-fluid placeholder-img ms-3">
-                      </a>
-                      <ul class="dropdown-menu">
-                        <li class="p-2 ">
-                            <strong>
-                              <i class="fa fas fa-user-circle me-1"></i> <!-- Font Awesome User Icon -->
-                              {{ username | titlecase }}
-                            </strong> 
-                            <br>
-                            <small class="text-muted me-2">
-                              <i class="fa fas fa-circle me-2"></i> <!-- Font Awesome Circle Icon -->
-                              {{ usertype | titlecase }}
-                            </small>
-                          </li>
-                        <li><hr class="dropdown-divider"></li>
-                        <li>
-                            <small class="dropdown-item cursor-pointer " (click)="openDialog()">
-                              <i class="fa fas fa-key me-2"></i> Change Password
-                            </small>
-                          </li>
-                      </ul>
-                    </li>
-            <!-- <img src="assets/dashboard/setting.svg" alt="setting" class="img-fluid ms-3 profile-img"> -->
-            <img src="assets/dashboard/logout.svg" alt="logout" class="img-fluid ms-2  profile-img logout-img" (click)="logout()">
+        <div
+          class="col-md-2 m-2 dashboard-menu text-center"
+          [routerLinkActive]="'is-active'"
+          [routerLink]="['/admin', { outlets: { admin_Menu: 'admin-coins' } }]"
+        >
+          <div class="mb-1">
+            <img src="assets/dashboard/coin.svg" alt="Coin" class="img-fluid" />
+          </div>
+          <small>Exchange Coins</small>
         </div>
+        <div
+          class="col-md-2 m-2 dashboard-menu text-center"
+          [routerLinkActive]="'is-active'"
+          [routerLink]="['/admin', { outlets: { admin_Menu: 'admin-target' } }]"
+        >
+          <div class="mb-1">
+            <img
+              src="assets/dashboard/target.svg"
+              alt="Target"
+              class="img-fluid"
+            />
+          </div>
+          <small>Portfolio</small>
+        </div>
+        <div
+          class="col-md-2 m-2 dashboard-menu text-center"
+          [routerLinkActive]="'is-active'"
+          [routerLink]="['/admin', { outlets: { admin_Menu: 'sold-coins' } }]"
+        >
+          <div class="mb-1">
+            <img
+              src="assets/dashboard/coin.svg"
+              alt="Target"
+              class="img-fluid"
+            />
+          </div>
+          <small>Sold Coins</small>
+        </div>
+      </div>
     </div>
-    <div class="row m-0 p-0">
-        <div class="col-md-12 container-body">
-            <router-outlet name="admin_Menu"></router-outlet>
-        </div>
-    </div>
-</div>
 
+    <div class="col-md-3 align-self-center d-flex justify-content-center">
+      <!-- User Info Card -->
+      <div
+        class="user-info-card p-2 border rounded dashboard-menu-user text-nowrap"
+      >
+        <strong>
+          <i class="fa fas fa-user-circle me-1"></i>
+          <!-- Font Awesome User Icon -->
+          {{ username | titlecase }}
+        </strong>
+        <br />
+        <small class="text-muted me-2">
+          <i class="fa fas fa-circle me-2"></i>
+          <!-- Font Awesome Circle Icon -->
+          {{ usertype | titlecase }}
+        </small>
+      </div>
+      <!-- Profile Image Dropdown -->
+      <li class="custom-menu custom-nav-item user-center dropdown pb-0">
+        <a
+          class="dropdown-toggle"
+          data-bs-toggle="dropdown"
+          aria-expanded="false"
+        >
+          <img
+            src="assets/dashboard/Profile.svg"
+            alt="placeholder"
+            class="img-fluid placeholder-img ms-3"
+          />
+        </a>
+        <ul class="dropdown-menu">
+          <li class="p-2">
+            <strong>
+              <i class="fa fas fa-user-circle me-1"></i>
+              <!-- Font Awesome User Icon -->
+              {{ username | titlecase }}
+            </strong>
+            <br />
+            <small class="text-muted me-2">
+              <i class="fa fas fa-circle me-2"></i>
+              <!-- Font Awesome Circle Icon -->
+              {{ usertype | titlecase }}
+            </small>
+          </li>
+          <li><hr class="dropdown-divider" /></li>
+          <li>
+            <small class="dropdown-item cursor-pointer" (click)="openDialog()">
+              <i class="fa fas fa-key me-2"></i> Change Password
+            </small>
+          </li>
+        </ul>
+      </li>
+      <!-- <img src="assets/dashboard/setting.svg" alt="setting" class="img-fluid ms-3 profile-img"> -->
+      <img
+        src="assets/dashboard/logout.svg"
+        alt="logout"
+        class="img-fluid ms-2 profile-img logout-img"
+        (click)="logout()"
+      />
+    </div>
+  </div>
+  <div class="row m-0 p-0">
+    <div class="col-md-12 container-body">
+      <router-outlet name="admin_Menu"></router-outlet>
+    </div>
+  </div>
+</div>
+<div
+  class="container-fluid m-0 p-0"
+  *ngIf="!isAdminDashboard && !isTrader && isSuperAdminDashboard"
+>
+  <div class="row bg-white m-0 p-0 justify-content-between">
+    <div class="col-md-2 d-flex align-self-center">
+      <a class="navbar-brand">
+        <img
+          src="assets/logo.svg"
+          alt="Logo"
+          class="img-fluid brand-logo ms-3"
+          [routerLink]="['/wm', { outlets: { super_Menu: 'wm-dashboard' } }]"
+        />
+      </a>
+      <h2 class="brand-name me-5 fw-bold fs-4">Crypto</h2>
+    </div>
+    <div class="col-md-7 d-flex align-self-center">
+      <div class="row justify-content-evenly mt-3 mb-3">
+        <div
+          class="col-md-2 m-2 dashboard-menu text-center"
+          [routerLinkActive]="'is-active'"
+          [routerLink]="['/wm', { outlets: { super_Menu: 'wm-dashboard' } }]"
+        >
+          <div class="mb-1">
+            <img
+              src="assets/dashboard/dashboard.svg"
+              alt="Dashboard"
+              class="img-fluid"
+            />
+          </div>
+          <small>Dashboard</small>
+        </div>
+        <div
+          class="col-md-2 m-2 dashboard-menu text-center"
+          [routerLinkActive]="'is-active'"
+          [routerLink]="['/wm', { outlets: { super_Menu: 'wm-coins' } }]"
+        >
+          <div class="mb-1">
+            <img src="assets/dashboard/coin.svg" alt="Coin" class="img-fluid" />
+          </div>
+          <small>Exchange Coins</small>
+        </div>
+        <div
+          class="col-md-2 m-2 dashboard-menu text-center"
+          [routerLinkActive]="'is-active'"
+          [routerLink]="['/wm', { outlets: { super_Menu: 'wm-target' } }]"
+        >
+          <div class="mb-1">
+            <img
+              src="assets/dashboard/target.svg"
+              alt="Target"
+              class="img-fluid"
+            />
+          </div>
+          <small>Portfolio</small>
+        </div>
+        <div
+          class="col-md-2 m-2 dashboard-menu text-center"
+          [routerLinkActive]="'is-active'"
+          [routerLink]="['/wm', { outlets: { super_Menu: 'wm-sold-coins' } }]"
+        >
+          <div class="mb-1">
+            <img
+              src="assets/dashboard/coin.svg"
+              alt="Target"
+              class="img-fluid"
+            />
+          </div>
+          <small>Sold Coins</small>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-3 align-self-center d-flex justify-content-center">
+      <!-- User Info Card -->
+      <div
+        class="user-info-card p-2 border rounded dashboard-menu-user text-nowrap"
+      >
+        <strong>
+          <i class="fa fas fa-user-circle me-1"></i>
+          <!-- Font Awesome User Icon -->
+          {{ username | titlecase }}
+        </strong>
+      </div>
+      <!-- Profile Image Dropdown -->
+      <li class="custom-menu custom-nav-item user-center dropdown pb-0">
+        <a
+          class="dropdown-toggle"
+          data-bs-toggle="dropdown"
+          aria-expanded="false"
+        >
+          <img
+            src="assets/dashboard/Profile.svg"
+            alt="placeholder"
+            class="img-fluid placeholder-img ms-3"
+          />
+        </a>
+        <ul class="dropdown-menu">
+          <li class="p-2">
+            <strong>
+              <i class="fa fas fa-user-circle me-1"></i>
+              <!-- Font Awesome User Icon -->
+              {{ username | titlecase }}
+            </strong>
+          </li>
+          <li><hr class="dropdown-divider" /></li>
+          <li>
+            <small class="dropdown-item cursor-pointer" (click)="openDialog()">
+              <i class="fa fas fa-key me-2"></i> Change Password
+            </small>
+          </li>
+        </ul>
+      </li>
+      <!-- <img src="assets/dashboard/setting.svg" alt="setting" class="img-fluid ms-3 profile-img"> -->
+      <img
+        src="assets/dashboard/logout.svg"
+        alt="logout"
+        class="img-fluid ms-2 profile-img logout-img"
+        (click)="logout()"
+      />
+    </div>
+  </div>
+  <div class="row m-0 p-0">
+    <div class="col-md-12 container-body">
+      <router-outlet name="super_Menu"></router-outlet>
+    </div>
+  </div>
+</div>

@@ -1,18 +1,19 @@
-import { AdminService } from './../admin.service';
 import { Component, OnInit } from '@angular/core';
-import { TraderService } from '../../trader/trader.service';
-import Swal from 'sweetalert2';
+import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
-import { FormControl } from '@angular/forms';
+import { TraderService } from '../../trader/trader.service';
+import { AdminService } from '../../admin/admin.service';
 import { debounceTime } from 'rxjs';
+import Swal from 'sweetalert2';
 import { PageEvent } from '@angular/material/paginator';
+import { SuperAdminService } from '../super-admin.service';
 
 @Component({
-  selector: 'app-admin-target',
-  templateUrl: './admin-target.component.html',
-  styleUrls: ['./admin-target.component.scss'],
+  selector: 'app-super-admin-trader',
+  templateUrl: './super-admin-trader.component.html',
+  styleUrls: ['./super-admin-trader.component.scss']
 })
-export class AdminTargetComponent implements OnInit {
+export class SuperAdminTraderComponent implements OnInit {
     page = 1;
       perPage = 50;
       total = 0;
@@ -29,23 +30,35 @@ export class AdminTargetComponent implements OnInit {
       coin: any;
       complition_id: any;
       untitled_id: any;
-      totalCurrentValue :any
+      totalCurrentValue :any;
+        form!:FormGroup;
+        untitledwm_id : any;
+        allUsersWmaList: Array<any> = [];
+        searchUsersValue = '';
       // isLoading: boolean = false;
       searchControl: FormControl = new FormControl('');
       constructor(
         private _traderService: TraderService,
         private _toastrService:ToastrService,
-        private _adminService:AdminService
+        private _adminService:AdminService,
+           private fb:FormBuilder,
+       private _superAdminService : SuperAdminService,
       ) {}
     
       ngOnInit(): void {
+        this.createForm();
         let data: any = localStorage.getItem('data');
         this.untitled_id = JSON.parse(data)?.untitled_id;
         this.getAllSetTargetList();
-        
+        this.getAllUsersListWma();
         this.setIntervalApi();
         this.searchControl.valueChanges.pipe(debounceTime(550))  
   
+      }
+      createForm(){
+        this.form = this.fb.group({
+          untitledwm_id:[null]
+        });
       }
       setIntervalApi() {
 
@@ -78,15 +91,18 @@ export class AdminTargetComponent implements OnInit {
       }
       getSearchInput(searchKey: any){
         this.searchKey = searchKey;
+        
         this.getAllSetTargetList();
       }
+
       getAllSetTargetList(): void {
-        this._traderService.getAllSetTargetList(this.page, this.perPage, this.searchKey).subscribe({
+
+        this._superAdminService.getAllSetTargetList(this.searchKey,this.page, this.perPage, this.untitledwm_id).subscribe({
           next: (res: any) => {
             if (res.data.length > 0) {
               this.allSetTargetList = res.data;
               this.totalCurrentValue = res.totalCurrentValue;
-          this.total = res.pagination.total;
+              this.total = res.pagination.total;
             } else {
               this.allSetTargetList = [];
               this.total = 0 ;
@@ -103,23 +119,7 @@ export class AdminTargetComponent implements OnInit {
         const match = coin.match(/\(([^)]+)\)/); // Regex to extract text within parentheses
         return match ? match[1] : null;
       }
-      // getCurrentPrice(
-      //   tickerSymbol: string,
-      //   callback: (price: number | null) => void
-      // ): void {
-      //   if (!tickerSymbol) {
-      //     callback(null);
-      //     return;
-      //   }
-      //   this._traderService.getCurrentPriceByTicker(tickerSymbol).subscribe({
-      //     next: (res: any) => callback(res.data?.currentPrice || null),
-      //     error: () => callback(null),
-      //   });
-      // }
-      // // get current price
-      // UpdateCurrentPriceStatus(): void {
-   
-      // }
+
       updateTargetCompitionStatus() {
         this._traderService.updateTargetCompitionStatus().subscribe({
           next: (res: any) => {
@@ -148,7 +148,7 @@ export class AdminTargetComponent implements OnInit {
         });
       }
       addupdateCurrentPrice() {
-        this._traderService.addupdateCurrentPrice('').subscribe({
+        this._superAdminService.addupdateCurrentPrice('').subscribe({
           next: (res: any) => {
             if (res.status == 201 || res.status == 200) {
               // this._toastrService.success(res.message);
@@ -160,60 +160,7 @@ export class AdminTargetComponent implements OnInit {
       
         });
       }
-      submit(item: any, footer: any, currentPrice: any) {
-        Swal.fire({
-          text: 'Do you want to Sell?',
-          icon: 'question',
-          showCancelButton: true,
-          confirmButtonColor: '#3085d6',
-          cancelButtonColor: '#d33',
-          confirmButtonText: 'Yes',
-          customClass: {
-            popup: 'small-swal', // Add a custom class
-          },
-        }).then((result: any) => {
-          if (result.isConfirmed) {
-            this.updateSellToSoldStatus(item, footer, currentPrice);
-            // this.isLoading = true;
-          }
-        });
-      }
-    
-      updateSellToSoldStatus(item: any, footer: any, currentPrice: any) {
-        if (!currentPrice || currentPrice === '--') {
-          return;
-        }
-        if (!footer.set_footer_id) {
-          return;
-        }
-        const body = {
-          sale_target_id: item.sale_target_id,
-          complition_id: footer.complition_id,
-          currant_price: currentPrice,
-          set_footer_id: footer.set_footer_id,
-          coin: item.coin,
-          base_price: item.base_price,
-          total_coins : item.total_available_coins,
-        };
-        this._adminService.updateSellToSoldStatus(body).subscribe({
-          next: (res: any) => {
-            if (res.status == 201 || res.status == 200) {
-              // this.isLoading = false;
-              this.getAllSetTargetList();
-              this._toastrService.success(res.message);
-            }else {
-              this._toastrService.warning(res.message);
-            }
-          },
-          error: (err: any) => {
-            if (err.error.status == 401 || err.error.status == 422) {
-              this._toastrService.warning(err.error.message);
-            } else {
-              // this._toastrService.error('Internal Server Error');
-            }
-          }
-        });
-      }
+      
       downloadReport(){
         this._traderService.downloadReport().subscribe({
           next: (blob: Blob) => {
@@ -233,34 +180,7 @@ export class AdminTargetComponent implements OnInit {
           }
         })
       }
-     //delete record
-  deleteRecord(event: any, id: any) {
-    let status = event.checked ? 1 : 0;
-   Swal.fire({
-               text: 'Do you want to Delete ?',
-               icon: 'question',
-               showCancelButton: true,
-               confirmButtonColor: '#3085d6',
-               cancelButtonColor: '#d33',
-               confirmButtonText: 'Yes',
-               customClass: {
-                 popup: 'small-swal' // Add a custom class
-               }
-             }).then(({ isConfirmed }) => {
-      if (isConfirmed) {
-        this._traderService.deleteRecordById(id, status).subscribe({
-          next: ({ message }: any) => {
-            this._toastrService.clear();
-            this._toastrService.success(message);
-            this.getAllSetTargetList();
-          },
-          error: ({ status, message }: any) => {
-            if (status === 422) this._toastrService.warning(message);
-          }
-        });
-      }
-    });
-  }
+
       onPageChange(event: PageEvent): void {
         this.page = event.pageIndex + 1;
         this.perPage = event.pageSize;
@@ -297,5 +217,29 @@ export class AdminTargetComponent implements OnInit {
         return formattedValue;
       }
       
-      
+      getAllUsersListWma(){
+        this._superAdminService.getAllUsersListWma().subscribe({
+          next: (res: any) => {
+            if (res.status === 201 || res.status === 200) {
+              this.allUsersWmaList = res.data;
+            } else {
+              this.allUsersWmaList = [];
+            }
+          }
+        });
+      }
+        //Filter user array
+        filterUsers() {
+          if (this.searchUsersValue !== "") {
+            this.allUsersWmaList = this.allUsersWmaList.filter((obj) =>
+              obj.service_name.toLowerCase().includes(this.searchUsersValue.toLowerCase())
+            );
+          } else {
+            this.allUsersWmaList = this.allUsersWmaList;
+          }
+        }
+        onUserSelectionChange(selectedUserId: string) {
+          this.untitledwm_id = selectedUserId
+        this.getAllSetTargetList();
+        }
     }
