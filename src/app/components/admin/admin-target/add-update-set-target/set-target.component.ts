@@ -63,22 +63,22 @@ export class SetTargetComponent implements OnInit {
   createForm() {
     this.form = this.fb.group({
       ticker: [null, Validators.required],
-      coin: [null, Validators.required],
-      exchange : [null, Validators.required],
-      base_price: [null, Validators.required],
-      currant_price: [null, Validators.required],
-      market_cap: ['', Validators.required],
-      return_x: [null, Validators.required],
-      available_coins: [null, Validators.required],
-      final_sale_price: [null, Validators.required],
-      current_value: [null, Validators.required],
-      current_return_x: [null, Validators.required],
-      timeframe: [null, Validators.required],
-      narrative: [null, Validators.required],
-      fdv_ratio: [null, Validators.required],
-      setTargetFooter: this.fb.array(this.createTargetInputs(5), this.totalPercentageValidator()),
+      coin: [null],
+      exchange : [null],
+      base_price: [null],
+      currant_price: [null],
+      market_cap: [''],
+      return_x: [null],
+      available_coins: [null],
+      final_sale_price: [null],
+      current_value: [null],
+      current_return_x: [null],
+      timeframe: [null],
+      narrative: [null],
+      fdv_ratio: [null],
+      setTargetFooter: this.fb.array(this.createTargetInputs(5)),
     });
-    this.handlePriceChange();
+    // this.handlePriceChange();
   }
   get control() {
     return this.form.controls;
@@ -93,41 +93,37 @@ export class SetTargetComponent implements OnInit {
       this.fb.group({
         sale_target_value: [
           '',
-          [
-            Validators.pattern('^[0-9]{1,2}$'), // Allow only 1 or 2 digits
-            Validators.min(0),
-            Validators.max(100),
-          ],
+       
         ],
         sale_target_percent: [`${index + 1}`], // Dynamic ID
       })
     );
   }
   // Custom validator for total percentage
-  totalPercentageValidator() {
-    return (formArray: AbstractControl): ValidationErrors | null => {
-      const total = (formArray as FormArray).controls.reduce((sum, control) => {
-        const value = parseInt(control.get('sale_target_value')?.value, 10) || 0;
-        return sum + value;
-      }, 0);
-      return total > 100 ? { totalExceeds100: true } : null;
-    };
-  }
+  // totalPercentageValidator() {
+  //   return (formArray: AbstractControl): ValidationErrors | null => {
+  //     const total = (formArray as FormArray).controls.reduce((sum, control) => {
+  //       const value = parseInt(control.get('sale_target_value')?.value, 10) || 0;
+  //       return sum + value;
+  //     }, 0);
+  //     return total > 100 ? { totalExceeds100: true } : null;
+  //   };
+  // }
   // Validate and prevent submission
   validateExactPercentage(): void {
-    this.form.updateValueAndValidity();
+    // this.form.updateValueAndValidity();
   
-    const total = this.setTargetFooterArray.controls.reduce((sum, control) => {
-      return sum + (parseInt(control.get('sale_target_value')?.value, 10) || 0);
-    }, 0);
+    // const total = this.setTargetFooterArray.controls.reduce((sum, control) => {
+    //   return sum + (parseInt(control.get('sale_target_value')?.value, 10) || 0);
+    // }, 0);
   
-    if (total <= 0 || total > 100) {
-      this._toastrService.clear();
-      this._toastrService.warning('Total percentage must be greater than 0 and exactly 100.');
-      this.percentageError = true;
-    } else {
-      this.percentageError = false;
-    }
+    // if (total <= 0 || total > 100) {
+    //   this._toastrService.clear();
+    //   this._toastrService.warning('Total percentage must be greater than 0 and exactly 100.');
+    //   this.percentageError = true;
+    // } else {
+    //   this.percentageError = false;
+    // }
   }
   
 
@@ -248,33 +244,33 @@ export class SetTargetComponent implements OnInit {
     }
   }
 
-  onInputChange() {
-    // Allow typing without toggling readonly state
-    if (this.fetchCurrentPriceError) {
-      this.fetchCurrentPriceError = false;
-    }
-    if (!this.form.controls['currant_price'].value) {
-      this.fetchCurrentPriceError = true;
-    }
-  }
-  onFDVInputChange() {
-    // Allow typing without toggling readonly state
-    if (this.fetchFDVError) {
-      this.fetchFDVError = false;
-    }
-    if (!this.form.controls['fdv_ratio'].value) {
-      this.fetchFDVError = true;
-    }
-  }
-  onMarketCapInputChange() {
-    // Allow typing without toggling readonly state for MarketCap
-    if (this.fetchMarketCapError) {
-      this.fetchMarketCapError = false;
-    }
-    if (!this.form.controls['market_cap'].value) {
-      this.fetchMarketCapError = true;
-    }
-  }
+  // onInputChange() {
+  //   // Allow typing without toggling readonly state
+  //   if (this.fetchCurrentPriceError) {
+  //     this.fetchCurrentPriceError = false;
+  //   }
+  //   if (!this.form.controls['currant_price'].value) {
+  //     this.fetchCurrentPriceError = true;
+  //   }
+  // }
+  // onFDVInputChange() {
+  //   // Allow typing without toggling readonly state
+  //   if (this.fetchFDVError) {
+  //     this.fetchFDVError = false;
+  //   }
+  //   if (!this.form.controls['fdv_ratio'].value) {
+  //     this.fetchFDVError = true;
+  //   }
+  // }
+  // onMarketCapInputChange() {
+  //   // Allow typing without toggling readonly state for MarketCap
+  //   if (this.fetchMarketCapError) {
+  //     this.fetchMarketCapError = false;
+  //   }
+  //   if (!this.form.controls['market_cap'].value) {
+  //     this.fetchMarketCapError = true;
+  //   }
+  // }
   //Filter coin array
   filterCoinList() {
     this.searchKeyChanged.next(this.searchKey.trim());
@@ -359,13 +355,13 @@ export class SetTargetComponent implements OnInit {
             }
           });
         }  else {
-      this.form.markAllAsTouched();
-      this._toastrService.warning('Fill required fields');
+      // this.form.markAllAsTouched();
+      // this._toastrService.warning('Fill required fields');
     }
-    this.validateExactPercentage();
-    if (this.percentageError) {
-      return;
-    }
+    // this.validateExactPercentage();
+    // if (this.percentageError) {
+    //   return;
+    // }
   }
   updateSetTarget() {
     let data = this.form.getRawValue();
@@ -407,8 +403,8 @@ export class SetTargetComponent implements OnInit {
     });
       
       }else {
-      this.form.markAllAsTouched();
-      this._toastrService.warning('Fill required fields');
+      // this.form.markAllAsTouched();
+      // this._toastrService.warning('Fill required fields');
     }
     // this.validateExactPercentage();
     // if (this.percentageError) {
@@ -452,7 +448,7 @@ export class SetTargetComponent implements OnInit {
     footerData.forEach((item) => {
       footerArray.push(
         this.fb.group({
-          sale_target_value: [item.sale_target_value, [Validators.min(0), Validators.max(100)]],
+          sale_target_value: [item.sale_target_value],
           sale_target_percent: [item.sale_target_percent],
           sale_target: [item.sale_target],
           target_status: [item.target_status],

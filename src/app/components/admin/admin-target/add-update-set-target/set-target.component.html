@@ -54,13 +54,6 @@
                 id="ticker_symbol"
                 formControlName="coin"
                 placeholder="Coin"
-                [readonly]="true"
-                [ngClass]="{
-                  'is-invalid':
-                    control['coin'].invalid &&
-                    (control['coin'].dirty ||
-                      control['coin'].touched)
-                }"
               />
             </div>
             <div class="col-md-2 mb-3 ">
@@ -71,17 +64,8 @@
                 id="ticker_symbol"
                 formControlName="exchange"
                 placeholder="Exchange"
-                [ngClass]="{
-                  'is-invalid':
-                    control['exchange'].invalid &&
-                    (control['exchange'].dirty ||
-                      control['exchange'].touched)
-                }"
               />
-                  <!-- Error message when unable to fetch price -->
-                  <div *ngIf="form.controls['exchange'].hasError('invalidExchange')" class="text-danger">
-                    <small class="current-price-validation">Coin And Exchange already exist</small>
-                  </div>
+                  
             </div>
             <div class="col-md-3 mb-3">
               <label  for="ticker_symbol" class="mb-2">Current Price</label>
@@ -91,19 +75,12 @@
                 id="currant_price"
                 placeholder="Current Price"
                 formControlName="currant_price"
-                [readonly]="isCurrentPriceReadonly"
-                (input)="onInputChange()"
-                [ngClass]="{
-                  'is-invalid':
-                    control['currant_price'].invalid &&
-                    (control['currant_price'].dirty ||
-                      control['currant_price'].touched)
-                }"
-              />
+                />
+                <!-- (input)="onInputChange()" -->
               <!-- Error message when unable to fetch price -->
-              <div *ngIf="fetchCurrentPriceError" class="text-danger">
+              <!-- <div *ngIf="fetchCurrentPriceError" class="text-danger">
                 <small class="current-price-validation">Unable to fetch Price. Please enter Price manually.</small>
-              </div>
+              </div> -->
             </div>
             
             <div class="col-md-3 mb-3">
@@ -114,18 +91,11 @@
                 id="market_cap"
                 placeholder="Market Capital"
                 formControlName="market_cap"
-                [readonly]="isMarketCapReadonly"
-                (input)="onMarketCapInputChange()"
-                [ngClass]="{
-                  'is-invalid':
-                    control['market_cap'].invalid &&
-                    (control['market_cap'].dirty ||
-                      control['market_cap'].touched)
-                }"
-              />
-              <div *ngIf="fetchMarketCapError" class="text-danger">
+                />
+                <!-- (input)="onMarketCapInputChange()" -->
+              <!-- <div *ngIf="fetchMarketCapError" class="text-danger">
                 <small class="current-price-validation">Unable to fetch Market Capital. Please enter it manually.</small>
-              </div>
+              </div> -->
             </div>
             </div>
             <div class="row pb-4 d-flex justify-content-center">
@@ -138,22 +108,9 @@
                 id="base_price"
                 placeholder="Base Price *"
                 formControlName="base_price"
-                [ngClass]="{
-                  'is-invalid':
-                    control['base_price'].invalid &&
-                    (control['base_price'].dirty || control['base_price'].touched)
-                }"
                  [ngClass]="{ 'disabled-cursor': control['base_price'].disabled }"
                 (input)="calculateFinalSalePrice()"
               />
-              <div
-                class="text-danger"
-                *ngIf="
-                  control['base_price'].invalid &&
-                  (control['base_price'].dirty || control['base_price'].touched)
-                ">
-                <small class="current-price-validation">Base Price Required.</small>
-              </div>
             </div>
             <div class="col-md-3 mb-3">
               <label  for="ticker_symbol" class="mb-2">Return X</label>
@@ -163,22 +120,8 @@
                 id="return_x"
                 placeholder="Return X *"
                 formControlName="return_x"
-                [ngClass]="{
-                  'is-invalid':
-                    control['return_x'].invalid &&
-                    (control['return_x'].dirty || control['return_x'].touched)
-                }"
                 (input)="calculateFinalSalePrice()"
               />
-              <div
-                class="text-danger"
-                *ngIf="
-                  control['return_x'].invalid &&
-                  (control['return_x'].dirty || control['return_x'].touched)
-                "
-              >
-                <small class="current-price-validation">Return X Required.</small>
-              </div>
             </div>
             <div class="col-md-3 mb-3">
               <label  for="ticker_symbol" class="mb-2">Purchased Coins</label>
@@ -190,24 +133,8 @@
               formControlName="available_coins"
               (input)="onInputChangePurchasedCion($event)"
               (blur)="onBlurPurchasedCoins()"
-              [ngClass]="{
-                'is-invalid': control['available_coins'].invalid &&
-                (control['available_coins'].dirty || control['available_coins'].touched)
-              }"
             />
-            
-
-              <!-- <span class="required-symbol">*</span> -->
-              <div
-                class="text-danger"
-                *ngIf="
-                  control['available_coins'].invalid &&
-                  (control['available_coins'].dirty ||
-                    control['available_coins'].touched)
-                "
-              >
-                <small class="current-price-validation">Available Coins Required.</small>
-              </div>
+  
             </div>
             <div class="col-md-3 mb-3">
               <label  for="ticker_symbol" class="mb-2">Final Sale Price</label>
@@ -217,22 +144,8 @@
                 id="final_sale_price"
                 formControlName="final_sale_price"
                 placeholder="Final Sale Price"
-                [readonly]="true"
-                [ngClass]="{
-                  'is-invalid':
-                    control['final_sale_price'].invalid &&
-                    (control['final_sale_price'].dirty ||
-                      control['final_sale_price'].touched)
-                }"
+              
               />
-              <div
-              class="text-danger"
-              *ngIf="
-                control['final_sale_price'].invalid &&
-                (control['final_sale_price'].dirty || control['final_sale_price'].touched)
-              ">
-              <small class="current-price-validation">Final Sale Price Required.</small>
-            </div>
             </div>
           </div>
            <div class="row pb-4 justify-content-center">
@@ -244,22 +157,7 @@
               id="ticker_symbol"
               formControlName="current_value"
               placeholder="Current Value"
-              [readonly]="true"
-              [ngClass]="{
-                'is-invalid':
-                  control['current_value'].invalid &&
-                  (control['current_value'].dirty ||
-                    control['current_value'].touched)
-              }"
-            />
-            <div
-            class="text-danger"
-            *ngIf="
-              control['current_value'].invalid &&
-              (control['current_value'].dirty || control['current_value'].touched)
-            ">
-            <small class="current-price-validation">Current Value Required.</small>
-          </div>
+                         />
           </div>
           <div class="col-md-3 mb-3 ">
             <label for="ticker_symbol" class="mb-2">Current Return X</label>
@@ -269,22 +167,8 @@
               id="ticker_symbol"
               formControlName="current_return_x"
               placeholder="Current Return X"
-              [readonly]="true"
-              [ngClass]="{
-                'is-invalid':
-                  control['current_return_x'].invalid &&
-                  (control['current_return_x'].dirty ||
-                    control['current_return_x'].touched)
-              }"
+             
             />
-            <div
-            class="text-danger"
-            *ngIf="
-              control['current_return_x'].invalid &&
-              (control['current_return_x'].dirty || control['current_return_x'].touched)
-            ">
-            <small class="current-price-validation" >Current Return X Value Required.</small>
-          </div>
           </div>
           <div class="col-md-3 mb-3 ">
             <label  for="ticker_symbol" class="mb-2">Major Unlock Date</label>
@@ -294,23 +178,7 @@
               id="ticker_symbol"
               formControlName="timeframe"
               placeholder="Major Unlock Date"
-              [ngClass]="{
-                'is-invalid':
-                  control['timeframe'].invalid &&
-                  (control['timeframe'].dirty ||
-                    control['timeframe'].touched)
-              }"
             />
-            <div
-            class="text-danger"
-            *ngIf="
-              control['timeframe'].invalid &&
-              (control['timeframe'].dirty ||
-                control['timeframe'].touched)
-            "
-          >
-            <small class="current-price-validation">Major Unlock Date Required.</small>
-          </div>
           </div>
           <div class="col-md-3 mb-3">
             <label for="fdv_ratio" class="mb-2">FDV</label>
@@ -320,43 +188,16 @@
               id="fdv_ratio"
               placeholder="FDV"
               formControlName="fdv_ratio"
-              [readonly]="isFDVReadonly"
-              (input)="onFDVInputChange()"
-              [ngClass]="{
-                'is-invalid': control['fdv_ratio'].invalid &&
-                (control['fdv_ratio'].dirty || control['fdv_ratio'].touched)
-              }"
-            />
-            <div *ngIf="fetchFDVError" class="text-danger">
+              />
+              <!-- (input)="onFDVInputChange()" -->
+            <!-- <div *ngIf="fetchFDVError" class="text-danger">
               <small class="current-price-validation">
                 Unable to fetch FDV. Please enter FDV manually.
               </small>
-            </div>
+            </div> -->
           </div>
-          <!-- <div class="col-md-3 mb-3">
-            <label for="ticker_symbol" class="mb-2">FDV</label>
-            <input
-              type="text"
-              class="form-control"
-              id="ticker_symbol"
-              formControlName="fdv_ratio"
-              placeholder="FDV"
-              [ngClass]="{
-                'is-invalid':
-                  control['fdv_ratio'].invalid &&
-                  (control['fdv_ratio'].dirty ||
-                    control['fdv_ratio'].touched)
-              }"
-            />
-          
-            <div   *ngIf="
-            control['fdv_ratio'].invalid &&
-            (control['fdv_ratio'].dirty ||
-              control['fdv_ratio'].touched)
-          " class="text-danger">
-              <small class="current-price-validation">Please enter FDV manually.</small>
-            </div>
-          </div> -->
+      
+
           </div>
           <div class="row pb-4 justify-content-center" formArrayName="setTargetFooter">
             <label  for="ticker_symbol" class="mb-2">% Sale Price </label>
@@ -371,20 +212,16 @@
                 formControlName="sale_target_value"
                 [id]="item.get('sale_target_percent')?.value" 
                 placeholder="0"
-                maxlength="2" 
-                min="0"
-                max="99"
-                (input)="validateExactPercentage()" />
-              <mat-error *ngIf="item.get('sale_target_value')?.hasError('pattern')">
+                />
+              <!-- <mat-error *ngIf="item.get('sale_target_value')?.hasError('pattern')">
                 Enter 2 digits only
-              </mat-error>
+              </mat-error> -->
             </mat-form-field>
             
           </div>
-          <div *ngIf="percentageError" class="text-danger">
-          <!-- The total percentage of all inputs must be exactly 100%. -->
+          <!-- <div *ngIf="percentageError" class="text-danger">
           Enter valid percentage between 0 and 100%.
-          </div>
+          </div> -->
           <div class="row">
             <div class="col-md-3 mb-3 ">
               <label  for="ticker_symbol" class="mb-2">Narrative</label>
@@ -394,23 +231,7 @@
                 id="ticker_symbol"
                 formControlName="narrative"
                 placeholder="Narrative"
-                [ngClass]="{
-                  'is-invalid':
-                    control['narrative'].invalid &&
-                    (control['narrative'].dirty ||
-                      control['narrative'].touched)
-                }"
               />
-              <div
-              class="text-danger"
-              *ngIf="
-                control['narrative'].invalid &&
-                (control['narrative'].dirty ||
-                  control['narrative'].touched)
-              "
-            >
-              <small class="current-price-validation">Narrative Required.</small>
-            </div>
             </div>
           </div>
         
