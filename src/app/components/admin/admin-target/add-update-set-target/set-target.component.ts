@@ -78,7 +78,7 @@ export class SetTargetComponent implements OnInit {
       fdv_ratio: [null],
       setTargetFooter: this.fb.array(this.createTargetInputs(5)),
     });
-    // this.handlePriceChange();
+    this.handlePriceChange();
   }
   get control() {
     return this.form.controls;
