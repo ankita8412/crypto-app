@@ -321,7 +321,6 @@ export class SetTargetComponent implements OnInit {
   }
 
   addSetTarget() {
-     if (this.form.valid) {
           Swal.fire({
                 text: 'Do you want to Save ?',
                 icon: 'question',
@@ -354,18 +353,10 @@ export class SetTargetComponent implements OnInit {
               });
             }
           });
-        }  else {
-      // this.form.markAllAsTouched();
-      // this._toastrService.warning('Fill required fields');
-    }
-    // this.validateExactPercentage();
-    // if (this.percentageError) {
-    //   return;
-    // }
+        
   }
   updateSetTarget() {
     let data = this.form.getRawValue();
-  if (this.form.valid) {
         Swal.fire({
           text: 'Do you want to Update ?',
           icon: 'question',
@@ -402,14 +393,7 @@ export class SetTargetComponent implements OnInit {
       }
     });
       
-      }else {
-      // this.form.markAllAsTouched();
-      // this._toastrService.warning('Fill required fields');
-    }
-    // this.validateExactPercentage();
-    // if (this.percentageError) {
-    //   return; 
-    // }
+      
   }
 
   getSetTargetById(id: any) {
