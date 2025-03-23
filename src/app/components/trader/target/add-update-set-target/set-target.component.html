@@ -79,13 +79,13 @@
               id="currant_price"
               placeholder="Current Price"
               formControlName="currant_price"
-              [readonly]="isCurrentPriceReadonly"
               (input)="onInputChange()"
-            />
+              />
+              <!-- [readonly]="isCurrentPriceReadonly" -->
             <!-- Error message when unable to fetch price -->
-            <div *ngIf="fetchCurrentPriceError" class="text-danger">
+            <!-- <div *ngIf="fetchCurrentPriceError" class="text-danger">
               <small class="current-price-validation">Unable to fetch Price. Please enter Price manually.</small>
-            </div>
+            </div> -->
           </div>
           
           <div class="col-md-3 mb-3">
@@ -96,12 +96,12 @@
               id="market_cap"
               placeholder="Market Capital"
               formControlName="market_cap"
-              [readonly]="isMarketCapReadonly"
               (input)="onMarketCapInputChange()"
-            />
+              />
+              <!-- [readonly]="isMarketCapReadonly"
             <div *ngIf="fetchMarketCapError" class="text-danger">
               <small class="current-price-validation">Unable to fetch Market Capital. Please enter it manually.</small>
-            </div>
+            </div> -->
           </div>
           </div>
           <div class="row pb-4 d-flex justify-content-center">
@@ -149,8 +149,8 @@
               id="final_sale_price"
               formControlName="final_sale_price"
               placeholder="Final Sale Price"
-              [readonly]="true"
-            />
+              />
+              <!-- [readonly]="true" -->
           </div>
         </div>
          <div class="row pb-4 justify-content-center">
@@ -162,8 +162,8 @@
             id="ticker_symbol"
             formControlName="current_value"
             placeholder="Current Value"
-            [readonly]="true"
-          />
+            />
+            <!-- [readonly]="true" -->
         </div>
         <div class="col-md-3 mb-3 ">
           <label for="ticker_symbol" class="mb-2">Current Return X</label>
@@ -173,8 +173,8 @@
             id="ticker_symbol"
             formControlName="current_return_x"
             placeholder="Current Return X"
-            [readonly]="true"
-          />
+            />
+            <!-- [readonly]="true" -->
         </div>
         <div class="col-md-3 mb-3 ">
           <label  for="ticker_symbol" class="mb-2">Major Unlock Date</label>
@@ -194,14 +194,14 @@
             id="fdv_ratio"
             placeholder="FDV"
             formControlName="fdv_ratio"
-            [readonly]="isFDVReadonly"
             (input)="onFDVInputChange()"
-          />
-          <div *ngIf="fetchFDVError" class="text-danger">
+            />
+            <!-- [readonly]="isFDVReadonly" -->
+          <!-- <div *ngIf="fetchFDVError" class="text-danger">
             <small class="current-price-validation">
               Unable to fetch FDV. Please enter FDV manually.
             </small>
-          </div>
+          </div> -->
         </div>
         </div>
         <div class="row pb-4 justify-content-center" formArrayName="setTargetFooter">
