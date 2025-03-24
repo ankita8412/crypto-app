@@ -317,14 +317,14 @@ export class SetTargetComponent implements OnInit {
         currentReturnX = currantPrice / basePrice;
       }
     
-      this.form.get('current_return_x')?.patchValue(currentReturnX.toFixed(2), { emitEvent: false });
+      this.form.get('current_return_x')?.patchValue(currentReturnX.toString(), { emitEvent: false });
     }
     
 
     // Calculate current_value
     if (currantPrice !== null && currantPrice !== undefined && !isNaN(availableCoins)) {
       const currentValue = availableCoins > 0 ? currantPrice * availableCoins : 0;
-      this.form.get('current_value')?.patchValue(currentValue.toFixed(2), { emitEvent: false });
+      this.form.get('current_value')?.patchValue(currentValue.toString(), { emitEvent: false });
     } else {
       this.form.get('current_value')?.patchValue(null, { emitEvent: false }); 
     }
