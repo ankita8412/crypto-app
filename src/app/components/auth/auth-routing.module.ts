@@ -16,7 +16,7 @@ const routes: Routes = [
   },  
   {
     path: "forgot-password",
-    component: ForgotPasswordComponent,
+    component:ForgotPasswordComponent,
     pathMatch: "full",
   },  
 ];
