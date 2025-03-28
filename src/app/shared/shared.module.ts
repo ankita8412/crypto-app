@@ -9,6 +9,7 @@ import {MatAutocompleteModule} from '@angular/material/autocomplete';
 import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
 import {MatPaginatorModule} from '@angular/material/paginator';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
+import { NgOtpInputModule } from 'ng-otp-input';
 
 @NgModule({
   declarations: [],
@@ -24,6 +25,7 @@ import { MatSlideToggleModule } from '@angular/material/slide-toggle';
     MatAutocompleteModule,
     NgxMatSelectSearchModule,
     MatPaginatorModule,
+    NgOtpInputModule,
     MatSlideToggleModule,
     
   ],
@@ -38,6 +40,7 @@ import { MatSlideToggleModule } from '@angular/material/slide-toggle';
     MatAutocompleteModule,
     NgxMatSelectSearchModule,
     MatPaginatorModule,
+    NgOtpInputModule,
     MatSlideToggleModule,
     
   ]

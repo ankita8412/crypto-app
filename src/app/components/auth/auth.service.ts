@@ -27,19 +27,30 @@ export class AuthService {
 changePassword(data: any): Observable<any> {
   return this.http.put(this.url + 'api/admin/change-password', data);
 }
-
-//to check user and email id is exist
-checkUserEmail( user_name:any, email_id:any):Observable<any>{
-  let params = {
-    user_name:user_name,
-    email_id:email_id
-  }
-  if ( user_name === '' || user_name === 'null' ) delete params.user_name;
-  if ( email_id === '' || email_id === 'null' ) delete params.email_id;
-  return this.http.get(this.url+'api/gambler/check-data',{
-    params:params
-  })
+ //verify email_id
+ verifyEmail_id(data: any): Observable<any> {
+  return this.http.post(this.url + 'api/admin/check-emailid', data);
 }
+//send otp
+sendOTP(data: any): Observable<any> {
+  return this.http.post(this.url + 'api/admin/send-otp', data);
+}
+//verify otp
+verifyOTP(data: any): Observable<any> {
+  return this.http.post(this.url + 'api/admin/verify-otp', data);
+}
+//forget password
+forgotPassword(data: any): Observable<any> {
+  return this.http.post(this.url + 'api/admin/forgot-Password', data);
+}
+//verify email_id sign up
+sendOTPIfEmailNotExist(data: any): Observable<any> {
+  return this.http.post(
+    this.url + 'api/admin/send-otp-if-email-not-exists',
+    data
+  );
+}
+
 public isAuthenticated(): boolean {
   return this.getToken() !== null;
 }
