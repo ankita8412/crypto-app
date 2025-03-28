@@ -60,11 +60,13 @@ timerSubscription: Subscription =new Subscription(); ;
     VerifyEmail() {
       let data = this.form.value;
       if (this.form.valid) {
+        this._sharedService.setLoading(true)
         this._authSerivce.verifyEmail_id(data).subscribe({
           next: (res: any) => {
             if (res.status === 200 || res.status === 201) {
               this.verificationStatus = 'success'; // Set status to success
               this.verifyemail = true;
+              this._sharedService.setLoading(false)
             } else {
               this.verificationStatus = 'error'; // Set status to error
               this._toastrService.warning(res.message);
@@ -77,6 +79,7 @@ timerSubscription: Subscription =new Subscription(); ;
             } else {
               this._toastrService.error('Internal Server Error');
             }
+            this._sharedService.setLoading(false)
           }
         });
       } else {
@@ -89,6 +92,7 @@ timerSubscription: Subscription =new Subscription(); ;
       let data = this.form.value;
       this.VerifyEmail();
       if (this.form.valid) {
+        this._sharedService.setLoading(true)
         this._authSerivce.sendOTP(data).subscribe({
           next: (res: any) => {
             if (res.status === 200 || res.status === 201) {
@@ -96,6 +100,7 @@ timerSubscription: Subscription =new Subscription(); ;
               this._toastrService.success(res.message);
               this.verifyemail = false;
               this.startTimer();
+              this._sharedService.setLoading(false)
             } else {
               this.verificationStatus = 'error';
               this._toastrService.warning(res.message);
@@ -108,6 +113,7 @@ timerSubscription: Subscription =new Subscription(); ;
             } else {
               this._toastrService.warning(err.error.message);
             }
+            this._sharedService.setLoading(false)
           }
         });
       } else {
@@ -138,6 +144,7 @@ timerSubscription: Subscription =new Subscription(); ;
           otp: this.otp,
           email_id: this.form.value.email_id
         };
+        this._sharedService.setLoading(true)
         this._authSerivce.verifyOTP(data).subscribe({
           next: (res: any) => {
             if (res.status === 200 || res.status === 201) {
@@ -145,6 +152,7 @@ timerSubscription: Subscription =new Subscription(); ;
               this._toastrService.success(res.message);
               this.verifyemail = false;
               this.forgotpassword = true;
+              this._sharedService.setLoading(false)
             } else {
               this.verificationStatus = 'error';
               this._toastrService.warning(res.message);
@@ -157,6 +165,7 @@ timerSubscription: Subscription =new Subscription(); ;
             } else {
               this._toastrService.warning(err.error.message);
             }
+            this._sharedService.setLoading(false)
           }
         });
       } else {
@@ -180,6 +189,7 @@ timerSubscription: Subscription =new Subscription(); ;
           newPassword: this.newpassword,
           confirmPassword:this.confirmpassword
         };
+        this._sharedService.setLoading(true)
         this._authSerivce.forgotPassword(data).subscribe({
           next: (res: any) => {
             if (res.status === 200 || res.status === 201) {
@@ -187,6 +197,7 @@ timerSubscription: Subscription =new Subscription(); ;
               this._toastrService.success(res.message);
               this.verifyemail = false;
               this.router.navigateByUrl('/auth');
+              this.forgotpassword = false;
             } else {
               this.verificationStatus = 'error';
               this._toastrService.warning(res.message);
@@ -199,6 +210,7 @@ timerSubscription: Subscription =new Subscription(); ;
             } else {
               this._toastrService.warning(err.error.message);
             }
+            this._sharedService.setLoading(false)
           }
         });
       } else {
