@@ -83,7 +83,7 @@ export class SetTargetComponent implements OnInit {
       current_return_x: [null],
       timeframe: [null],
       narrative: [null],
-      fdv_ratio: [null],
+      fdv_ratio: [''],
       setTargetFooter: this.fb.array(this.createTargetInputs(5)),
     });
     this.handlePriceChange();
