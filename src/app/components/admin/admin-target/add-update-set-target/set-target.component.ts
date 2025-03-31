@@ -312,12 +312,12 @@ export class SetTargetComponent implements OnInit {
       }
       
        // Calculate current_value
-    if (currantPrice !== null && currantPrice !== undefined && !isNaN(availableCoins)) {
-      const currentValue = availableCoins > 0 ? currantPrice * availableCoins : 0;
-      this.form.get('current_value')?.patchValue(currentValue.toFixed(2), { emitEvent: false });
-    } else {
-      this.form.get('current_value')?.patchValue(null, { emitEvent: false }); 
-    }
+       if (currantPrice !== null && currantPrice !== undefined && !isNaN(availableCoins)) {
+        const currentValue = availableCoins > 0 ? currantPrice * availableCoins : 0;
+        this.form.get('current_value')?.patchValue(currentValue, { emitEvent: false });
+      } else {
+        this.form.get('current_value')?.patchValue(null, { emitEvent: false }); 
+      }
   }
 
   addSetTarget() {
