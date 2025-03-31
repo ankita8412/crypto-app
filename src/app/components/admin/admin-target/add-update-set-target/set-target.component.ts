@@ -309,7 +309,7 @@ export class SetTargetComponent implements OnInit {
         let currentReturnX = 0; // Default to 0 if basePrice is 0 to avoid Infinity
       
         if (basePrice !== 0) {
-          const currentReturnX = (currantPrice / basePrice).toLocaleString("fullwide", { useGrouping: false });
+          currentReturnX = currantPrice / basePrice;
         }
       
         this.form.get('current_return_x')?.patchValue(currentReturnX.toFixed(2), { emitEvent: false });
@@ -318,10 +318,12 @@ export class SetTargetComponent implements OnInit {
        // Calculate current_value
        if (currantPrice !== null && currantPrice !== undefined && !isNaN(availableCoins)) {
         const currentValue = availableCoins > 0 ? currantPrice * availableCoins : 0;
-        this.form.get('current_value')?.patchValue(currentValue, { emitEvent: false });
+        this.form.get('current_value')?.patchValue(currentValue.toFixed(10), { emitEvent: false });
       } else {
         this.form.get('current_value')?.patchValue(null, { emitEvent: false }); 
       }
+      
+      
   }
 
   addSetTarget() {
