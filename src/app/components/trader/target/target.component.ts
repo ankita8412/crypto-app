@@ -51,7 +51,7 @@ export class TargetComponent implements OnInit {
         
         this.addupdateCurrentPrice();
       }
-    }, 10000);
+    }, 60000);
 
     // Interval for running every 7 seconds
     this.refreshInterval1 = setInterval(() => {
